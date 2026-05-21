@@ -1,0 +1,1387 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Click Lounge Studio — Packages</title>
+<!-- Meta Pixel Code -->
+<script>
+!function(f,b,e,v,n,t,s)
+{if(f.fbq)return;n=f.fbq=function(){n.callMethod?
+n.callMethod.apply(n,arguments):n.queue.push(arguments)};
+if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';
+n.queue=[];t=b.createElement(e);t.async=!0;
+t.src=v;s=b.getElementsByTagName(e)[0];
+s.parentNode.insertBefore(t,s)}(window, document,'script',
+'https://connect.facebook.net/en_US/fbevents.js');
+fbq('init', '263971983385899');
+fbq('track', 'PageView');
+</script>
+<noscript><img height="1" width="1" style="display:none"
+src="https://www.facebook.com/tr?id=263971983385899&ev=PageView&noscript=1"
+/></noscript>
+<!-- End Meta Pixel Code -->
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+:root {
+  --green: #2d6e5f;
+  --green-dark: #1e4d42;
+  --green-light: #4a9082;
+  --amber: #c49a1a;
+  --amber-light: #d4b030;
+  --cream: #f5ede0;
+  --cream-dark: #ede0cb;
+  --warm-white: #faf6f0;
+  --rust: #b05a2a;
+  --text-dark: #1a2e28;
+  --text-mid: #4a6058;
+  --text-light: #8fa89e;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior:smooth; }
+body { font-family:'DM Sans',sans-serif; background:var(--warm-white); color:var(--text-dark); overflow-x:hidden; }
+
+/* NAV */
+nav {
+  position:sticky; top:0; z-index:200;
+  background:rgba(250,246,240,0.96); backdrop-filter:blur(12px);
+  border-bottom:1px solid rgba(45,110,95,.12);
+  display:flex; align-items:center; justify-content:center;
+  padding:0 1rem; height:54px;
+}
+nav a {
+  font-size:.8rem; font-weight:600; letter-spacing:.03em;
+  color:var(--text-mid); text-decoration:none;
+  padding:0 1rem; height:54px; display:flex; align-items:center;
+  border-bottom:2.5px solid transparent;
+  transition:color .2s,border-color .2s; white-space:nowrap;
+}
+nav a:hover { color:var(--green); }
+nav a.active { color:var(--green); border-bottom-color:var(--green); }
+
+/* PAGE SECTIONS */
+.section { display:none; animation:fadeUp .35s ease; }
+.section.active { display:block; }
+@keyframes fadeUp { from{opacity:0;transform:translateY(14px);}to{opacity:1;transform:translateY(0);} }
+
+/* SUB TABS */
+.sub-tabs {
+  display:flex; overflow-x:auto; background:var(--cream-dark);
+  padding:0 1.5rem; scrollbar-width:none;
+  border-bottom:2px solid rgba(45,110,95,.12);
+}
+.sub-tabs::-webkit-scrollbar{display:none;}
+.sub-tab {
+  font-size:.82rem; font-weight:600; color:var(--text-mid);
+  background:none; border:none; border-bottom:3px solid transparent;
+  padding:.9rem 1.3rem; cursor:pointer; white-space:nowrap;
+  transition:color .2s,border-color .2s; margin-bottom:-2px;
+}
+.sub-tab.active,.sub-tab:hover{color:var(--green);border-bottom-color:var(--green);}
+.sub-panel{display:none;}
+.sub-panel.active{display:block;animation:fadeUp .3s ease;}
+
+/* SHARED */
+.page-header {
+  background:var(--cream); padding:3.5rem 2rem 3rem;
+  text-align:center; position:relative; overflow:hidden;
+}
+.page-header::before {
+  content:''; position:absolute; width:500px; height:500px; border-radius:50%;
+  background:radial-gradient(circle,rgba(45,110,95,.07) 0%,transparent 70%);
+  top:50%; left:50%; transform:translate(-50%,-50%);
+}
+.eyebrow {
+  font-family:'Space Mono',monospace; font-size:.68rem; font-weight:700;
+  letter-spacing:.16em; text-transform:uppercase; color:var(--rust);
+  display:block; margin-bottom:.6rem; position:relative;
+}
+.page-title {
+  font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3rem);
+  color:var(--green-dark); line-height:1.1; position:relative;
+}
+.page-desc {
+  max-width:560px; margin:.9rem auto 0; color:var(--text-mid);
+  line-height:1.75; font-size:.95rem; position:relative;
+}
+
+/* PRICE BADGE */
+.price-badge {
+  display:inline-flex; align-items:baseline; gap:.15rem;
+  background:rgba(45,110,95,.1); border-radius:100px;
+  padding:.45rem 1.2rem; margin:.75rem 0;
+}
+.price-num{font-family:'Space Mono',monospace;font-size:1.7rem;font-weight:700;color:var(--green);}
+.price-dec{font-family:'Space Mono',monospace;font-size:.85rem;color:var(--green);}
+
+/* PACKAGE CARD */
+.pkg-card {
+  background:#fff; border-radius:18px; overflow:hidden;
+  border:1px solid rgba(45,110,95,.1);
+  transition:transform .2s,box-shadow .2s;
+}
+.pkg-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(45,110,95,.13);}
+.pkg-card-header {
+  padding:1.6rem 1.6rem .8rem; text-align:center;
+  border-bottom:1px solid rgba(45,110,95,.07);
+}
+.pkg-name{font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--green-dark);margin-bottom:.2rem;}
+.pkg-sub{font-size:.78rem;color:var(--text-light);text-transform:uppercase;letter-spacing:.1em;font-family:'Space Mono',monospace;}
+.pkg-body{padding:1.4rem 1.6rem;}
+.pkg-features{list-style:none;font-size:.87rem;color:var(--text-mid);line-height:1;}
+.pkg-features li{padding:.45rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;align-items:flex-start;gap:.55rem;}
+.pkg-features li:last-child{border-bottom:none;}
+.pkg-features li::before{content:'✓';color:var(--green);font-weight:700;font-size:.8rem;margin-top:.05rem;flex-shrink:0;}
+.pkg-cta {
+  display:block; text-align:center; margin-top:1.2rem;
+  background:var(--green); color:#fff; font-weight:600; font-size:.85rem;
+  letter-spacing:.04em; padding:.8rem; border-radius:10px;
+  text-decoration:none; transition:background .2s;
+}
+.pkg-cta:hover{background:var(--green-dark);}
+.pkg-badge {
+  position:absolute; top:1rem; right:1rem;
+  background:var(--amber); color:#fff;
+  font-family:'Space Mono',monospace; font-size:.62rem; font-weight:700;
+  letter-spacing:.08em; text-transform:uppercase;
+  padding:.28rem .7rem; border-radius:100px;
+}
+
+/* CARDS GRID */
+.cards-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(270px,1fr));
+  gap:1.5rem; padding:2.5rem 2rem; max-width:1100px; margin:0 auto;
+}
+
+/* ADDON */
+.addon-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(200px,1fr));
+  gap:.9rem; padding:1.5rem 2rem; max-width:900px; margin:0 auto;
+}
+.addon-item {
+  background:#fff; border-radius:10px; padding:.85rem 1rem;
+  border:1px solid rgba(45,110,95,.1);
+  display:flex; align-items:center; justify-content:space-between; gap:.75rem;
+}
+.addon-name{font-size:.84rem;color:var(--text-dark);font-weight:500;}
+.addon-price{font-family:'Space Mono',monospace;font-size:.88rem;font-weight:700;color:var(--amber);white-space:nowrap;}
+
+/* UPGRADE */
+.upgrade-grid {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:1rem; padding:.5rem 2rem 2rem; max-width:900px; margin:0 auto;
+}
+.upgrade-item{background:var(--cream);border-radius:12px;padding:1.1rem 1.4rem;border:1px solid rgba(45,110,95,.1);}
+.upgrade-title{font-size:.85rem;font-weight:600;color:var(--green-dark);margin-bottom:.3rem;}
+.upgrade-price{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;color:var(--green);}
+.upgrade-desc{font-size:.78rem;color:var(--text-light);margin-top:.25rem;}
+
+/* PHOTOGRAPHER OVERVIEW */
+.photo-overview{background:var(--green-dark);padding:2.5rem 2rem;text-align:center;}
+.photo-types {
+  display:grid; grid-template-columns:repeat(auto-fill,minmax(160px,1fr));
+  gap:1rem; max-width:900px; margin:1.5rem auto 0;
+}
+.photo-type-chip {
+  background:rgba(255,255,255,.08); border:1px solid rgba(255,255,255,.15);
+  border-radius:12px; padding:1rem; text-align:center;
+}
+.photo-type-num{font-family:'Space Mono',monospace;font-size:1.6rem;font-weight:700;color:var(--amber-light);}
+.photo-type-name{font-family:'Playfair Display',serif;font-size:.95rem;color:#fff;margin-top:.2rem;}
+.photo-type-sub{font-size:.72rem;color:rgba(255,255,255,.55);margin-top:.2rem;line-height:1.4;}
+
+/* FULLBLEED PKG */
+.fullbleed-pkg {
+  display:grid; grid-template-columns:1fr 1fr;
+  min-height:460px;
+}
+@media(max-width:680px){.fullbleed-pkg{grid-template-columns:1fr;}}
+.fullbleed-img {
+  background:linear-gradient(135deg,#f0e0d8,#d4c0b8);
+  display:flex; align-items:center; justify-content:center; font-size:5rem;
+  min-height:240px;
+}
+.fullbleed-body {
+  padding:2.5rem; display:flex; flex-direction:column; justify-content:center;
+  background:var(--warm-white);
+}
+.pkg-label{font-family:'Playfair Display',serif;font-size:2.2rem;color:var(--green-dark);line-height:1.1;margin-bottom:.4rem;}
+.strikethrough{font-size:.9rem;color:var(--text-light);text-decoration:line-through;font-family:'Space Mono',monospace;}
+.big-price{font-family:'Space Mono',monospace;font-size:2.2rem;font-weight:700;color:var(--green);}
+.fullbleed-features{list-style:none;margin-top:1rem;font-size:.85rem;color:var(--text-mid);line-height:1;}
+.fullbleed-features li{padding:.38rem 0;display:flex;align-items:flex-start;gap:.5rem;}
+.fullbleed-features li::before{content:'·';color:var(--green);font-size:1.2rem;margin-top:-.05rem;flex-shrink:0;}
+
+/* GENDER REVEAL */
+.reveal-section{background:linear-gradient(135deg,#f0d8e0,#e0c8d8);padding:3rem 2rem;}
+.reveal-grid{display:grid;grid-template-columns:1fr 1fr;gap:2rem;max-width:900px;margin:1.5rem auto 0;}
+@media(max-width:640px){.reveal-grid{grid-template-columns:1fr;}}
+.reveal-box{background:rgba(255,255,255,.6);border-radius:16px;padding:1.8rem;}
+.reveal-box h3{font-family:'Playfair Display',serif;font-size:1.1rem;color:var(--green-dark);margin-bottom:1rem;}
+.reveal-list{list-style:none;font-size:.85rem;color:var(--text-mid);line-height:1;}
+.reveal-list li{padding:.38rem 0;display:flex;gap:.5rem;align-items:flex-start;}
+.reveal-list li::before{content:'○';color:var(--green);flex-shrink:0;}
+
+/* EVENTS */
+.bridal-hero{background:linear-gradient(160deg,#f5e8e0,#ead0c8);padding:3rem 2rem;text-align:center;position:relative;overflow:hidden;}
+.bridal-label{font-family:'Playfair Display',serif;font-style:italic;font-size:1.3rem;color:var(--rust);}
+.bridal-title{font-family:'Playfair Display',serif;font-size:clamp(2.5rem,5vw,4rem);color:var(--green-dark);line-height:1;}
+.offer-banner {
+  display:inline-block; background:linear-gradient(135deg,#c8a020,#a87818);
+  color:#fff; font-family:'Space Mono',monospace; font-size:.72rem; font-weight:700;
+  letter-spacing:.1em; text-transform:uppercase; padding:.6rem 1.4rem; border-radius:4px;
+  transform:rotate(-2deg); margin-bottom:1rem;
+}
+.bridal-prices{display:flex;align-items:baseline;justify-content:center;gap:1rem;flex-wrap:wrap;margin:1rem 0;}
+.old-price{font-family:'Space Mono',monospace;font-size:1.1rem;color:var(--text-light);text-decoration:line-through;}
+.new-price{font-family:'Space Mono',monospace;font-size:2.6rem;font-weight:700;color:var(--green);}
+.save-chip{background:var(--green);color:#fff;font-size:.75rem;font-weight:700;padding:.3rem .8rem;border-radius:100px;}
+
+/* STUDIO BOOTH */
+.booth-section{background:var(--green-dark);padding:3rem 2rem;text-align:center;}
+.booth-title{font-family:'Space Mono',monospace;font-size:clamp(1.5rem,4vw,3rem);font-weight:700;color:#fff;letter-spacing:-.01em;text-transform:uppercase;}
+.booth-sub{color:rgba(255,255,255,.7);font-size:.92rem;line-height:1.75;max-width:620px;margin:.8rem auto 2rem;}
+.booth-tiers{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;max-width:800px;margin:0 auto;}
+@media(max-width:620px){.booth-tiers{grid-template-columns:1fr;}}
+.tier{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:16px;padding:1.8rem 1.4rem;text-align:center;}
+.tier.featured{background:rgba(196,154,26,.15);border-color:var(--amber-light);}
+.tier-hours{font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--amber-light);margin-bottom:.5rem;}
+.tier-price{font-family:'Space Mono',monospace;font-size:1.9rem;font-weight:700;color:#fff;margin:.3rem 0;}
+.tier-features{list-style:none;font-size:.8rem;color:rgba(255,255,255,.7);line-height:1;margin-top:.9rem;}
+.tier-features li{padding:.35rem 0;}
+
+/* BOOKING */
+.booking-hero{background:linear-gradient(135deg,var(--cream),#e0d0bc);padding:3rem 2rem;text-align:center;}
+.payment-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;max-width:700px;margin:2rem auto;}
+@media(max-width:560px){.payment-grid{grid-template-columns:1fr;}}
+.payment-box{background:#fff;border-radius:16px;padding:1.8rem;text-align:center;border:1px solid rgba(45,110,95,.1);}
+.payment-title{font-family:'Space Mono',monospace;font-weight:700;font-size:1rem;color:var(--green);margin-bottom:.3rem;}
+.payment-num{font-size:1.1rem;font-weight:600;color:var(--text-dark);}
+.payment-name{font-size:.85rem;color:var(--text-mid);margin-top:.2rem;}
+.tnc-section{max-width:800px;margin:0 auto;padding:2.5rem 2rem;}
+.tnc-group{margin-bottom:2rem;}
+.tnc-group-title {
+  font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;
+  letter-spacing:.1em;text-transform:uppercase;color:var(--green);
+  margin-bottom:.75rem;display:flex;align-items:center;gap:.6rem;
+}
+.tnc-group-title::after{content:'';flex:1;height:1px;background:rgba(45,110,95,.15);}
+.tnc-list{list-style:none;}
+.tnc-list li{font-size:.88rem;color:var(--text-mid);line-height:1.65;padding:.4rem 0 .4rem 1.2rem;position:relative;}
+.tnc-list li::before{content:'—';position:absolute;left:0;color:var(--green);font-weight:700;}
+
+/* BOOK BTN */
+.book-btn {
+  display:inline-flex;align-items:center;gap:.5rem;
+  background:var(--amber);color:#fff;text-decoration:none;
+  font-family:'Space Mono',monospace;font-size:.8rem;font-weight:700;
+  letter-spacing:.06em;text-transform:uppercase;
+  padding:.85rem 2rem;border-radius:100px;
+  transition:transform .15s,box-shadow .2s;
+}
+.book-btn:hover{transform:translateY(-2px);box-shadow:0 8px 24px rgba(196,154,26,.35);}
+.book-btn.green{background:var(--green);}
+.book-btn.green:hover{box-shadow:0 8px 24px rgba(45,110,95,.3);}
+.book-btn.rust{background:var(--rust);}
+
+/* FOOTER */
+footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:center;}
+.footer-brand{font-family:'Space Mono',monospace;font-size:1rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-light);margin-bottom:.6rem;}
+.footer-contact{font-size:.82rem;color:rgba(255,255,255,.65);line-height:2;margin-bottom:1.2rem;}
+.footer-social{display:flex;gap:.8rem;justify-content:center;margin-bottom:1.5rem;}
+.footer-social a{width:38px;height:38px;border-radius:50%;background:rgba(255,255,255,.1);display:flex;align-items:center;justify-content:center;color:#fff;text-decoration:none;font-size:1rem;transition:background .2s;}
+.footer-social a:hover{background:var(--amber);}
+.footer-bottom{font-size:.72rem;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.1);padding-top:1.2rem;margin-top:.5rem;}
+
+@media(max-width:640px){
+  nav{gap:0;}
+  nav a{font-size:.7rem;padding:0 .55rem;}
+  .cards-grid{padding:1.5rem 1rem;}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" onclick="showPage('home',this);return false;" style="padding:0 .8rem;border:none;"><img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="height:36px;width:auto;display:block;"></a>
+  <div style="width:1px;height:24px;background:rgba(45,110,95,.15);margin:0 .2rem;"></div>
+  <a href="#" class="active" onclick="showPage('home',this);return false;">Home</a>
+  <a href="#" onclick="showPage('self-shoot',this);return false;">Self Shoot</a>
+  <a href="#" onclick="showPage('photographer',this);return false;">Photographer</a>
+  <a href="#" onclick="showPage('events',this);return false;">Events & Rentals</a>
+  <a href="#" onclick="showPage('booking',this);return false;">Booking Process</a>
+</nav>
+
+<!-- ══ HOME ══ -->
+<div id="home" class="section active">
+  <div class="page-header" style="min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
+    <img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="width:260px;height:auto;margin-bottom:1rem;position:relative;">
+    <h1 class="page-title" style="font-size:clamp(2.5rem,6vw,4rem);letter-spacing:.02em;">PACKAGES</h1>
+    <p class="page-desc">Explore our diverse range of photography session packages. Whether it's a portrait, couple's shoot, family session, or special event, CLS ensures picture-perfect results every time.</p>
+    <div style="display:flex;gap:1rem;flex-wrap:wrap;justify-content:center;margin-top:2rem;position:relative;">
+      <a class="book-btn" href="#" onclick="showPage('self-shoot',document.querySelectorAll('nav a')[1]);return false;">Self-Shoot →</a>
+      <a class="book-btn green" href="#" onclick="showPage('photographer',document.querySelectorAll('nav a')[2]);return false;">Photographer →</a>
+      <a class="book-btn rust" href="#" onclick="showPage('events',document.querySelectorAll('nav a')[3]);return false;">Events & Rentals →</a>
+    </div>
+  </div>
+
+  <div class="cards-grid" style="max-width:1000px;">
+    <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('self-shoot',document.querySelectorAll('nav a')[1])">
+      <div style="background:linear-gradient(135deg,var(--cream),#ddd0b8);padding:2.5rem;text-align:center;font-size:3rem;">📸</div>
+      <div class="pkg-body">
+        <div class="pkg-name">Self-Shoot Packages</div>
+        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Thoughtfully designed for introverts and creative spirits. Basic, Birthday packages + add-ons. From ₱500.</p>
+        <a class="pkg-cta" href="#" onclick="showPage('self-shoot',document.querySelectorAll('nav a')[1]);return false;">View Packages →</a>
+      </div>
+    </div>
+    <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('photographer',document.querySelectorAll('nav a')[2])">
+      <div style="background:linear-gradient(135deg,#f0e8d8,#d8ccb8);padding:2.5rem;text-align:center;font-size:3rem;">🎞️</div>
+      <div class="pkg-body">
+        <div class="pkg-name">Photographer Sessions</div>
+        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Style Shots, Couples, Maternity, Kids' Birthday, Family, Graduation & PAWtraits. From ₱3,000.</p>
+        <a class="pkg-cta" href="#" onclick="showPage('photographer',document.querySelectorAll('nav a')[2]);return false;">View Packages →</a>
+      </div>
+    </div>
+    <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('events',document.querySelectorAll('nav a')[3])">
+      <div style="background:linear-gradient(135deg,#f0d8d0,#d8beba);padding:2.5rem;text-align:center;font-size:3rem;">🎉</div>
+      <div class="pkg-body">
+        <div class="pkg-name">Events & Rentals</div>
+        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Bridal Bliss shoots (₱5,000) & Studio Booth for events (from ₱6,000). 20% off when booked 2 months ahead.</p>
+        <a class="pkg-cta" href="#" onclick="showPage('events',document.querySelectorAll('nav a')[3]);return false;">View Packages →</a>
+      </div>
+    </div>
+  </div>
+
+  <div style="background:var(--cream-dark);padding:1.5rem 2rem;text-align:center;">
+    <p style="font-size:.84rem;color:var(--text-mid);">📍 U302 Decoro Bldg. Circumferential Rd. San Roque, Antipolo City &nbsp;·&nbsp; 📞 +63976 022 1462 &nbsp;·&nbsp; ✉️ clickloungestudio@gmail.com</p>
+  </div>
+</div>
+
+<!-- ══ SELF SHOOT ══ -->
+<div id="self-shoot" class="section">
+  <div class="page-header">
+    <span class="eyebrow">The Creators Playbook</span>
+    <h1 class="page-title">[basic self-shoot packages]</h1>
+    <p class="page-desc">All include 20-min shoot, up to 2 backdrops with outfit pause time, and freebies. Add-ons available to customize your session.</p>
+  </div>
+
+  <div class="sub-tabs">
+    <button class="sub-tab active" onclick="showSubTab('ss-basic',this)">Basic Packages</button>
+    <button class="sub-tab" onclick="showSubTab('ss-birthday',this)">Birthday Packages</button>
+    <button class="sub-tab" onclick="showSubTab('ss-addons',this)">Add-ons & Upgrades</button>
+  </div>
+
+  <!-- BASIC PACKAGES -->
+  <div id="ss-basic" class="sub-panel active">
+    <div class="cards-grid">
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-badge">1–2 pax</div>
+        <div class="pkg-card-header">
+          <div class="pkg-sub">Snapshot</div>
+          <div class="pkg-name" style="font-size:2rem;color:var(--rust);">SELFIE</div>
+          <div class="price-badge"><span class="price-num">500</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 1–2 pax</li>
+            <li>20 min shoot</li>
+            <li>All Digital Copies — Add ₱200</li>
+            <li>Backdrop: up to 2</li>
+            <li>Pause time for 2nd backdrop/outfit</li>
+            <li>FREE: 2 Besties Print</li>
+            <li>FREE: 8 Digital Copies</li>
+            <li>FREE: 1 pet</li>
+            <li>FREE: 0–2yo child</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-badge">1–4 pax</div>
+        <div class="pkg-card-header">
+          <div class="pkg-sub">Tribe</div>
+          <div class="pkg-name" style="font-size:2rem;color:var(--green);">TIME</div>
+          <div class="price-badge"><span class="price-num">800</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 1–4 pax</li>
+            <li>20 min shoot</li>
+            <li>All Digital Copies: Add ₱200</li>
+            <li>Backdrop: up to 2</li>
+            <li>Pause time for 2nd backdrop/outfit</li>
+            <li>FREE: 4 Besties Print</li>
+            <li>FREE: 10 digital copies</li>
+            <li>FREE: 1 pet</li>
+            <li>FREE: 0–2yo child</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-badge">1–6 pax</div>
+        <div class="pkg-card-header">
+          <div class="pkg-sub">Crowd</div>
+          <div class="pkg-name" style="font-size:2rem;color:var(--rust);">CAM</div>
+          <div class="price-badge"><span class="price-num">1,000</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 1–6 pax</li>
+            <li>20 min shoot</li>
+            <li>Backdrop: up to 2</li>
+            <li>Pause time for 2nd backdrop/outfit</li>
+            <li>FREE: All Digital Copies</li>
+            <li>FREE: 6 Besties Print</li>
+            <li>FREE: 1 pet</li>
+            <li>FREE: 0–2yo child</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-badge">1–10 pax</div>
+        <div class="pkg-card-header">
+          <div class="pkg-sub">Crew</div>
+          <div class="pkg-name" style="font-size:2rem;color:var(--green);">CAPTURES</div>
+          <div class="price-badge"><span class="price-num">1,200</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 1–10 pax</li>
+            <li>20 min shoot</li>
+            <li>Backdrop: up to 2</li>
+            <li>Pause time for 2nd backdrop/outfit</li>
+            <li>FREE: All Digital Copies</li>
+            <li>FREE: 8 Besties Print</li>
+            <li>FREE: 1 pet</li>
+            <li>FREE: 0–2yo child</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- BIRTHDAY PACKAGES -->
+  <div id="ss-birthday" class="sub-panel">
+    <div style="text-align:center;padding:2rem 2rem .5rem;">
+      <span class="eyebrow">Celebrate in style</span>
+      <h2 class="page-title" style="font-size:1.8rem;">[self-shoot birthday packages]</h2>
+      <p class="page-desc" style="font-size:.88rem;">Self-shoot sessions with birthday-ready props — sash, headband, crown, faux cake & more!</p>
+    </div>
+    <div class="cards-grid">
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-card-header" style="background:linear-gradient(135deg,#f5e8e0,#ead8cc);">
+          <div class="pkg-name">Frenzy Snaps</div>
+          <div class="price-badge"><span class="price-num">700</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 2 PAX</li>
+            <li>Self-shoot for 20 mins</li>
+            <li>Up to 2 Backdrops + outfit pause</li>
+            <li>FREE: All digital copies</li>
+            <li>FREE: 4 minis print</li>
+            <li>FREE: Birthday sash, headband, crown</li>
+            <li>50% discount on double glass frame (P800)</li>
+            <li>FREE: 1 pet</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-badge" style="background:var(--green);">Popular</div>
+        <div class="pkg-card-header" style="background:linear-gradient(135deg,#e8f0e4,#d0e0c8);">
+          <div class="pkg-name">Party Clicks</div>
+          <div class="price-badge"><span class="price-num">1,000</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 4 PAX</li>
+            <li>Self-shoot for 20 mins</li>
+            <li>Up to 2 Backdrops + outfit pause</li>
+            <li>FREE: All digital copies</li>
+            <li>FREE: 4 Besties print</li>
+            <li>FREE: Birthday sash, headband, crown, faux cake</li>
+            <li>50% discount on double glass frame (P800)</li>
+            <li>FREE: 1 pet</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+
+      <div class="pkg-card" style="position:relative;">
+        <div class="pkg-card-header" style="background:linear-gradient(135deg,#e8e0f0,#d0c8e0);">
+          <div class="pkg-name">Click Capture</div>
+          <div class="price-badge"><span class="price-num">1,500</span><span class="price-dec">.00</span></div>
+        </div>
+        <div class="pkg-body">
+          <ul class="pkg-features">
+            <li>Up to 6 PAX</li>
+            <li>Self-shoot for 20 mins</li>
+            <li>Up to 2 Backdrops + outfit pause</li>
+            <li>FREE: All digital copies</li>
+            <li>FREE: 8 Besties print</li>
+            <li>FREE: Birthday sash, headband, crown, faux cake</li>
+            <li>FREE: Framed 8R in Double Glass Frame</li>
+            <li>FREE: 1 pet</li>
+          </ul>
+          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADD-ONS -->
+  <div id="ss-addons" class="sub-panel">
+    <div style="max-width:900px;margin:0 auto;padding:2.5rem 2rem 1rem;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green-dark);margin-bottom:.3rem;">[add ons]</h2>
+      <p style="color:var(--text-mid);font-size:.88rem;">Customize any session with these extras.</p>
+    </div>
+    <div class="addon-grid">
+      <div class="addon-item"><span class="addon-name">5 Mins extra time</span><span class="addon-price">₱100</span></div>
+      <div class="addon-item"><span class="addon-name">4R Prints</span><span class="addon-price">₱50</span></div>
+      <div class="addon-item"><span class="addon-name">A4 or 8R size Print</span><span class="addon-price">₱200</span></div>
+      <div class="addon-item"><span class="addon-name">A5 size Print</span><span class="addon-price">₱150</span></div>
+      <div class="addon-item"><span class="addon-name">Frame (Double Glass, 8R)</span><span class="addon-price">₱1,500</span></div>
+      <div class="addon-item"><span class="addon-name">Theme Set Up</span><span class="addon-price">₱2,000</span></div>
+      <div class="addon-item"><span class="addon-name">Basic Set Design</span><span class="addon-price">₱700</span></div>
+      <div class="addon-item"><span class="addon-name">32-in Matte Number Balloon</span><span class="addon-price">₱75</span></div>
+      <div class="addon-item"><span class="addon-name">Basic HMU</span><span class="addon-price">₱2,000</span></div>
+      <div class="addon-item"><span class="addon-name">Digital Copy</span><span class="addon-price">₱200</span></div>
+      <div class="addon-item"><span class="addon-name">Pet (max 3 per session)</span><span class="addon-price">₱100/pet</span></div>
+    </div>
+
+    <div style="max-width:900px;margin:1.5rem auto 0;padding:0 2rem .5rem;">
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:var(--green-dark);margin-bottom:.3rem;">[upgrade] to your chosen package</h2>
+    </div>
+    <div class="upgrade-grid">
+      <div class="upgrade-item">
+        <div class="upgrade-title">Photographer</div>
+        <div class="upgrade-price">+₱700 <span style="font-size:.75rem;font-weight:400;color:var(--text-light);">/20 min</span></div>
+        <div class="upgrade-desc">Add a professional photographer to your self-shoot session</div>
+      </div>
+      <div class="upgrade-item">
+        <div class="upgrade-title">Photographer + Basic Set Design</div>
+        <div class="upgrade-price">+₱1,000 <span style="font-size:.75rem;font-weight:400;color:var(--text-light);">/20min</span></div>
+        <div class="upgrade-desc">Photographer with styled backdrop setup included</div>
+      </div>
+      <div class="upgrade-item">
+        <div class="upgrade-title">Photographer + Set Design + Frame</div>
+        <div class="upgrade-price">+₱1,800</div>
+        <div class="upgrade-desc">Full upgrade: photographer, set design, Double Glass Frame 8R</div>
+      </div>
+    </div>
+    <div style="text-align:center;padding:2rem;">
+      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ PHOTOGRAPHER ══ -->
+<div id="photographer" class="section">
+
+  <div class="page-header">
+    <span class="eyebrow">Photographer Session Packages</span>
+    <h1 class="page-title">Professional Shoots</h1>
+    <p class="page-desc">Tap any package to see full details and pricing. All sessions include a professional photographer, beautiful studio backdrops, and edited photos.</p>
+  </div>
+
+  <!-- 6 Package Cards -->
+  <div class="cards-grid" style="max-width:1100px;">
+
+    <!-- 1: Styleshots -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-styleshots')" style="cursor:pointer;position:relative;">
+      <div style="background:linear-gradient(135deg,#f5e8e0,#e0cfc0);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">📷</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);">From ₱1,500</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-style:italic;font-size:1.5rem;">Styleshots</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Portrait, 18th Birthday, Corporate, Set Cards &amp; more. Solo or duo sessions.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 2: Radiant Mama -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-mama')" style="cursor:pointer;position:relative;">
+      <div style="background:linear-gradient(135deg,#1a1a1a,#3a3030);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">🤱</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-light);">From ₱2,000</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">Radiant Mama</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Maternity shoot packages — solo or with partner. Includes FREE HMU &amp; studio props.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 3: Candid Kids -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-kids')" style="cursor:pointer;position:relative;">
+      <div style="background:linear-gradient(135deg,#e0f0f8,#c8e4f0);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">🎈</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);">From ₱1,500</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">Candid Kids</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">For families with kids aged 1–10. Toddler (ONEderful/TWOgether) &amp; Big 7 packages.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 4: Family Portrait -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-family')" style="cursor:pointer;position:relative;">
+      <div style="background:linear-gradient(135deg,#e8f0e4,#cce0c4);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">👨‍👩‍👧‍👦</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);">From ₱1,700</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">Family Portraits</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Fam Bam (up to 5 pax) or Fam Vibes (up to 8 pax). Group &amp; solo shots included.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 5: Graduation -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-grad')" style="cursor:pointer;position:relative;">
+      <div class="pkg-badge">3 Tiers</div>
+      <div style="background:linear-gradient(135deg,#e8e0c8,#d0c8a8);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">🎓</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark);">From ₱700</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">Graduation</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Cap &amp; Gown, Grad-U-Click, or VIP Grad Glam. Toga shots, formal shots &amp; group session.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 6: PAWtraits -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-paw')" style="cursor:pointer;position:relative;">
+      <div style="background:linear-gradient(135deg,#fdf4e0,#f0e0b8);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+        <div style="font-size:2.8rem;">🐾</div>
+        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);">From ₱1,500</span>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">PAWtraits</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">For families with pets! Purrfect or Pawsome packages. Unlimited shots by photographer.</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+  </div>
+
+  <div style="text-align:center;padding:1rem 2rem 3rem;">
+    <p style="font-size:.83rem;color:var(--text-light);">Click any package to see full inclusions, pricing &amp; add-ons.</p>
+  </div>
+</div>
+
+<!-- ══════════════════════════════════════
+     MODALS
+══════════════════════════════════════ -->
+
+<!-- Modal overlay -->
+<div id="modal-overlay" onclick="closeModal()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.55);z-index:500;backdrop-filter:blur(4px);"></div>
+
+<!-- Shared modal styles injected via JS -->
+<style>
+.modal {
+  display:none; position:fixed; top:50%; left:50%; transform:translate(-50%,-50%) scale(.95);
+  z-index:600; width:min(92vw,780px); max-height:88vh; overflow-y:auto;
+  background:#fff; border-radius:20px; box-shadow:0 24px 80px rgba(0,0,0,.25);
+  transition:transform .25s ease, opacity .25s ease; opacity:0;
+}
+.modal.open { display:block; transform:translate(-50%,-50%) scale(1); opacity:1; }
+.modal-close {
+  position:sticky; top:0; display:flex; justify-content:flex-end; padding:.8rem 1rem .4rem;
+  background:#fff; z-index:10;
+}
+.modal-close button {
+  background:var(--cream-dark); border:none; width:32px; height:32px; border-radius:50%;
+  font-size:1rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+  color:var(--text-mid); transition:background .2s;
+}
+.modal-close button:hover { background:var(--cream); }
+.modal-inner { padding:.5rem 2rem 2rem; }
+.modal-title {
+  font-family:'Playfair Display',serif; font-size:clamp(1.6rem,4vw,2.2rem);
+  color:var(--green-dark); margin-bottom:.2rem; line-height:1.15;
+}
+.modal-sub { font-size:.8rem; color:var(--text-light); font-family:'Space Mono',monospace; letter-spacing:.08em; text-transform:uppercase; margin-bottom:1.2rem; }
+.modal-pkg-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(220px,1fr)); gap:1.2rem; margin-bottom:1.5rem; }
+.modal-pkg {
+  border-radius:14px; padding:1.4rem; border:2px solid rgba(45,110,95,.1);
+  background:var(--warm-white);
+}
+.modal-pkg.highlight { border-color:var(--amber); background:linear-gradient(135deg,#fffaf0,#fff8e0); }
+.modal-pkg-name { font-family:'Playfair Display',serif; font-size:1.2rem; color:var(--green-dark); margin-bottom:.2rem; }
+.modal-pkg-price { font-family:'Space Mono',monospace; font-size:1.5rem; font-weight:700; color:var(--green); margin:.3rem 0; }
+.modal-pkg-old { font-family:'Space Mono',monospace; font-size:.85rem; color:var(--text-light); text-decoration:line-through; }
+.modal-feat { list-style:none; font-size:.84rem; color:var(--text-mid); line-height:1; margin-top:.8rem; }
+.modal-feat li { padding:.35rem 0; border-bottom:1px solid rgba(45,110,95,.07); display:flex; gap:.5rem; align-items:flex-start; }
+.modal-feat li:last-child { border:none; }
+.modal-feat li::before { content:'✓'; color:var(--green); font-weight:700; flex-shrink:0; font-size:.78rem; margin-top:.1rem; }
+.modal-addons { margin-top:1.2rem; }
+.modal-addons-title { font-family:'Space Mono',monospace; font-size:.7rem; font-weight:700; letter-spacing:.15em; text-transform:uppercase; color:var(--rust); margin-bottom:.7rem; }
+.modal-addon-row { display:flex; justify-content:space-between; align-items:center; font-size:.84rem; color:var(--text-mid); padding:.35rem 0; border-bottom:1px solid rgba(45,110,95,.07); }
+.modal-addon-row:last-child { border:none; }
+.modal-addon-price { font-family:'Space Mono',monospace; font-weight:700; color:var(--amber); font-size:.82rem; }
+.modal-note { background:var(--cream); border-radius:10px; padding:1rem 1.2rem; font-size:.8rem; color:var(--text-mid); line-height:1.65; margin-top:1.2rem; }
+.modal-book { display:block; text-align:center; margin-top:1.5rem; background:var(--green); color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.04em; padding:.9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+.modal-book:hover { background:var(--green-dark); }
+.modal-section-title { font-family:'Playfair Display',serif; font-size:1rem; color:var(--green-dark); margin:1.2rem 0 .5rem; padding-bottom:.3rem; border-bottom:1px solid rgba(45,110,95,.12); }
+</style>
+
+<!-- MODAL: STYLESHOTS -->
+<div id="modal-styleshots" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">Styleshots</div>
+    <div class="modal-sub">Photographer Session Packages</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">Solo Shot</div>
+        <div class="modal-pkg-price">₱1,500</div>
+        <ul class="modal-feat">
+          <li>1 pax</li>
+          <li>15 mins</li>
+          <li>1 Outfit</li>
+          <li>3 edited photos*</li>
+          <li>1 Light Style</li>
+          <li>20 digital copies of best shots</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">Duo Shot</div>
+        <div class="modal-pkg-price">₱2,500</div>
+        <ul class="modal-feat">
+          <li>2 pax</li>
+          <li>15 mins</li>
+          <li>5 edited photos*</li>
+          <li>2 outfits</li>
+          <li>2 Light styles</li>
+          <li>FREE 5 mins self shoot</li>
+          <li>20 digital copies of best shots</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Add-ons</div>
+    <div class="modal-addon-row"><span>Pax</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
+    <div class="modal-addon-row"><span>Basic Set Design</span><span class="modal-addon-price">₱700</span></div>
+    <div class="modal-addon-row"><span>Frame — 10×12in / 8R size (Discount: 800)</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Frame — 7×9in / 5R size (Discount: 500)</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-addon-row"><span>10 mins Self Shoot</span><span class="modal-addon-price">₱350</span></div>
+    <div class="modal-addon-row"><span>10 mins addtl Style Shots</span><span class="modal-addon-price">₱500</span></div>
+    <div class="modal-addon-row"><span>Addtl Edited Photo</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>Addtl Light Style</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-note">*Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: RADIANT MAMA -->
+<div id="modal-mama" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">Radiant Mama</div>
+    <div class="modal-sub">Maternity Style Shots Packages</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">Mama Love</div>
+        <div class="modal-pkg-old">₱4,550</div>
+        <div class="modal-pkg-price">₱2,000</div>
+        <ul class="modal-feat">
+          <li>20 min session</li>
+          <li>1 outfit change</li>
+          <li>1 Style (light set up)</li>
+          <li>2 Shot Layouts</li>
+          <li>4 edited photos</li>
+          <li>FREE use of 1 outfit</li>
+          <li>FREE use of studio props</li>
+          <li>FREE all soft copies</li>
+          <li>ADD ₱1,000 to include Dad</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">Glowing Mom</div>
+        <div class="modal-pkg-old">₱9,500</div>
+        <div class="modal-pkg-price">₱4,500</div>
+        <ul class="modal-feat">
+          <li>45 mins session</li>
+          <li>2 outfit changes</li>
+          <li>2 Light Styles</li>
+          <li>4 Shot Layouts</li>
+          <li>2 Set Designs</li>
+          <li>8 edited photos</li>
+          <li>Get ALL digital copies</li>
+          <li>1pc 8R in Double Glass Frame</li>
+          <li>FREE 4 addtl pax</li>
+          <li>FREE Hair and Make up for Mom</li>
+          <li>FREE use of available outfits</li>
+          <li>FREE use of studio props</li>
+          <li>FREE use of Satin drape and crown</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Add-ons</div>
+    <div class="modal-addon-row"><span>Hair &amp; Makeup</span><span class="modal-addon-price">₱2,000</span></div>
+    <div class="modal-addon-row"><span>Additional Time</span><span class="modal-addon-price">₱500/10 min</span></div>
+    <div class="modal-addon-row"><span>Discount on Frames</span><span class="modal-addon-price">Available</span></div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: CANDID KIDS -->
+<div id="modal-kids" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">Candid Kids</div>
+    <div class="modal-sub">Photographer Session Packages</div>
+
+    <div style="font-family:'Playfair Display',serif;font-size:.95rem;color:var(--green);margin-bottom:.8rem;">For families with kids aged 1–3 yo!</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">ONEderful</div>
+        <div class="modal-pkg-price">₱1,500</div>
+        <ul class="modal-feat">
+          <li>Toddler + Up to 3 pax &amp; 1 pet</li>
+          <li>20 mins unlimited shots by photographer</li>
+          <li>Choice of plain backdrop</li>
+          <li>FREE: 4 Minis Print</li>
+          <li>FREE: ALL digital copies</li>
+          <li>Discount on Frames</li>
+          <li>50% disc on Digital Backdrop (₱500 for 2 pics on 1 Digital Backdrop)</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">TWOgether</div>
+        <div class="modal-pkg-price">₱2,000</div>
+        <ul class="modal-feat">
+          <li>Toddler + Up to 3 pax &amp; 1 pet</li>
+          <li>20 mins unlimited shots by photographer</li>
+          <li>Get all digital copies</li>
+          <li>Free 1 Solo, 2 Besties, 4 Minis Print</li>
+          <li>Discount on Frames</li>
+          <li>Option 1: 2 edited pics on 2 Digital Backdrops</li>
+          <li>Option 2: Set Design — CandyLand, Cloudy Skies, Coachella Tent, Floral Princess</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="font-family:'Playfair Display',serif;font-size:.95rem;color:var(--green);margin:.8rem 0;">For kids aged 4–10 yo! (The Big 7 Package)</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">Sweet Kid</div>
+        <div class="modal-pkg-price">₱1,500</div>
+        <ul class="modal-feat">
+          <li>Up to 1 pax</li>
+          <li>15 mins unlimited shots by photographer</li>
+          <li>2 outfit changes</li>
+          <li>Choice of plain backdrop or available set design</li>
+          <li>FREE: 4 Minis Print</li>
+          <li>FREE: ALL digital copies</li>
+          <li>Discount on Frames</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">All Star</div>
+        <div class="modal-pkg-price">₱2,500</div>
+        <ul class="modal-feat">
+          <li>Up to 1 pax</li>
+          <li>20 mins unlimited shots by photographer</li>
+          <li>2 outfit changes</li>
+          <li>Choice of plain backdrop or available set design</li>
+          <li>FREE: 1 Solo, 2 Besties, 4 Minis Print</li>
+          <li>FREE: ALL digital copies</li>
+          <li>3 Edited Photos</li>
+          <li>FREE: 5R on Double Glass Frame</li>
+          <li>FREE Digital Invitation</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal-section-title">Add-ons (all Kids packages)</div>
+    <div class="modal-addon-row"><span>5 Mins extra</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>Per pet (max 3)</span><span class="modal-addon-price">₱100</span></div>
+    <div class="modal-addon-row"><span>Per person</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>4R Prints</span><span class="modal-addon-price">₱50</span></div>
+    <div class="modal-addon-row"><span>A4 or 8R size Print</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>A5 size Print</span><span class="modal-addon-price">₱150</span></div>
+    <div class="modal-addon-row"><span>32-in Matte Number Balloon</span><span class="modal-addon-price">₱75/each</span></div>
+    <div class="modal-addon-row"><span>Double Glass Frame</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Digital Backdrop Edit</span><span class="modal-addon-price">₱300/pic</span></div>
+    <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱100/pic</span></div>
+    <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg. Booking is a must.</div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: FAMILY PORTRAITS -->
+<div id="modal-family" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">Family Portraits</div>
+    <div class="modal-sub">Photographer Session Packages</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">Fam Bam</div>
+        <div class="modal-pkg-price">₱1,700</div>
+        <ul class="modal-feat">
+          <li>Up to 5 PAX (add-on ₱200/pax)</li>
+          <li>Unlimited shots for 20 mins by photographer</li>
+          <li>Group shots &amp; Solo shots</li>
+          <li>Up to 2 Backdrops</li>
+          <li>FREE: All digital copies</li>
+          <li>FREE: 1 Solo, 4 minis, 2 besties print</li>
+          <li>FREE use of available props</li>
+          <li>Discount for frames</li>
+          <li>1 pet allowed</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">Fam Vibes</div>
+        <div class="modal-pkg-old">₱3,000</div>
+        <div class="modal-pkg-price">₱2,200 <span style="font-size:.7rem;font-weight:400;color:var(--green);"> Save ₱800</span></div>
+        <ul class="modal-feat">
+          <li>Up to 8 PAX (add-on ₱200/pax)</li>
+          <li>Unlimited shots for 30 mins by photographer</li>
+          <li>Group shots &amp; Solo shots</li>
+          <li>Up to 2 Backdrops</li>
+          <li>FREE: All digital copies</li>
+          <li>FREE: 4 minis, 2 besties print, 2 strips</li>
+          <li>FREE 5R Framed Picture</li>
+          <li>Free 3 Clickcards</li>
+          <li>FREE use of available props</li>
+          <li>1 pet allowed</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Add-ons</div>
+    <div class="modal-addon-row"><span>5 Mins extra</span><span class="modal-addon-price">₱100</span></div>
+    <div class="modal-addon-row"><span>15 mins extra</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>4R Prints</span><span class="modal-addon-price">₱50</span></div>
+    <div class="modal-addon-row"><span>A4 or 8R size Print</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>A5 size Print</span><span class="modal-addon-price">₱150</span></div>
+    <div class="modal-addon-row"><span>Theme Set Up</span><span class="modal-addon-price">₱1,200</span></div>
+    <div class="modal-addon-row"><span>Basic Set Design</span><span class="modal-addon-price">₱700</span></div>
+    <div class="modal-addon-row"><span>32-in Matte Number Balloon</span><span class="modal-addon-price">₱75</span></div>
+    <div class="modal-addon-row"><span>Pet (max 3 per session)</span><span class="modal-addon-price">₱100/pet</span></div>
+    <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: 800)</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: 500)</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: GRADUATION -->
+<div id="modal-grad" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">Graduation Packages</div>
+    <div class="modal-sub">Photographer Session Packages</div>
+    <div class="modal-pkg-grid" style="grid-template-columns:repeat(auto-fit,minmax(190px,1fr));">
+      <div class="modal-pkg">
+        <div style="font-size:.72rem;font-family:'Space Mono',monospace;color:var(--text-light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;">Quick &amp; Easy</div>
+        <div class="modal-pkg-name">Cap &amp; Gown</div>
+        <div class="modal-pkg-price">₱700</div>
+        <ul class="modal-feat">
+          <li>1 graduate</li>
+          <li>Photographer Session</li>
+          <li>9 Toga Shots</li>
+          <li>3 Formal Shots (Filipiana/Barong)</li>
+          <li>12 digital copies of best shots</li>
+          <li>1 edited photo</li>
+          <li>1 Graduation Backdrop Choice</li>
+          <li>4 minis print out</li>
+          <li>Discount 8R double glass frame (₱800)</li>
+          <li>ClickCard</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div style="font-size:.72rem;font-family:'Space Mono',monospace;color:var(--rust);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;">Grad shoot + fam pic</div>
+        <div class="modal-pkg-name">Grad-U-Click</div>
+        <div class="modal-pkg-old">₱2,200</div>
+        <div class="modal-pkg-price">₱1,500</div>
+        <div style="font-size:.78rem;font-weight:600;color:var(--green-dark);margin:.6rem 0 .3rem;">Graduate Session</div>
+        <ul class="modal-feat">
+          <li>1 graduate · Graduation Photographer Session</li>
+          <li>9 Toga Shots</li>
+          <li>3 Formal Shots (Filipiana/Barong)</li>
+          <li>1 Graduation backdrop choice</li>
+          <li>All digital copies · 3 edited photos</li>
+          <li>4 minis print out · ClickCard</li>
+        </ul>
+        <div style="font-size:.78rem;font-weight:600;color:var(--green-dark);margin:.8rem 0 .3rem;">Group Session</div>
+        <ul class="modal-feat">
+          <li>5 mins photographer session with 2 non-graduates/family</li>
+          <li>1 Colored backdrop</li>
+          <li>4 minis print out</li>
+          <li>Discount 8R double glass frame (₱800)</li>
+          <li>ClickCard</li>
+        </ul>
+      </div>
+      <div class="modal-pkg">
+        <div style="font-size:.72rem;font-family:'Space Mono',monospace;color:var(--amber);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.3rem;">All-in package</div>
+        <div class="modal-pkg-name">VIP Grad Glam</div>
+        <div class="modal-pkg-old">₱4,500</div>
+        <div class="modal-pkg-price">₱3,000</div>
+        <div style="font-size:.78rem;font-weight:600;color:var(--green-dark);margin:.6rem 0 .3rem;">Graduate Session</div>
+        <ul class="modal-feat">
+          <li>1 graduate · Basic Hair and Make up</li>
+          <li>Graduation Photographer session — Toga, Formal (Filipiana/Barong), Creative or Your choice of look</li>
+          <li>1 Graduation backdrop choice</li>
+          <li>All digital copies · 6 edited photos</li>
+          <li>2 minis · 1 5R print out · 1 8R double glass frame</li>
+          <li>ClickCard</li>
+        </ul>
+        <div style="font-size:.78rem;font-weight:600;color:var(--green-dark);margin:.8rem 0 .3rem;">Group Session</div>
+        <ul class="modal-feat">
+          <li>10 mins Photographer session with up to 5 pax (5 non-graduate/Family members)</li>
+          <li>2 minis, 1 4R · ClickCard</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Package Add-ons</div>
+    <div class="modal-addon-row"><span>Additional pax</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>Double Glass Frame</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Creative Style Shot</span><span class="modal-addon-price">₱1,000</span></div>
+    <div class="modal-addon-row"><span>Basic Hair &amp; Make Up</span><span class="modal-addon-price">₱2,000</span></div>
+    <div class="modal-addon-row"><span>10 mins self-shoot</span><span class="modal-addon-price">₱350</span></div>
+    <div class="modal-addon-row"><span>Edited photo</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>Rush Editing Fee</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>5R Frame Matted</span><span class="modal-addon-price">₱600</span></div>
+    <div class="modal-addon-row"><span>5R Double Glass Frame</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-note">Let us know what hood color you need. School emblems can be edited to your chosen file. Stole shall be provided by the graduate. Please wear a black or nude tube top for Filipiana shots (women) and white shirt with no collar for Barong shots (men). Our barong fits Large to XL size only. We provide pearl earrings and necklace for women. Hair and Make Up Services is subject to booking. Please advise upon booking if you will avail the VIP Grad Glam package.</div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: PAWTRAITS -->
+<div id="modal-paw" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div class="modal-title">PAWtraits Package</div>
+    <div class="modal-sub">For families with pets!</div>
+    <div class="modal-pkg-grid">
+      <div class="modal-pkg">
+        <div class="modal-pkg-name">Purrfect</div>
+        <div class="modal-pkg-price">₱1,500</div>
+        <ul class="modal-feat">
+          <li>1 pet</li>
+          <li>Up to 2 pax</li>
+          <li>20 mins unlimited shots by photographer</li>
+          <li>ClickCard</li>
+          <li>FREE 2 Besties, 4 Minis Print</li>
+          <li>FREE: ALL digital copies</li>
+          <li>FREE: 5R on Double Glass Frame</li>
+        </ul>
+      </div>
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">Pawsome</div>
+        <div class="modal-pkg-price">₱2,000</div>
+        <ul class="modal-feat">
+          <li>1 pet</li>
+          <li>Up to 3 pax</li>
+          <li>2 light set up</li>
+          <li>Use of basic set design for pets</li>
+          <li>30 mins unlimited shots by photographer</li>
+          <li>2 edited photos</li>
+          <li>ClickCard</li>
+          <li>FREE 1 Solo, 2 Besties, 4 Minis Print</li>
+          <li>FREE: ALL digital copies</li>
+          <li>FREE: 8R on Double Glass Frame</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Add-ons</div>
+    <div class="modal-addon-row"><span>5 Mins extra</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>4R Prints</span><span class="modal-addon-price">₱50</span></div>
+    <div class="modal-addon-row"><span>A4 or 8R size Print</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>A5 size Print</span><span class="modal-addon-price">₱150</span></div>
+    <div class="modal-addon-row"><span>Per pet (max of 3)</span><span class="modal-addon-price">₱200</span></div>
+    <div class="modal-addon-row"><span>Per person</span><span class="modal-addon-price">₱100</span></div>
+    <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. Booking is a must for Pawsome Package. Pet Guidelines must be followed.</div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- ══ EVENTS & RENTALS ══ -->
+<div id="events" class="section">
+
+  <!-- Bridal Bliss -->
+  <div class="bridal-hero">
+    <div class="offer-banner">⭐ LIMITED TIME OFFER</div>
+    <div class="bridal-label">Style Shots</div>
+    <div class="bridal-title">Bridal Bliss</div>
+    <div class="bridal-prices">
+      <span class="old-price">₱8,000</span>
+      <span class="new-price">₱5,000</span>
+      <span class="save-chip">Save ₱3,000</span>
+    </div>
+    <p style="color:var(--text-mid);font-size:.9rem;margin-bottom:1.5rem;">Exclusive bridal shoot for up to 7 pax</p>
+    <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+
+  <div style="max-width:800px;margin:0 auto;padding:2.5rem 2rem 0;">
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:1.5rem;">
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;color:var(--green-dark);margin-bottom:.8rem;font-size:1.2rem;">What's Included</h3>
+        <ul style="list-style:none;font-size:.86rem;color:var(--text-mid);line-height:1;">
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> 60 mins session</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> Exclusive shoot for up to 7 pax</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> 2 Style (light set up)</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> Group Shots</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> Solo Shots worth ₱1,000 each</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> Bride Style Shots worth ₱3,500</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE HMU for the bride</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE All digital copies</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE BTS vid clips</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE use of studio props</li>
+          <li style="padding:.38rem 0;border-bottom:1px solid rgba(45,110,95,.06);display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE: Veil, Crown, Bridal Sash, Faux Bride To Be cake</li>
+          <li style="padding:.38rem 0;display:flex;gap:.5rem;"><span style="color:var(--green);font-weight:700;">✓</span> FREE Prints: 12 minis, 10 besties</li>
+        </ul>
+      </div>
+      <div>
+        <h3 style="font-family:'Playfair Display',serif;color:var(--green-dark);margin-bottom:.8rem;font-size:1.2rem;">Gifts Included 🎁</h3>
+        <div style="background:var(--cream);border-radius:14px;padding:1.2rem;margin-bottom:1rem;">
+          <ul style="list-style:none;font-size:.87rem;color:var(--text-mid);line-height:2.2;">
+            <li>🌸 Mini Bouquet for the Bride</li>
+            <li>🪙 ClickCards</li>
+            <li>🎟️ 200 Vouchers</li>
+          </ul>
+        </div>
+        <h3 style="font-family:'Playfair Display',serif;color:var(--green-dark);margin-bottom:.8rem;font-size:1.1rem;">Add-ons</h3>
+        <div class="addon-item" style="margin-bottom:.5rem;"><span class="addon-name">5 Mins extra</span><span class="addon-price">₱200</span></div>
+        <div class="addon-item" style="margin-bottom:.5rem;"><span class="addon-name">Per person (beyond 7)</span><span class="addon-price">₱200</span></div>
+        <div class="addon-item" style="margin-bottom:.5rem;"><span class="addon-name">4R Prints</span><span class="addon-price">₱50</span></div>
+        <div class="addon-item"><span class="addon-name">Basic HMU (per person)</span><span class="addon-price">₱3,000</span></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Studio Booth -->
+  <div class="booth-section" style="margin-top:3rem;">
+    <span class="eyebrow" style="color:var(--amber-light);position:relative;">Events</span>
+    <div class="booth-title">STUDIO BOOTH</div>
+    <p class="booth-sub">Bringing our very own <em>Styleshoot</em> to your special events. Get stunning high quality portrait photos with our studio setup on site — high resolution soft copies, long lasting prints, or elegantly framed photos.</p>
+
+    <div class="booth-tiers">
+      <div class="tier">
+        <div class="tier-hours">1 Hour</div>
+        <div class="tier-price">₱6,000</div>
+        <ul class="tier-features">
+          <li>FREE All high resolution soft copies</li>
+          <li>Free Template</li>
+        </ul>
+      </div>
+      <div class="tier featured">
+        <div class="tier-hours">2 Hours</div>
+        <div class="tier-price">₱10,000</div>
+        <ul class="tier-features">
+          <li>FREE All high resolution soft copies</li>
+          <li>Free Template</li>
+        </ul>
+      </div>
+      <div class="tier">
+        <div class="tier-hours">3 Hours</div>
+        <div class="tier-price">₱23,000</div>
+        <ul class="tier-features">
+          <li>FREE All soft copies in Pocket Flash Drive</li>
+          <li>FREE Template</li>
+          <li>FREE 100 prints</li>
+          <li>50 4R prints in Wooden Frame w/ Glass Cover</li>
+          <li>ADD ₱4,000 → 50 4R Wooden Frame w/ Glass Cover</li>
+        </ul>
+      </div>
+    </div>
+
+    <div style="margin:2rem auto 0;max-width:640px;">
+      <h3 style="color:rgba(255,255,255,.9);font-family:'Playfair Display',serif;font-size:1.1rem;margin-bottom:.8rem;">Add-ons</h3>
+      <div style="display:grid;grid-template-columns:auto 1fr;gap:.4rem 1.5rem;font-size:.85rem;color:rgba(255,255,255,.7);text-align:left;max-width:460px;margin:0 auto;">
+        <span style="color:var(--amber-light);font-family:'Space Mono',monospace;font-weight:700;">₱5,000</span><span>50 4R prints in Glassy Envelope</span>
+        <span style="color:var(--amber-light);font-family:'Space Mono',monospace;font-weight:700;">₱9,000</span><span>50 4R prints in Wooden Frame with Glass Cover</span>
+        <span style="color:var(--amber-light);font-family:'Space Mono',monospace;font-weight:700;">₱2,000</span><span>Hourly Add on</span>
+        <span style="color:var(--amber-light);font-family:'Space Mono',monospace;font-weight:700;">₱500–800</span><span>Transportation Fee outside Antipolo City</span>
+      </div>
+      <div style="background:rgba(196,154,26,.15);border:1px solid rgba(196,154,26,.3);border-radius:12px;padding:1rem 1.4rem;margin-top:1.5rem;color:#fff;font-size:.88rem;">
+        🎉 <strong style="color:var(--amber-light);">GET 20% OFF*</strong> — When you book at least 2 months before your event.
+      </div>
+    </div>
+    <div style="margin-top:2rem;">
+      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Studio Booth</a>
+    </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING PROCESS ══ -->
+<div id="booking" class="section">
+  <div class="booking-hero">
+    <span class="eyebrow">How to Reserve</span>
+    <h1 class="page-title">Booking Process</h1>
+    <p class="page-desc">Book through our Facebook or Instagram page. A non-refundable deposit of ₱300 secures your slot.</p>
+  </div>
+
+  <div style="max-width:700px;margin:2.5rem auto 0;padding:0 2rem;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;color:var(--green-dark);font-size:1.5rem;margin-bottom:.3rem;">Payment Methods</h2>
+    <p style="font-size:.85rem;color:var(--text-light);">Reservation deposit &amp; balance via:</p>
+  </div>
+  <div class="payment-grid" style="padding:0 2rem;">
+    <div class="payment-box">
+      <div style="font-size:1.8rem;margin-bottom:.5rem;">📱</div>
+      <div class="payment-title">GCash</div>
+      <div class="payment-num">09602730301</div>
+      <div class="payment-name">Kristine Santos</div>
+    </div>
+    <div class="payment-box">
+      <div style="font-size:1.8rem;margin-bottom:.5rem;">🏦</div>
+      <div class="payment-title">BPI</div>
+      <div class="payment-num">006435024635</div>
+      <div class="payment-name">ClickLounge Studio</div>
+    </div>
+  </div>
+  <p style="text-align:center;padding:.75rem 2rem 2rem;font-size:.84rem;color:var(--text-mid);">Balance is due at the end of the session. Accepted: BPI bank transfer and GCash Ewallet.</p>
+
+  <div class="tnc-section">
+    <h2 style="font-family:'Playfair Display',serif;font-size:2rem;color:var(--green-dark);text-align:center;margin-bottom:2rem;">Terms &amp; Conditions</h2>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Bookings</div>
+      <ul class="tnc-list">
+        <li>Bookings can be done through our FB or IG Page</li>
+        <li><strong>Non-refundable</strong> deposit of <strong>₱300</strong> is required to secure a booking and will be deducted from balance payment of package availed</li>
+        <li>Bookings are accepted at least a day before the requested shoot</li>
+        <li>Booking request for 10AM of the same day is subject for approval. Otherwise you can walk in from 11am–5PM (except Tuesdays)</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Payment</div>
+      <ul class="tnc-list">
+        <li>Balance is due at the end of the session. Accepted: BPI bank transfer and GCash Ewallet</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Walk-in</div>
+      <ul class="tnc-list">
+        <li>Walk-in inquiries will be accommodated subject to availability, but will not be entitled to any promotions or discounts</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Graduation Packages</div>
+      <ul class="tnc-list">
+        <li>Let us know what hood color you need for the shoot to check the availability</li>
+        <li>Please wear a black or nude tube top for the Filipiana shots for women, and white shirt with no collar for Barong shots for men</li>
+        <li>We provide pearl earrings and necklace for women. You can bring your own accessories too</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Basic Hair &amp; Make Up Services</div>
+      <ul class="tnc-list">
+        <li>Subject to availability</li>
+        <li>Please advise upon booking if you want to add this to your package unless stated otherwise</li>
+        <li>Please arrive 1 hour ahead with clean, dry hair and a makeup-free face</li>
+        <li>We recommend sending us your inspiration photos for your desired hair and makeup style</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Discounts &amp; Promotions</div>
+      <ul class="tnc-list">
+        <li>Discounts apply to the studio session package itself and do not include additional services such as makeup artistry and hair styling</li>
+        <li>Discounts and promotions cannot be combined with other promotions or discounts offered by the studio</li>
+        <li>The studio reserves the right to modify or cancel promotions at any time without prior notice</li>
+        <li>Rescheduling of existing bookings will not qualify for any promotions. Regular rates will be applied at the time of the rescheduled session</li>
+      </ul>
+    </div>
+
+    <div class="tnc-group">
+      <div class="tnc-group-title">Equipment &amp; Studio Use</div>
+      <ul class="tnc-list">
+        <li><strong>Equipment:</strong> Clients are responsible for proper use. Any damage caused by misuse will be the client's responsibility</li>
+        <li><strong>Studio Use:</strong> The studio may use client photos &amp; recordings for promotional purposes, unless otherwise agreed upon</li>
+        <li><strong>Event Terms and Conditions are given with agreed contract</strong></li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;margin-top:2.5rem;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
+      <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+      <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
+    </div>
+  </div>
+</div>
+
+<!-- FOOTER -->
+<footer>
+  <div style="margin-bottom:.8rem;"><img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="width:120px;height:auto;filter:brightness(0) invert(1);opacity:.85;"></div>
+  <div class="footer-contact">
+    U302 Decoro Bldg. Circumferential Rd. San Roque, Antipolo City<br>
+    +63976 022 1462 &nbsp;|&nbsp; +632 7005 7497 &nbsp;|&nbsp; clickloungestudio@gmail.com
+  </div>
+  <div class="footer-social">
+    <a href="https://www.facebook.com/clicklounge.studio" target="_blank" title="Facebook">f</a>
+    <a href="#" title="TikTok">♪</a>
+    <a href="https://www.instagram.com/clicklounge.studio" target="_blank" title="Instagram">◎</a>
+  </div>
+  <div class="footer-bottom">© 2025 Click Lounge Studio. All rights reserved.</div>
+</footer>
+
+<script>
+function showPage(id, navEl) {
+  document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+  document.getElementById(id).classList.add('active');
+  document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
+  if (navEl && navEl.textContent.trim()) navEl.classList.add('active');
+  // if logo clicked, activate "Home" link
+  if (navEl && !navEl.textContent.trim()) {
+    const homeLink = document.querySelector('nav a[onclick*="home"]');
+    if (homeLink) homeLink.classList.add('active');
+  }
+  window.scrollTo({ top:0, behavior:'smooth' });
+}
+function showSubTab(id, btn) {
+  const panel = document.getElementById(id);
+  if (!panel) return;
+  panel.parentElement.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
+  panel.classList.add('active');
+  btn.closest('.sub-tabs').querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+}
+let _activeModal = null;
+function openModal(id) {
+  if (_activeModal) closeModal();
+  const overlay = document.getElementById('modal-overlay');
+  const modal = document.getElementById(id);
+  if (!modal) return;
+  overlay.style.display = 'block';
+  modal.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  requestAnimationFrame(() => { modal.classList.add('open'); });
+  _activeModal = modal;
+  // Meta Pixel: track package view
+  if (typeof fbq !== 'undefined') {
+    fbq('track', 'ViewContent', { content_name: id.replace('modal-','') });
+  }
+}
+function closeModal() {
+  if (!_activeModal) return;
+  _activeModal.classList.remove('open');
+  document.getElementById('modal-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+  const m = _activeModal; _activeModal = null;
+  setTimeout(() => { m.style.display = 'none'; }, 260);
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
+</script>
+</body>
+</html>
