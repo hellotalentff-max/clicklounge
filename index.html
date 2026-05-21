@@ -327,7 +327,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
   <div class="cards-grid" style="max-width:1000px;">
     <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('self-shoot',document.querySelectorAll('nav a')[1])">
-      <div style="background:linear-gradient(135deg,var(--cream),#ddd0b8);padding:2.5rem;text-align:center;font-size:3rem;">📸</div>
+      <div style="position:relative;height:180px;overflow:hidden;">
+        <img src="img_selfshoot_card.png" alt="Self Shoot Packages" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 55%);"></div>
+      </div>
       <div class="pkg-body">
         <div class="pkg-name">Self-Shoot Packages</div>
         <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Thoughtfully designed for introverts and creative spirits. Basic, Birthday packages + add-ons. From ₱500.</p>
@@ -335,18 +338,24 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('photographer',document.querySelectorAll('nav a')[2])">
-      <div style="background:linear-gradient(135deg,#f0e8d8,#d8ccb8);padding:2.5rem;text-align:center;font-size:3rem;">🎞️</div>
+      <div style="position:relative;height:180px;overflow:hidden;">
+        <img src="img_photographer_card.png" alt="Photographer Sessions" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 55%);"></div>
+      </div>
       <div class="pkg-body">
         <div class="pkg-name">Photographer Sessions</div>
-        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Style Shots, Couples, Maternity, Kids' Birthday, Family, Graduation & PAWtraits. From ₱3,000.</p>
+        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Style Shots, Couples, Maternity, Kids' Birthday, Family, Graduation &amp; PAWtraits. From ₱1,500.</p>
         <a class="pkg-cta" href="#" onclick="showPage('photographer',document.querySelectorAll('nav a')[2]);return false;">View Packages →</a>
       </div>
     </div>
     <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('events',document.querySelectorAll('nav a')[3])">
-      <div style="background:linear-gradient(135deg,#f0d8d0,#d8beba);padding:2.5rem;text-align:center;font-size:3rem;">🎉</div>
+      <div style="position:relative;height:180px;overflow:hidden;">
+        <img src="img_events_card.png" alt="Events & Rentals" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.45) 0%,transparent 55%);"></div>
+      </div>
       <div class="pkg-body">
-        <div class="pkg-name">Events & Rentals</div>
-        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Bridal Bliss shoots (₱5,000) & Studio Booth for events (from ₱6,000). 20% off when booked 2 months ahead.</p>
+        <div class="pkg-name">Events &amp; Rentals</div>
+        <p style="font-size:.85rem;color:var(--text-mid);margin:.5rem 0 1rem;line-height:1.6;">Bridal Bliss shoots (₱5,000) &amp; Studio Booth for events (from ₱6,000). 20% off when booked 2 months ahead.</p>
         <a class="pkg-cta" href="#" onclick="showPage('events',document.querySelectorAll('nav a')[3]);return false;">View Packages →</a>
       </div>
     </div>
