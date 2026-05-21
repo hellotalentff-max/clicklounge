@@ -593,13 +593,23 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <!-- PROMO Banner -->
-  <div style="background:linear-gradient(135deg,#c8a020,#8a6010);padding:1rem 2rem;text-align:center;cursor:pointer;" onclick="openModal('modal-promo')">
-    <span style="font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.75);">Limited Time</span>
-    <div style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:.3rem;">
-      <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;font-style:italic;">Current Promos</span>
-      <span style="background:rgba(255,255,255,.2);color:#fff;font-size:.8rem;font-weight:700;padding:.35rem 1rem;border-radius:100px;border:1px solid rgba(255,255,255,.3);">⭐ View Offers →</span>
+  <div onclick="openModal('modal-promo')" style="cursor:pointer;background:var(--cream-dark);padding:1.2rem 2rem;text-align:center;position:relative;overflow:hidden;border-bottom:2px solid rgba(196,154,26,.3);">
+    <div style="position:relative;z-index:1;display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);">Limited Time</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-dark);font-style:italic;line-height:1.1;">Current Promos</div>
+      </div>
+      <div style="background:#e53935;color:#ffd600;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;padding:.55rem 1.4rem;border-radius:100px;animation:promoPulseBtn 1.4s ease-in-out infinite;white-space:nowrap;letter-spacing:.05em;">
+        VIEW CURRENT PROMOS →
+      </div>
     </div>
   </div>
+  <style>
+    @keyframes promoPulseBtn {
+      0%,100% { box-shadow:0 0 0 0 rgba(229,57,53,.7); transform:scale(1); }
+      50%     { box-shadow:0 0 0 10px rgba(229,57,53,0); transform:scale(1.05); }
+    }
+  </style>
 
   <!-- 6 Package Cards -->
   <div class="cards-grid" style="max-width:1100px;">
@@ -617,18 +627,6 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
 
-    <!-- 1b: Couple Styleshots -->
-    <div class="pkg-card pkg-clickable" onclick="openModal('modal-couple')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#f0e4d8,#ddc8b4);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
-        <div style="font-size:2.8rem;">💑</div>
-        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);">₱4,500</span>
-      </div>
-      <div class="pkg-body">
-        <div class="pkg-name" style="font-size:1.5rem;">Couple Styleshots</div>
-        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Romantic couple sessions — Anniversary, Prenup, Postnup &amp; more. Save ₱2,100!</p>
-        <div class="pkg-cta" style="cursor:pointer;">View Package →</div>
-      </div>
-    </div>
 
     <!-- 2: Radiant Mama -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-mama')" style="cursor:pointer;position:relative;">
