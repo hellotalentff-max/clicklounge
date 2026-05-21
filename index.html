@@ -592,25 +592,51 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <p class="page-desc">Tap any package to see full details and pricing. All sessions include a professional photographer, beautiful studio backdrops, and edited photos.</p>
   </div>
 
+  <!-- PROMO Banner -->
+  <div style="background:linear-gradient(135deg,#c8a020,#8a6010);padding:1rem 2rem;text-align:center;cursor:pointer;" onclick="openModal('modal-promo')">
+    <span style="font-family:'Space Mono',monospace;font-size:.7rem;font-weight:700;letter-spacing:.15em;text-transform:uppercase;color:rgba(255,255,255,.75);">Limited Time</span>
+    <div style="display:flex;align-items:center;justify-content:center;gap:1rem;flex-wrap:wrap;margin-top:.3rem;">
+      <span style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;font-style:italic;">Current Promos</span>
+      <span style="background:rgba(255,255,255,.2);color:#fff;font-size:.8rem;font-weight:700;padding:.35rem 1rem;border-radius:100px;border:1px solid rgba(255,255,255,.3);">⭐ View Offers →</span>
+    </div>
+  </div>
+
   <!-- 6 Package Cards -->
   <div class="cards-grid" style="max-width:1100px;">
 
     <!-- 1: Styleshots -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-styleshots')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#f5e8e0,#e0cfc0);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
-        <div style="font-size:2.8rem;">📷</div>
-        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);">From ₱1,500</span>
+      <div style="position:relative;height:200px;overflow:hidden;">
+        <img src="11.png" alt="Styleshots" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%);display:flex;align-items:flex-end;padding:.8rem 1rem;">
+          <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--rust);padding:.25rem .7rem;border-radius:100px;">From ₱3,000</span>
+        </div>
       </div>
       <div class="pkg-body">
         <div class="pkg-name" style="font-style:italic;font-size:1.5rem;">Styleshots</div>
-        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Portrait, 18th Birthday, Corporate, Set Cards &amp; more. Solo or duo sessions.</p>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Solo portrait sessions — Portrait, 18th Birthday, Corporate, Set Cards &amp; more.</p>
         <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
+      </div>
+    </div>
+
+    <!-- 1b: Couple Styleshots -->
+    <div class="pkg-card pkg-clickable" onclick="openModal('modal-couple')" style="cursor:pointer;position:relative;">
+      <div style="position:relative;height:200px;overflow:hidden;">
+        <img src="19.png" alt="Couple Styleshots" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%);display:flex;align-items:flex-end;padding:.8rem 1rem;">
+          <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--rust);padding:.25rem .7rem;border-radius:100px;">₱4,500</span>
+        </div>
+      </div>
+      <div class="pkg-body">
+        <div class="pkg-name" style="font-size:1.5rem;">Couple Styleshots</div>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Romantic couple sessions — Anniversary, Prenup, Postnup &amp; more. Save ₱2,100!</p>
+        <div class="pkg-cta" style="cursor:pointer;">View Package →</div>
       </div>
     </div>
 
     <!-- 2: Radiant Mama -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-mama')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#1a1a1a,#3a3030);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+      <div style="background:linear-gradient(135deg,#1a1a1a,#3a3030);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
         <div style="font-size:2.8rem;">🤱</div>
         <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--amber-light);">From ₱2,000</span>
       </div>
@@ -623,7 +649,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
     <!-- 3: Candid Kids -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-kids')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#e0f0f8,#c8e4f0);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+      <div style="background:linear-gradient(135deg,#e0f0f8,#c8e4f0);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
         <div style="font-size:2.8rem;">🎈</div>
         <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);">From ₱1,500</span>
       </div>
@@ -636,13 +662,15 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
     <!-- 4: Family Portrait -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-family')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#e8f0e4,#cce0c4);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
-        <div style="font-size:2.8rem;">👨‍👩‍👧‍👦</div>
-        <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green);">From ₱1,700</span>
+      <div style="position:relative;height:200px;overflow:hidden;">
+        <img src="12.png" alt="Family Portraits" style="width:100%;height:100%;object-fit:cover;object-position:top;">
+        <div style="position:absolute;inset:0;background:linear-gradient(to top,rgba(0,0,0,.55) 0%,transparent 60%);display:flex;align-items:flex-end;padding:.8rem 1rem;">
+          <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:#fff;background:var(--green);padding:.25rem .7rem;border-radius:100px;">From ₱1,700</span>
+        </div>
       </div>
       <div class="pkg-body">
         <div class="pkg-name" style="font-size:1.5rem;">Family Portraits</div>
-        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Fam Bam (up to 5 pax) or Fam Vibes (up to 8 pax). Group &amp; solo shots included.</p>
+        <p style="font-size:.84rem;color:var(--text-mid);margin:.4rem 0 1rem;line-height:1.6;">Fam Bam, Fam Vibes, Moments &amp; Generations. Up to 20 pax with studio furnitures.</p>
         <div class="pkg-cta" style="cursor:pointer;">View Packages →</div>
       </div>
     </div>
@@ -650,7 +678,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <!-- 5: Graduation -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-grad')" style="cursor:pointer;position:relative;">
       <div class="pkg-badge">3 Tiers</div>
-      <div style="background:linear-gradient(135deg,#e8e0c8,#d0c8a8);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+      <div style="background:linear-gradient(135deg,#e8e0c8,#d0c8a8);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
         <div style="font-size:2.8rem;">🎓</div>
         <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--green-dark);">From ₱700</span>
       </div>
@@ -663,7 +691,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
     <!-- 6: PAWtraits -->
     <div class="pkg-card pkg-clickable" onclick="openModal('modal-paw')" style="cursor:pointer;position:relative;">
-      <div style="background:linear-gradient(135deg,#fdf4e0,#f0e0b8);height:160px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
+      <div style="background:linear-gradient(135deg,#fdf4e0,#f0e0b8);height:200px;display:flex;align-items:center;justify-content:center;flex-direction:column;gap:.4rem;">
         <div style="font-size:2.8rem;">🐾</div>
         <span style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;color:var(--rust);">From ₱1,500</span>
       </div>
@@ -737,15 +765,85 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .modal-section-title { font-family:'Playfair Display',serif; font-size:1rem; color:var(--green-dark); margin:1.2rem 0 .5rem; padding-bottom:.3rem; border-bottom:1px solid rgba(45,110,95,.12); }
 </style>
 
+<!-- MODAL: PROMO -->
+<div id="modal-promo" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <div style="display:inline-block;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.45rem 1.1rem;border-radius:4px;margin-bottom:.8rem;">⭐ Limited Time Offers</div>
+    <div class="modal-title">Current Promos</div>
+    <div class="modal-sub">Available now — book before they're gone!</div>
+
+    <!-- Styleshots promo -->
+    <div style="border-radius:16px;overflow:hidden;margin-bottom:1.2rem;border:2px solid var(--amber);">
+      <img src="11.png" alt="Styleshots Promo" style="width:100%;max-height:320px;object-fit:cover;object-position:top;display:block;">
+      <div style="padding:1.2rem 1.4rem;background:linear-gradient(135deg,#fffaf0,#fff8e0);">
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--green-dark);font-style:italic;">Styleshots</div>
+          <div style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--text-light);text-decoration:line-through;">₱5,600</div>
+          <div style="font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--green);">₱3,000</div>
+        </div>
+        <ul class="modal-feat">
+          <li>1 pax · Exclusive session by a photographer</li>
+          <li>20 mins shoot · 3 edited photos · 2 Light Styles · 1 Outfit</li>
+          <li>20 Soft copies best shots</li>
+          <li>FREE Basic Hair &amp; Make Up</li>
+          <li>FREE use of available outfit</li>
+        </ul>
+        <div style="margin-top:.8rem;font-size:.82rem;color:var(--text-mid);background:rgba(45,110,95,.07);border-radius:8px;padding:.7rem .9rem;"><strong style="color:var(--green);">ADD ₱500</strong> → +15 mins (35min total) · 2 outfit changes · 5 Edited Photos · All Soft Copies</div>
+      </div>
+    </div>
+
+    <!-- Couple Styleshots promo -->
+    <div style="border-radius:16px;overflow:hidden;margin-bottom:1.2rem;border:2px solid var(--amber);">
+      <img src="19.png" alt="Couple Styleshots Promo" style="width:100%;max-height:320px;object-fit:cover;object-position:top;display:block;">
+      <div style="padding:1.2rem 1.4rem;background:linear-gradient(135deg,#fffaf0,#fff8e0);">
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.6rem;">
+          <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:var(--green-dark);">Couple Styleshots</div>
+          <div style="font-family:'Space Mono',monospace;font-size:.75rem;color:var(--text-light);text-decoration:line-through;">₱6,100</div>
+          <div style="font-family:'Space Mono',monospace;font-size:1.5rem;font-weight:700;color:var(--green);">₱4,500</div>
+          <span style="background:#e53935;color:#fff;font-size:.72rem;font-weight:700;padding:.25rem .7rem;border-radius:100px;">Save ₱2,100</span>
+        </div>
+        <ul class="modal-feat">
+          <li>2 pax · 35 mins shoot · 6 edited photos · 2 light styles</li>
+          <li>FREE use of available outfit</li>
+          <li>FREE Basic Hair &amp; Make Up for one</li>
+          <li>FREE Soft copies</li>
+        </ul>
+      </div>
+    </div>
+
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session Now</a>
+  </div>
+</div>
+
 <!-- MODAL: STYLESHOTS -->
 <div id="modal-styleshots" class="modal">
   <div class="modal-close"><button onclick="closeModal()">✕</button></div>
   <div class="modal-inner">
-    <div class="modal-title">Styleshots</div>
-    <div class="modal-sub">Photographer Session Packages</div>
+    <img src="11.png" alt="Styleshots" style="width:100%;max-height:280px;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:1.2rem;display:block;">
+    <div class="modal-title" style="font-style:italic;">Styleshots</div>
+    <div class="modal-sub">Photographer Session Package</div>
     <div class="modal-pkg-grid">
+      <div class="modal-pkg highlight">
+        <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;color:var(--rust);margin-bottom:.4rem;">Limited Time Offer</div>
+        <div class="modal-pkg-name">Solo Styleshot</div>
+        <div class="modal-pkg-old">₱5,600</div>
+        <div class="modal-pkg-price">₱3,000</div>
+        <ul class="modal-feat">
+          <li>1 pax</li>
+          <li>Exclusive session by a photographer</li>
+          <li>20 mins shoot</li>
+          <li>3 edited photos</li>
+          <li>2 Light Styles</li>
+          <li>1 Outfit</li>
+          <li>20 Soft copies best shots</li>
+          <li>FREE Basic Hair &amp; Make Up</li>
+          <li>FREE use of available outfit</li>
+        </ul>
+        <div style="margin-top:.8rem;font-size:.82rem;color:var(--text-mid);background:rgba(45,110,95,.07);border-radius:8px;padding:.7rem .9rem;"><strong style="color:var(--green);">ADD ₱500</strong> → +15 mins (35min total) · Upgrade to 2 outfit changes · Upgrade to 5 Edited Photos · Get all Soft Copies</div>
+      </div>
       <div class="modal-pkg">
-        <div class="modal-pkg-name">Solo Shot</div>
+        <div class="modal-pkg-name">Solo Shot (Standard)</div>
         <div class="modal-pkg-price">₱1,500</div>
         <ul class="modal-feat">
           <li>1 pax</li>
@@ -756,33 +854,52 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
           <li>20 digital copies of best shots</li>
         </ul>
       </div>
-      <div class="modal-pkg highlight">
-        <div class="modal-pkg-name">Duo Shot</div>
-        <div class="modal-pkg-price">₱2,500</div>
-        <ul class="modal-feat">
-          <li>2 pax</li>
-          <li>15 mins</li>
-          <li>5 edited photos*</li>
-          <li>2 outfits</li>
-          <li>2 Light styles</li>
-          <li>FREE 5 mins self shoot</li>
-          <li>20 digital copies of best shots</li>
-        </ul>
-      </div>
     </div>
     <div class="modal-section-title">Add-ons</div>
     <div class="modal-addon-row"><span>Pax</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
     <div class="modal-addon-row"><span>Basic Set Design</span><span class="modal-addon-price">₱700</span></div>
-    <div class="modal-addon-row"><span>Frame — 10×12in / 8R size (Discount: 800)</span><span class="modal-addon-price">₱1,500</span></div>
-    <div class="modal-addon-row"><span>Frame — 7×9in / 5R size (Discount: 500)</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-addon-row"><span>Frame 10×12in / 8R (Discount: ₱800)</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Frame 7×9in / 5R (Discount: ₱500)</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-addon-row"><span>10 mins Self Shoot</span><span class="modal-addon-price">₱350</span></div>
     <div class="modal-addon-row"><span>10 mins addtl Style Shots</span><span class="modal-addon-price">₱500</span></div>
     <div class="modal-addon-row"><span>Addtl Edited Photo</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-addon-row"><span>Addtl Light Style</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
-    <div class="modal-note">*Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
+    <div class="modal-note">*Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
+    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+  </div>
+</div>
+
+<!-- MODAL: COUPLE STYLESHOTS -->
+<div id="modal-couple" class="modal">
+  <div class="modal-close"><button onclick="closeModal()">✕</button></div>
+  <div class="modal-inner">
+    <img src="19.png" alt="Couple Styleshots" style="width:100%;max-height:300px;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:1.2rem;display:block;">
+    <div style="display:inline-block;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.4rem 1rem;border-radius:4px;margin-bottom:.6rem;">⭐ Limited Time Offer</div>
+    <div class="modal-title">Couple Styleshots</div>
+    <div class="modal-sub">Photographer Session Package</div>
+    <div class="modal-pkg-grid" style="grid-template-columns:1fr;">
+      <div class="modal-pkg highlight">
+        <div class="modal-pkg-name">Couple Styleshots</div>
+        <div class="modal-pkg-old">₱6,100</div>
+        <div class="modal-pkg-price">₱4,500 <span style="font-size:.75rem;font-weight:400;"> — </span><span style="font-size:.85rem;background:#e53935;color:#fff;padding:.2rem .6rem;border-radius:100px;font-weight:700;">SAVE ₱2,100</span></div>
+        <ul class="modal-feat">
+          <li>2 pax</li>
+          <li>35 mins shoot</li>
+          <li>6 edited photos</li>
+          <li>2 light styles</li>
+          <li>FREE use of available outfit</li>
+          <li>FREE Basic Hair &amp; Make Up for one</li>
+          <li>FREE Soft copies</li>
+        </ul>
+      </div>
+    </div>
+    <div class="modal-section-title">Add-ons</div>
+    <div class="modal-addon-row"><span>HMU Men</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>10 Mins extra</span><span class="modal-addon-price">₱1,000</span></div>
+    <div class="modal-note">Booking is a must. HMU is done 1.5hrs before your time slot. Late fee applies.</div>
     <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
   </div>
 </div>
@@ -928,8 +1045,11 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 <div id="modal-family" class="modal">
   <div class="modal-close"><button onclick="closeModal()">✕</button></div>
   <div class="modal-inner">
+    <img src="12.png" alt="Family Portraits" style="width:100%;max-height:260px;object-fit:cover;object-position:top;border-radius:12px;margin-bottom:1.2rem;display:block;">
     <div class="modal-title">Family Portraits</div>
     <div class="modal-sub">Photographer Session Packages</div>
+
+    <!-- Fam Bam & Fam Vibes -->
     <div class="modal-pkg-grid">
       <div class="modal-pkg">
         <div class="modal-pkg-name">Fam Bam</div>
@@ -946,10 +1066,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
           <li>1 pet allowed</li>
         </ul>
       </div>
-      <div class="modal-pkg highlight">
+      <div class="modal-pkg">
         <div class="modal-pkg-name">Fam Vibes</div>
         <div class="modal-pkg-old">₱3,000</div>
-        <div class="modal-pkg-price">₱2,200 <span style="font-size:.7rem;font-weight:400;color:var(--green);"> Save ₱800</span></div>
+        <div class="modal-pkg-price">₱2,200 <span style="font-size:.7rem;color:var(--green);font-weight:600;">Save ₱800</span></div>
         <ul class="modal-feat">
           <li>Up to 8 PAX (add-on ₱200/pax)</li>
           <li>Unlimited shots for 30 mins by photographer</li>
@@ -964,18 +1084,68 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </ul>
       </div>
     </div>
-    <div class="modal-section-title">Add-ons</div>
+
+    <!-- Moments -->
+    <div style="border-radius:16px;overflow:hidden;margin:1rem 0;border:2px solid rgba(45,110,95,.15);">
+      <img src="12.png" alt="Moments Family Package" style="width:100%;max-height:220px;object-fit:cover;object-position:center 30%;display:block;">
+      <div class="modal-pkg highlight" style="border-radius:0;border:none;margin:0;">
+        <div style="display:flex;align-items:baseline;gap:.75rem;flex-wrap:wrap;margin-bottom:.5rem;">
+          <div class="modal-pkg-name" style="font-style:italic;">Moments — Family Portrait Package</div>
+        </div>
+        <div class="modal-pkg-old">₱6,200</div>
+        <div class="modal-pkg-price">₱3,500 <span style="font-size:.75rem;font-weight:400;"> — </span><span style="font-size:.82rem;background:var(--green);color:#fff;padding:.2rem .6rem;border-radius:100px;font-weight:700;">Save ₱2,700</span></div>
+        <ul class="modal-feat" style="margin-top:.8rem;">
+          <li>Up to 10 PAX (add on ₱200 per pax)</li>
+          <li>Unlimited shots for 30 mins by photographer</li>
+          <li>1 Backdrop Choice · Solo shots · Group shots</li>
+          <li>FREE use of big studio furnitures</li>
+          <li>FREE: All digital copies</li>
+          <li>FREE: Behind the scene video clips</li>
+          <li>FREE: 8 minis, 4 besties print, 2 strips</li>
+          <li>FREE use of available props</li>
+          <li>FREE: Framed 8R edited picture in Double Glass Frame</li>
+          <li>FREE: up to 3 pets</li>
+          <li>🎁 With Vouchers and Discounts!</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Generations -->
+    <div style="border-radius:16px;overflow:hidden;margin:1rem 0;border:2px solid rgba(196,154,26,.3);">
+      <img src="10.png" alt="Generations Big Family Package" style="width:100%;max-height:220px;object-fit:cover;object-position:center 20%;display:block;">
+      <div class="modal-pkg" style="border-radius:0;border:none;margin:0;background:linear-gradient(135deg,#f0f8f0,#e4f0e4);">
+        <div class="modal-pkg-name" style="font-style:italic;">Generations — The BIG Family Package</div>
+        <div class="modal-pkg-old">₱7,000</div>
+        <div class="modal-pkg-price">₱5,000 <span style="font-size:.75rem;font-weight:400;"> — </span><span style="font-size:.82rem;background:var(--amber);color:#fff;padding:.2rem .6rem;border-radius:100px;font-weight:700;">Save ₱1,100</span></div>
+        <ul class="modal-feat" style="margin-top:.8rem;">
+          <li>Up to 20 PAX</li>
+          <li>Unlimited shots for 40 mins by photographer</li>
+          <li>1 Backdrop · Solo shots · Group shots</li>
+          <li>FREE use of big studio furnitures</li>
+          <li>FREE: All digital copies</li>
+          <li>FREE: 8pcs minis, 4pcs besties, 2 solos</li>
+          <li>FREE use of available props</li>
+          <li>FREE: 5 Edited photos</li>
+          <li>FREE: Framed 8R edited picture in Double Glass Frame</li>
+          <li>FREE: up to 3 pets</li>
+          <li>🎁 With Vouchers and Discounts!</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="modal-section-title">Add-ons (all Family packages)</div>
     <div class="modal-addon-row"><span>5 Mins extra</span><span class="modal-addon-price">₱100</span></div>
-    <div class="modal-addon-row"><span>15 mins extra</span><span class="modal-addon-price">₱300</span></div>
+    <div class="modal-addon-row"><span>15 mins with Prints</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-addon-row"><span>4R Prints</span><span class="modal-addon-price">₱50</span></div>
     <div class="modal-addon-row"><span>A4 or 8R size Print</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>A5 size Print</span><span class="modal-addon-price">₱150</span></div>
-    <div class="modal-addon-row"><span>Theme Set Up</span><span class="modal-addon-price">₱1,200</span></div>
+    <div class="modal-addon-row"><span>Theme Set Up</span><span class="modal-addon-price">₱2,000</span></div>
     <div class="modal-addon-row"><span>Basic Set Design</span><span class="modal-addon-price">₱700</span></div>
     <div class="modal-addon-row"><span>32-in Matte Number Balloon</span><span class="modal-addon-price">₱75</span></div>
     <div class="modal-addon-row"><span>Pet (max 3 per session)</span><span class="modal-addon-price">₱100/pet</span></div>
-    <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: 800)</span><span class="modal-addon-price">₱1,500</span></div>
-    <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: 500)</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: ₱800)</span><span class="modal-addon-price">₱1,500</span></div>
+    <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: ₱500)</span><span class="modal-addon-price">₱800</span></div>
+    <div class="modal-addon-row"><span>Double Glass Frame 8R</span><span class="modal-addon-price">₱1,000</span></div>
     <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
     <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
   </div>
