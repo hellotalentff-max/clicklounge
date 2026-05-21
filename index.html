@@ -561,6 +561,35 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
     </div>
+
+    <!-- 🎁 GIFT GENERATOR -->
+    <div style="max-width:520px;margin:2.5rem auto 3rem;padding:0 1.5rem;text-align:center;">
+      <div style="background:linear-gradient(135deg,#fff8e8,#fff0d0);border:2px dashed var(--amber);border-radius:20px;padding:2rem 1.5rem;">
+        <div style="font-size:2.2rem;margin-bottom:.5rem;">🎁</div>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.4rem;color:var(--green-dark);margin-bottom:.4rem;">Birthday Surprise!</h3>
+        <p style="font-size:.85rem;color:var(--text-mid);line-height:1.6;margin-bottom:1.2rem;">Spin for a free gift to add to your birthday self-shoot session!</p>
+
+        <!-- Result area (hidden until spin) -->
+        <div id="gift-result" style="display:none;margin-bottom:1.2rem;">
+          <div id="gift-box" style="background:#fff;border-radius:14px;padding:1.4rem 1.2rem;border:2px solid var(--green);box-shadow:0 4px 20px rgba(45,110,95,.12);">
+            <div style="font-size:2rem;margin-bottom:.4rem;" id="gift-icon"></div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:var(--green-dark);font-weight:700;" id="gift-name"></div>
+            <div style="font-size:.82rem;color:var(--text-mid);margin:.4rem 0 .8rem;" id="gift-desc"></div>
+            <div style="font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.12em;color:var(--text-light);margin-bottom:.3rem;">YOUR CODE</div>
+            <div id="gift-code" style="font-family:'Space Mono',monospace;font-size:1.1rem;font-weight:700;color:var(--amber);background:var(--cream-dark);border-radius:8px;padding:.5rem 1rem;display:inline-block;letter-spacing:.1em;"></div>
+            <div style="margin-top:1rem;background:var(--cream);border-radius:10px;padding:.8rem 1rem;font-size:.8rem;color:var(--text-mid);line-height:1.6;">
+              📸 <strong>Screenshot this and show it to our staff</strong> when you come in for your birthday session to claim your free gift!
+            </div>
+          </div>
+        </div>
+
+        <!-- Spin button -->
+        <button id="gift-btn" onclick="spinGift()" style="background:var(--amber);color:#fff;font-family:'Space Mono',monospace;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.9rem 2rem;border-radius:100px;border:none;cursor:pointer;width:100%;transition:transform .15s,box-shadow .2s;animation:promoPulseBtn 1.8s ease-in-out infinite;">
+          🎉 Claim My Birthday Gift!
+        </button>
+        <div id="gift-used-msg" style="display:none;font-size:.82rem;color:var(--text-light);margin-top:.8rem;"></div>
+      </div>
+    </div>
   </div>
 
   <!-- ADD-ONS -->
@@ -1541,6 +1570,89 @@ function showResults() {
   const q = document.getElementById('pkg-search').value.trim();
   if (q) runSearch(q);
 }
+
+// ── GIFT GENERATOR ──
+const GIFT_COOLDOWN = 20 * 60 * 1000; // 20 mins in ms
+const GIFT_PRIZES = [
+  { chance: 0.10, icon: '⏱️', name: 'FREE 5 Minutes!', desc: 'Enjoy an extra 5 minutes added to your birthday self-shoot session — on us!' },
+  { chance: 0.10, icon: '🖼️', name: 'FREE Print!',     desc: 'Get a complimentary print of your favourite shot from your birthday session!' },
+  { chance: 0.80, icon: '🧑‍🤝‍🧑', name: 'FREE Extra Pax!',  desc: 'Bring one extra person to your birthday self-shoot session at no extra charge!' },
+];
+
+function genCode() {
+  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
+  let c = 'CLS-';
+  for (let i = 0; i < 8; i++) c += chars[Math.floor(Math.random() * chars.length)];
+  return c;
+}
+
+function spinGift() {
+  const now = Date.now();
+  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
+  const btn = document.getElementById('gift-btn');
+  const usedMsg = document.getElementById('gift-used-msg');
+
+  if (lastSpin && (now - lastSpin) < GIFT_COOLDOWN) {
+    // Already spun — show existing result silently, no message to user
+    document.getElementById('gift-result').style.display = 'block';
+    return;
+  }
+
+  // Disable button with animation
+  btn.disabled = true;
+  btn.textContent = '🎊 Revealing your gift…';
+  btn.style.animation = 'none';
+  btn.style.opacity = '.7';
+
+  setTimeout(() => {
+    // Pick prize
+    const r = Math.random();
+    let cumulative = 0, prize = GIFT_PRIZES[2];
+    for (const p of GIFT_PRIZES) {
+      cumulative += p.chance;
+      if (r < cumulative) { prize = p; break; }
+    }
+    const code = genCode();
+
+    // Store timestamp (hidden from user)
+    sessionStorage.setItem('_gts', now.toString());
+    sessionStorage.setItem('_gtr', JSON.stringify({ prize, code }));
+
+    // Show result
+    document.getElementById('gift-icon').textContent = prize.icon;
+    document.getElementById('gift-name').textContent = prize.name;
+    document.getElementById('gift-desc').textContent = prize.desc;
+    document.getElementById('gift-code').textContent = code;
+    document.getElementById('gift-result').style.display = 'block';
+
+    // Update button
+    btn.textContent = '🎁 Gift Claimed!';
+    btn.style.background = 'var(--green)';
+    btn.style.opacity = '1';
+
+    // Scroll to result
+    document.getElementById('gift-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 1200);
+}
+
+// Restore gift result on page revisit within same session
+function restoreGift() {
+  const saved = sessionStorage.getItem('_gtr');
+  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
+  if (!saved || !lastSpin) return;
+  if ((Date.now() - lastSpin) >= GIFT_COOLDOWN) return;
+  try {
+    const { prize, code } = JSON.parse(saved);
+    document.getElementById('gift-icon').textContent = prize.icon;
+    document.getElementById('gift-name').textContent = prize.name;
+    document.getElementById('gift-desc').textContent = prize.desc;
+    document.getElementById('gift-code').textContent = code;
+    document.getElementById('gift-result').style.display = 'block';
+    const btn = document.getElementById('gift-btn');
+    if (btn) { btn.textContent = '🎁 Gift Claimed!'; btn.style.background = 'var(--green)'; btn.disabled = true; btn.style.animation = 'none'; }
+  } catch(e) {}
+}
+document.addEventListener('DOMContentLoaded', restoreGift);
 
 function showPage(id, navEl) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
