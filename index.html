@@ -1463,7 +1463,6 @@ function showSubTab(id, btn) {
 }
 let _activeModal = null;
 function openImagePopup(src) {
-  // Create or reuse image popup overlay
   let overlay = document.getElementById('img-popup-overlay');
   if (!overlay) {
     overlay = document.createElement('div');
@@ -1476,6 +1475,7 @@ function openImagePopup(src) {
   document.getElementById('img-popup-img').src = src;
   overlay.style.display = 'flex';
 }
+function openModal(id) {
   if (_activeModal) closeModal();
   const overlay = document.getElementById('modal-overlay');
   const modal = document.getElementById(id);
@@ -1485,7 +1485,6 @@ function openImagePopup(src) {
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => { modal.classList.add('open'); });
   _activeModal = modal;
-  // Meta Pixel: track package view
   if (typeof fbq !== 'undefined') {
     fbq('track', 'ViewContent', { content_name: id.replace('modal-','') });
   }
