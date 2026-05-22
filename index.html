@@ -309,7 +309,8 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <a href="#" onclick="showPage('self-shoot',this);return false;">Self Shoot</a>
   <a href="#" onclick="showPage('photographer',this);return false;">Photographer</a>
   <a href="#" onclick="showPage('events',this);return false;">Events & Rentals</a>
-  <a href="#" onclick="showPage('booking',this);return false;">Booking Process</a>
+  <a href="#" onclick="showPage('booking',this);return false;" style="display:none;">Booking Process</a>
+  <a href="#" onclick="showPage('loyalty',this);return false;">🏅 ClickCard</a>
 </nav>
 
 <!-- ══ HOME ══ -->
@@ -663,6 +664,9 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     @keyframes promoPulseBtn {
       0%,100% { box-shadow:0 0 0 0 rgba(229,57,53,.7); transform:scale(1); }
       50%     { box-shadow:0 0 0 10px rgba(229,57,53,0); transform:scale(1.05); }
+    }
+    @keyframes spin {
+      to { transform: rotate(360deg); }
     }
   </style>
 
@@ -1486,6 +1490,232 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 </div>
 
+<!-- ══ LOYALTY ══ -->
+<div id="loyalty" class="section">
+
+  <style>
+    .tier-card { border-radius:20px; padding:1.8rem; position:relative; overflow:hidden; }
+    .tier-card.bronze { background:linear-gradient(135deg,#f5ede0,#e8d5bc); border:2px solid #c8a070; }
+    .tier-card.silver { background:linear-gradient(135deg,#eef0f4,#d8dce4); border:2px solid #9aa0ae; }
+    .tier-card.gold   { background:linear-gradient(135deg,#fffbe8,#f5e8b0); border:2px solid #c8a020; }
+    .tier-card.vip    { background:linear-gradient(135deg,#1e2a38,#2d3f52); border:2px solid #4a9082; color:#fff; }
+    .tier-name { font-family:'Space Mono',monospace; font-size:.72rem; font-weight:700; letter-spacing:.16em; text-transform:uppercase; margin-bottom:.3rem; }
+    .tier-pts  { font-family:'Playfair Display',serif; font-size:2rem; font-weight:700; line-height:1; margin-bottom:.8rem; }
+    .tier-perks { list-style:none; font-size:.83rem; line-height:1; }
+    .tier-perks li { padding:.38rem 0; border-bottom:1px solid rgba(0,0,0,.07); display:flex; gap:.5rem; align-items:flex-start; }
+    .tier-card.vip .tier-perks li { border-color:rgba(255,255,255,.08); }
+    .tier-perks li::before { content:'✦'; flex-shrink:0; font-size:.7rem; margin-top:.1rem; }
+    .tier-card.bronze .tier-perks li::before { color:#c8a070; }
+    .tier-card.silver .tier-perks li::before { color:#9aa0ae; }
+    .tier-card.gold   .tier-perks li::before { color:#c8a020; }
+    .tier-card.vip    .tier-perks li::before { color:#4a9082; }
+    .pts-input { width:100%; border:2px solid rgba(45,110,95,.2); border-radius:12px; padding:.8rem 1rem; font-family:'DM Sans',sans-serif; font-size:.95rem; color:var(--text-dark); outline:none; transition:border-color .2s; }
+    .pts-input:focus { border-color:var(--green); }
+    .loy-btn { background:var(--green); color:#fff; font-family:'Space Mono',monospace; font-size:.8rem; font-weight:700; letter-spacing:.06em; text-transform:uppercase; padding:.85rem 1.5rem; border-radius:10px; border:none; cursor:pointer; transition:background .2s; }
+    .loy-btn:hover { background:var(--green-dark); }
+    .reward-chip { display:inline-flex; align-items:center; gap:.5rem; background:var(--cream); border:1px solid rgba(45,110,95,.15); border-radius:100px; padding:.4rem 1rem; font-size:.82rem; color:var(--text-mid); font-weight:500; }
+    .how-step { display:flex; gap:1rem; align-items:flex-start; padding:1rem 0; border-bottom:1px solid rgba(45,110,95,.08); }
+    .how-num { width:34px; height:34px; border-radius:50%; background:var(--green); color:#fff; font-family:'Space Mono',monospace; font-size:.85rem; font-weight:700; display:flex; align-items:center; justify-content:center; flex-shrink:0; }
+  </style>
+
+  <!-- Hero -->
+  <div style="background:linear-gradient(135deg,var(--green-dark),#1a3d35);padding:3.5rem 2rem;text-align:center;position:relative;overflow:hidden;">
+    <div style="position:absolute;top:-60px;right:-60px;width:220px;height:220px;border-radius:50%;background:rgba(255,255,255,.04);"></div>
+    <div style="position:absolute;bottom:-40px;left:-40px;width:160px;height:160px;border-radius:50%;background:rgba(74,144,130,.15);"></div>
+    <span style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:var(--amber-light);display:block;margin-bottom:.6rem;">Click Lounge Studio</span>
+    <h1 style="font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.2rem);color:#fff;margin-bottom:.6rem;">ClickCard Rewards</h1>
+    <p style="color:rgba(255,255,255,.7);max-width:500px;margin:0 auto 2rem;font-size:.92rem;line-height:1.75;">Every session earns you points. Points unlock real perks — exclusive access, free upgrades, priority booking &amp; more.</p>
+    <div style="display:flex;gap:.8rem;justify-content:center;flex-wrap:wrap;">
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.8rem 1.4rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--amber-light);">1 pt</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem;">per ₱100 spent</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.8rem 1.4rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--amber-light);">4 tiers</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem;">Bronze → VIP</div>
+      </div>
+      <div style="background:rgba(255,255,255,.1);border:1px solid rgba(255,255,255,.2);border-radius:12px;padding:.8rem 1.4rem;text-align:center;">
+        <div style="font-family:'Space Mono',monospace;font-size:1.3rem;font-weight:700;color:var(--amber-light);">0 cash</div>
+        <div style="font-size:.75rem;color:rgba(255,255,255,.6);margin-top:.2rem;">rewards cost to us</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Points Calculator -->
+  <div style="background:var(--cream);padding:2.5rem 2rem;">
+    <div style="max-width:540px;margin:0 auto;text-align:center;">
+      <span class="eyebrow">Check your tier</span>
+      <h2 class="page-title" style="font-size:1.8rem;margin-bottom:1.2rem;">Points Calculator</h2>
+      <div style="margin-bottom:1rem;">
+        <label style="font-size:.8rem;color:var(--text-mid);font-weight:600;display:block;margin-bottom:.4rem;text-align:left;">How much have you spent in total? (₱)</label>
+        <input class="pts-input" id="loy-spend" type="number" min="0" placeholder="e.g. 5000" oninput="calcPoints()">
+      </div>
+      <div id="loy-result" style="display:none;margin-top:1.2rem;background:#fff;border-radius:16px;padding:1.4rem;border:2px solid var(--green);text-align:left;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;flex-wrap:wrap;gap:.5rem;">
+          <div>
+            <div style="font-size:.75rem;color:var(--text-light);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;">Your Points</div>
+            <div id="loy-pts-total" style="font-family:'Space Mono',monospace;font-size:2rem;font-weight:700;color:var(--green);"></div>
+          </div>
+          <div id="loy-tier-badge" style="font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.1em;text-transform:uppercase;padding:.5rem 1.2rem;border-radius:100px;"></div>
+        </div>
+        <div id="loy-tier-msg" style="font-size:.85rem;color:var(--text-mid);line-height:1.65;"></div>
+        <div id="loy-next-msg" style="margin-top:.7rem;font-size:.8rem;color:var(--text-light);font-style:italic;"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Check My Points -->
+  <div style="background:var(--green-dark);padding:2.5rem 2rem;">
+    <div style="max-width:540px;margin:0 auto;text-align:center;">
+      <span class="eyebrow" style="color:var(--amber-light);">Know your balance</span>
+      <h2 class="page-title" style="font-size:1.8rem;color:#fff;margin-bottom:.5rem;">Check My Points</h2>
+      <p style="color:rgba(255,255,255,.65);font-size:.88rem;margin-bottom:1.5rem;line-height:1.7;">Enter your name or phone number below and we'll look up your ClickCard balance from our system.</p>
+      <div style="display:flex;gap:.6rem;">
+        <input id="chk-query" type="text" placeholder="Your name or phone number"
+          style="flex:1;border:2px solid rgba(255,255,255,.2);border-radius:10px;padding:.8rem 1rem;font-family:'DM Sans',sans-serif;font-size:.9rem;color:#fff;background:rgba(255,255,255,.1);outline:none;transition:border-color .2s;"
+          onfocus="this.style.borderColor='rgba(255,255,255,.5)'" onblur="this.style.borderColor='rgba(255,255,255,.2)'"
+          onkeydown="if(event.key==='Enter')checkMyPoints()">
+        <button onclick="checkMyPoints()" style="background:var(--amber);color:#fff;font-family:'Space Mono',monospace;font-size:.8rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.8rem 1.4rem;border-radius:10px;border:none;cursor:pointer;white-space:nowrap;transition:background .2s;">
+          Check →
+        </button>
+      </div>
+      <div id="chk-result" style="margin-top:1.2rem;"></div>
+      <p style="color:rgba(255,255,255,.35);font-size:.75rem;margin-top:1rem;">Points are updated after each completed session. Contact staff if you have questions about your balance.</p>
+    </div>
+  </div>
+
+  <!-- Tiers -->
+  <div style="padding:2.5rem 2rem;">
+    <div style="text-align:center;margin-bottom:2rem;">
+      <span class="eyebrow">Membership Tiers</span>
+      <h2 class="page-title" style="font-size:1.8rem;">The Higher You Climb,<br>The More You Get</h2>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:1.2rem;max-width:1000px;margin:0 auto;">
+
+      <div class="tier-card bronze">
+        <div class="tier-name" style="color:#8a5a2a;">🥉 Bronze</div>
+        <div class="tier-pts" style="color:#8a5a2a;">0 – 49 pts</div>
+        <ul class="tier-perks" style="color:#5a3a1a;">
+          <li>Digital ClickCard membership</li>
+          <li>Birthday month surprise gift</li>
+          <li>Access to member-only promos</li>
+          <li>Priority booking via DM</li>
+          <li>1 free backdrop change</li>
+        </ul>
+      </div>
+
+      <div class="tier-card silver">
+        <div class="tier-name" style="color:#5a6070;">🥈 Silver</div>
+        <div class="tier-pts" style="color:#5a6070;">50 – 149 pts</div>
+        <ul class="tier-perks" style="color:#3a4050;">
+          <li>All Bronze perks</li>
+          <li>FREE 5-min session extension</li>
+          <li>10% discount on add-ons</li>
+          <li>Early access to new set designs</li>
+          <li>1 free digital copy upgrade</li>
+          <li>Name in CLS Wall of Fans</li>
+        </ul>
+      </div>
+
+      <div class="tier-card gold">
+        <div class="tier-name" style="color:#8a6010;">🥇 Gold</div>
+        <div class="tier-pts" style="color:#8a6010;">150 – 299 pts</div>
+        <ul class="tier-perks" style="color:#5a4008;">
+          <li>All Silver perks</li>
+          <li>FREE Basic HMU (1× per year)</li>
+          <li>15% discount on add-ons</li>
+          <li>1 free outfit change per session</li>
+          <li>Complimentary 4R print per visit</li>
+          <li>Featured on CLS social media</li>
+          <li>Dedicated booking slot (no waitlist)</li>
+        </ul>
+      </div>
+
+      <div class="tier-card vip">
+        <div class="tier-name" style="color:var(--amber-light);">💎 VIP</div>
+        <div class="tier-pts" style="color:var(--amber-light);">300+ pts</div>
+        <ul class="tier-perks">
+          <li>All Gold perks</li>
+          <li>FREE annual mini session (20 mins)</li>
+          <li>20% discount on ALL add-ons</li>
+          <li>Exclusive VIP-only set designs</li>
+          <li>First access to new packages</li>
+          <li>Behind-the-scenes studio tour</li>
+          <li>Personal thank-you from the team</li>
+          <li>Referral bonus: +10 pts per friend</li>
+        </ul>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- How to Earn -->
+  <div style="background:var(--cream);padding:2.5rem 2rem;">
+    <div style="max-width:640px;margin:0 auto;">
+      <div style="text-align:center;margin-bottom:1.5rem;">
+        <span class="eyebrow">Earning Points</span>
+        <h2 class="page-title" style="font-size:1.8rem;">How It Works</h2>
+      </div>
+      <div class="how-step">
+        <div class="how-num">1</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-dark);margin-bottom:.2rem;">Book &amp; Show Up</div>
+          <div style="font-size:.84rem;color:var(--text-mid);line-height:1.6;">Every ₱100 you spend on any session or add-on earns you <strong>1 point</strong>. Points are credited after your session.</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">2</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-dark);margin-bottom:.2rem;">Refer a Friend</div>
+          <div style="font-size:.84rem;color:var(--text-mid);line-height:1.6;">When a friend books using your name as a referral, you earn <strong>+5 pts</strong> (VIP members earn +10 pts). No limit on referrals!</div>
+        </div>
+      </div>
+      <div class="how-step">
+        <div class="how-num">3</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-dark);margin-bottom:.2rem;">Engage &amp; Celebrate</div>
+          <div style="font-size:.84rem;color:var(--text-mid);line-height:1.6;">Tag us on social media after your shoot for <strong>+2 pts</strong>. Review us on Google for <strong>+3 pts</strong>. Celebrate your birthday month for a surprise bonus!</div>
+        </div>
+      </div>
+      <div class="how-step" style="border:none;">
+        <div class="how-num">4</div>
+        <div>
+          <div style="font-weight:600;color:var(--text-dark);margin-bottom:.2rem;">Claim Your Perks</div>
+          <div style="font-size:.84rem;color:var(--text-mid);line-height:1.6;">Show your ClickCard to staff at the start of every session. Perks are applied automatically based on your current tier. No vouchers needed!</div>
+        </div>
+      </div>
+
+      <!-- Bonus points chips -->
+      <div style="margin-top:1.2rem;">
+        <div style="font-size:.78rem;font-weight:700;color:var(--text-light);text-transform:uppercase;letter-spacing:.1em;font-family:'Space Mono',monospace;margin-bottom:.7rem;">Bonus Point Opportunities</div>
+        <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
+          <span class="reward-chip">📸 Session booked — +1 pt/₱100</span>
+          <span class="reward-chip">📱 Tag us on IG/FB — +2 pts</span>
+          <span class="reward-chip">⭐ Google review — +3 pts</span>
+          <span class="reward-chip">🎂 Birthday month — surprise bonus</span>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- FAQ -->
+  <div style="padding:2.5rem 2rem;max-width:680px;margin:0 auto;">
+    <div style="text-align:center;margin-bottom:1.5rem;">
+      <span class="eyebrow">Questions</span>
+      <h2 class="page-title" style="font-size:1.8rem;">ClickCard FAQ</h2>
+    </div>
+    <div id="faq-wrap"></div>
+  </div>
+
+  <!-- Join CTA -->
+  <div style="background:var(--green-dark);padding:3rem 2rem;text-align:center;">
+    <h2 style="font-family:'Playfair Display',serif;font-size:1.8rem;color:#fff;margin-bottom:.6rem;">Ready to Start Earning?</h2>
+    <p style="color:rgba(255,255,255,.7);font-size:.9rem;margin-bottom:1.5rem;max-width:420px;margin-left:auto;margin-right:auto;line-height:1.7;">Just book your next session and tell our staff you want to enroll in ClickCard Rewards. It's free, instant, and starts earning from your very first visit.</p>
+    <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')" style="font-size:.85rem;">Book a Session &amp; Enroll →</a>
+  </div>
+
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div style="margin-bottom:.8rem;"><img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="width:120px;height:auto;filter:brightness(0) invert(1);opacity:.85;"></div>
@@ -1571,6 +1801,181 @@ function showResults() {
   if (q) runSearch(q);
 }
 
+// ── LOYALTY ──
+const TIERS = [
+  { name:'Bronze', min:0,   max:49,  color:'#8a5a2a', bg:'#f5e6cc', emoji:'🥉', msg:'Welcome to the Click Fam! You\'re a Bronze member — enjoy priority booking, member-only promos, and your birthday month surprise.', next:'Earn {n} more points to reach Silver and unlock free session extensions!' },
+  { name:'Silver', min:50,  max:149, color:'#5a6070', bg:'#d8dce4', emoji:'🥈', msg:'You\'re a Silver member! Enjoy FREE 5-min extensions, 10% off add-ons, early access to new set designs, and more.', next:'Earn {n} more points to reach Gold — that\'s where the real magic happens!' },
+  { name:'Gold',   min:150, max:299, color:'#8a6010', bg:'#f5e8b0', emoji:'🥇', msg:'You\'ve hit Gold! Enjoy FREE HMU once a year, 15% off add-ons, complimentary 4R prints, and a social media feature!', next:'Just {n} more points to reach VIP — the ultimate Click Lounge experience!' },
+  { name:'VIP',    min:300, max:Infinity, color:'#4a9082', bg:'#1e2a38', emoji:'💎', msg:'You\'re VIP! You get a FREE annual mini session, 20% off all add-ons, exclusive set designs, and so much more. Thank you for being part of the Click Fam! 💚', next:'' },
+];
+
+function calcPoints() {
+  const spend = parseFloat(document.getElementById('loy-spend').value) || 0;
+  const pts   = Math.floor(spend / 100);
+  const box   = document.getElementById('loy-result');
+  if (spend === 0) { box.style.display='none'; return; }
+  const tier  = TIERS.find(t => pts >= t.min && pts <= t.max) || TIERS[0];
+  const next  = TIERS[TIERS.indexOf(tier) + 1];
+  document.getElementById('loy-pts-total').textContent = pts + ' pts';
+  const badge = document.getElementById('loy-tier-badge');
+  badge.textContent = tier.emoji + ' ' + tier.name;
+  badge.style.background = tier.bg;
+  badge.style.color = tier.color;
+  badge.style.border = '1.5px solid ' + tier.color;
+  document.getElementById('loy-tier-msg').textContent = tier.msg;
+  document.getElementById('loy-next-msg').textContent = next ? tier.next.replace('{n}', next.min - pts) : '';
+  box.style.display = 'block';
+}
+
+const CLS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
+
+async function callScript(params) {
+  const url = CLS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+  const res = await fetch(url);
+  return res.json();
+}
+
+async function checkMyPoints() {
+  const q = document.getElementById('chk-query').value.trim();
+  const box = document.getElementById('chk-result');
+  if (!q) {
+    box.innerHTML = '<p style="color:rgba(255,255,255,.5);font-size:.85rem;">Please enter your name or phone number.</p>';
+    return;
+  }
+  box.innerHTML = `<div style="color:rgba(255,255,255,.6);font-size:.85rem;padding:.8rem;text-align:center;">
+    <div style="display:inline-block;width:18px;height:18px;border:2px solid rgba(255,255,255,.3);border-top-color:#fff;border-radius:50%;animation:spin .8s linear infinite;vertical-align:middle;margin-right:.5rem;"></div>
+    Looking up your account…
+  </div>`;
+
+  try {
+    // Try fetching clients from the sheet
+    const data = await callScript({ action: 'getClients' });
+    const clients = data.clients || data.data || data || [];
+    const qLower = q.toLowerCase();
+
+    // Match by name or phone (column mapping: B=name, C=email, D=type, E=date)
+    const match = clients.find(row => {
+      const name = (row['FB Name'] || row[0] || '').toLowerCase();
+      const email = (row['Email'] || row[1] || '').toLowerCase();
+      const phone = (row['Phone'] || row['Mobile'] || row[2] || '').toLowerCase();
+      return name.includes(qLower) || email.includes(qLower) || phone.includes(qLower);
+    });
+
+    if (!match) {
+      box.innerHTML = `<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.2rem;text-align:center;">
+        <div style="font-size:1.2rem;margin-bottom:.4rem;">🔍</div>
+        <div style="font-size:.88rem;color:rgba(255,255,255,.8);font-weight:600;margin-bottom:.3rem;">No account found for "${q}"</div>
+        <div style="font-size:.8rem;color:rgba(255,255,255,.5);line-height:1.6;">Make sure you're using the name you gave us at the studio. Ask our staff to check your ClickCard balance!</div>
+      </div>`;
+      return;
+    }
+
+    // Now fetch transactions to calculate points
+    let totalSpend = 0;
+    let sessionCount = 0;
+    try {
+      const txData = await callScript({ action: 'getTransactions' });
+      const txs = txData.transactions || txData.data || txData || [];
+      const clientName = (match['FB Name'] || match[0] || '').toLowerCase().trim();
+      const firstName = clientName.split(' ')[0];
+      txs.forEach(tx => {
+        // Use exact column header 'Client Name' from Transactions sheet
+        const txClient = (tx['Client Name'] || '').toLowerCase().trim();
+        if (!txClient) return; // skip empty rows / summary rows
+        // Skip rows that look like summary rows (no Invoice # or no Client Name)
+        if (!tx['Invoice #'] && !tx['ID']) return;
+        const txFirstName = txClient.split(' ')[0];
+        const isMatch = txClient === clientName ||
+          txClient.includes(clientName) ||
+          clientName.includes(txClient) ||
+          (firstName.length > 2 && txFirstName === firstName &&
+           txClient.split(' ').some(w => w.length > 2 && clientName.includes(w)));
+        if (isMatch) {
+          const amt = parseFloat(tx['Total'] || 0);
+          if (amt > 0) { totalSpend += amt; sessionCount++; }
+        }
+      });
+    } catch(e) { /* transactions fetch failed */ }
+
+    const pts = Math.floor(totalSpend / 100);
+    const tier = TIERS.find(t => pts >= t.min && pts <= t.max) || TIERS[0];
+    const next = TIERS[TIERS.indexOf(tier) + 1];
+    const clientName = match['FB Name'] || match[0] || q;
+    const clientType = match['Type'] || match[3] || '';
+
+    box.innerHTML = `<div style="background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.18);border-radius:16px;overflow:hidden;margin-top:.5rem;">
+      <div style="background:rgba(255,255,255,.06);padding:1.1rem 1.3rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.6rem;">
+        <div>
+          <div style="font-family:'Playfair Display',serif;font-size:1.2rem;color:#fff;">${clientName}</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;margin-top:.15rem;">${clientType ? clientType.toUpperCase() + ' CLIENT' : 'CLICKCARD MEMBER'}</div>
+        </div>
+        <div style="text-align:right;">
+          <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.12em;color:rgba(255,255,255,.45);text-transform:uppercase;">Points Balance</div>
+          <div style="font-family:'Space Mono',monospace;font-size:2rem;font-weight:700;color:var(--amber-light);line-height:1.1;">${pts} pts</div>
+        </div>
+      </div>
+      <div style="padding:1rem 1.3rem;">
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.65);">Current Tier</span>
+          <span style="font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;background:rgba(255,255,255,.12);border-radius:100px;padding:.3rem .9rem;color:#fff;">${tier.emoji} ${tier.name}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.65);">Sessions tracked</span>
+          <span style="font-family:'Space Mono',monospace;font-size:.82rem;color:rgba(255,255,255,.85);">${sessionCount || '—'}</span>
+        </div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:.8rem;">
+          <span style="font-size:.82rem;color:rgba(255,255,255,.65);">Total spent</span>
+          <span style="font-family:'Space Mono',monospace;font-size:.82rem;color:rgba(255,255,255,.85);">₱${totalSpend.toLocaleString()}</span>
+        </div>
+        ${next ? `<div style="background:rgba(255,255,255,.06);border-radius:10px;padding:.75rem 1rem;font-size:.78rem;color:rgba(255,255,255,.6);line-height:1.6;">
+          🎯 <strong style="color:rgba(255,255,255,.85);">${next.min - pts} more points</strong> to reach ${next.emoji} ${next.name}!
+        </div>` : `<div style="background:rgba(74,144,130,.2);border-radius:10px;padding:.75rem 1rem;font-size:.78rem;color:rgba(255,255,255,.75);line-height:1.6;">
+          💎 You're at the highest tier — thank you for being a VIP member!
+        </div>`}
+      </div>
+    </div>`;
+
+  } catch(err) {
+    box.innerHTML = `<div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:14px;padding:1.2rem;text-align:center;">
+      <div style="font-size:1.2rem;margin-bottom:.4rem;">⚠️</div>
+      <div style="font-size:.85rem;color:rgba(255,255,255,.7);font-weight:600;margin-bottom:.3rem;">Connection issue</div>
+      <div style="font-size:.8rem;color:rgba(255,255,255,.45);line-height:1.6;">Unable to reach the database right now. Please ask our staff to check your ClickCard balance!</div>
+    </div>`;
+  }
+}
+
+// FAQ
+const FAQS = [
+  { q:'How do I enroll in ClickCard Rewards?', a:'Just tell our staff you\'d like to enroll when you come in for your session. Enrollment is free and instant — no app download needed. We\'ll log your points manually.' },
+  { q:'Do my points expire?', a:'Points are valid for 12 months from your last session. As long as you visit at least once a year, your points stay active and your tier is preserved.' },
+  { q:'Can I use my perks on the same day I earn them?', a:'Yes! If you cross a tier threshold during a session (e.g. you pay for an upgrade that pushes you to Silver), your new perks apply starting from your next visit.' },
+  { q:'What counts as a "referral"?', a:'When a new client books any package and mentions your name at checkout, you earn +5 pts (or +10 pts if you\'re VIP). The referred client must complete their session for points to be credited.' },
+  { q:'Are perks stackable?', a:'Yes — higher tiers include all perks from lower tiers. VIP members enjoy every single benefit listed across all four tiers.' },
+  { q:'Can I transfer my points to someone else?', a:'Points are non-transferable, but you can use your perks for sessions that include guests (e.g. your free backdrop change applies to your whole group).' },
+  { q:'What happens if I don\'t reach the next tier in time?', a:'Your points never reset unless they expire (12 months of inactivity). You can accumulate across multiple visits at your own pace.' },
+];
+
+document.addEventListener('DOMContentLoaded', () => {
+  const wrap = document.getElementById('faq-wrap');
+  if (!wrap) return;
+  wrap.innerHTML = FAQS.map((f,i) => `
+    <div style="border-bottom:1px solid rgba(45,110,95,.1);padding:.2rem 0;">
+      <button onclick="toggleFaq(${i})" style="width:100%;background:none;border:none;padding:1rem 0;text-align:left;cursor:pointer;display:flex;justify-content:space-between;align-items:center;gap:1rem;">
+        <span style="font-weight:600;font-size:.9rem;color:var(--text-dark);">${f.q}</span>
+        <span id="faq-icon-${i}" style="color:var(--green);font-size:1.1rem;flex-shrink:0;">+</span>
+      </button>
+      <div id="faq-body-${i}" style="display:none;padding-bottom:1rem;font-size:.85rem;color:var(--text-mid);line-height:1.75;">${f.a}</div>
+    </div>`).join('');
+});
+
+function toggleFaq(i) {
+  const body = document.getElementById('faq-body-' + i);
+  const icon = document.getElementById('faq-icon-' + i);
+  const open = body.style.display === 'block';
+  body.style.display = open ? 'none' : 'block';
+  icon.textContent = open ? '+' : '−';
+}
+
 // ── GIFT GENERATOR ──
 const GIFT_COOLDOWN = 20 * 60 * 1000; // 20 mins in ms
 const GIFT_PRIZES = [
@@ -1623,6 +2028,9 @@ function spinGift() {
     document.getElementById('gift-name').textContent = prize.name;
     document.getElementById('gift-desc').textContent = prize.desc;
     document.getElementById('gift-code').textContent = code;
+    // Set Control Hub link — opens Gifts tab with code in URL so staff can paste it
+    const hubLink = document.getElementById('gift-hub-link');
+    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
     document.getElementById('gift-result').style.display = 'block';
 
     // Update button
@@ -1647,6 +2055,8 @@ function restoreGift() {
     document.getElementById('gift-name').textContent = prize.name;
     document.getElementById('gift-desc').textContent = prize.desc;
     document.getElementById('gift-code').textContent = code;
+    const hubLink = document.getElementById('gift-hub-link');
+    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
     document.getElementById('gift-result').style.display = 'block';
     const btn = document.getElementById('gift-btn');
     if (btn) { btn.textContent = '🎁 Gift Claimed!'; btn.style.background = 'var(--green)'; btn.disabled = true; btn.style.animation = 'none'; }
