@@ -1829,6 +1829,17 @@ function calcPoints() {
 
 const CLS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
 
+// Safe name matching: exact OR shares at least 2 words
+function namesMatch(a, b) {
+  a = (a || '').toLowerCase().trim();
+  b = (b || '').toLowerCase().trim();
+  if (!a || !b) return false;
+  if (a === b) return true;
+  const wa = a.split(/\s+/).filter(w => w.length > 1);
+  const wb = b.split(/\s+/).filter(w => w.length > 1);
+  return wa.filter(w => wb.includes(w)).length >= 2;
+}
+
 async function callScript(params) {
   const url = CLS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
   const res = await fetch(url);
@@ -1876,21 +1887,12 @@ async function checkMyPoints() {
     try {
       const txData = await callScript({ action: 'getTransactions' });
       const txs = txData.transactions || txData.data || txData || [];
-      const clientName = (match['FB Name'] || match[0] || '').toLowerCase().trim();
-      const firstName = clientName.split(' ')[0];
+      const clientName = (match['FB Name'] || match[0] || '').trim();
       txs.forEach(tx => {
-        // Use exact column header 'Client Name' from Transactions sheet
-        const txClient = (tx['Client Name'] || '').toLowerCase().trim();
-        if (!txClient) return; // skip empty rows / summary rows
-        // Skip rows that look like summary rows (no Invoice # or no Client Name)
+        const txClient = (tx['Client Name'] || '').trim();
+        if (!txClient) return;
         if (!tx['Invoice #'] && !tx['ID']) return;
-        const txFirstName = txClient.split(' ')[0];
-        const isMatch = txClient === clientName ||
-          txClient.includes(clientName) ||
-          clientName.includes(txClient) ||
-          (firstName.length > 2 && txFirstName === firstName &&
-           txClient.split(' ').some(w => w.length > 2 && clientName.includes(w)));
-        if (isMatch) {
+        if (namesMatch(clientName, txClient)) {
           const amt = parseFloat(tx['Total'] || 0);
           if (amt > 0) { totalSpend += amt; sessionCount++; }
         }
