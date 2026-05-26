@@ -1841,7 +1841,9 @@ function namesMatch(a, b) {
 }
 
 async function callScript(params) {
-  const url = CLS_SCRIPT_URL + '?' + new URLSearchParams(params).toString();
+  const payload = { action: params.action, payload: params.payload || {} };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
+  const url = CLS_SCRIPT_URL + '?d=' + encodeURIComponent(b64);
   const res = await fetch(url);
   return res.json();
 }
