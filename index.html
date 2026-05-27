@@ -1487,10 +1487,29 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
       <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
     </div>
+
+    <!-- Full T&C -->
+    <div style="margin-top:3rem;text-align:center;">
+      <span class="eyebrow">Studio Policies</span>
+      <h2 class="page-title" style="font-size:1.6rem;margin-bottom:1rem;">Full Terms &amp; Conditions</h2>
+      <img src="Terms_and_conditions.png" alt="Studio Terms and Conditions" onclick="openTnC()"
+        style="max-width:100%;width:680px;border-radius:16px;box-shadow:0 8px 32px rgba(0,0,0,.12);cursor:zoom-in;border:1px solid var(--cream-dark);transition:transform .2s;"
+        onmouseover="this.style.transform='scale(1.01)'" onmouseout="this.style.transform='scale(1)'">
+      <p style="font-size:.78rem;color:var(--text-light);margin-top:.7rem;">🔍 Tap image to view full size</p>
+    </div>
   </div>
 </div>
 
-<!-- ══ LOYALTY ══ -->
+<!-- ══ T&C FULLSCREEN MODAL ══ -->
+<div id="tnc-overlay" onclick="closeTnC()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="max-width:780px;width:92%;margin:1.5rem auto;position:relative;">
+    <button onclick="event.stopPropagation();closeTnC()"
+      style="position:sticky;top:.8rem;float:right;background:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:10;margin-bottom:.5rem;">✕</button>
+    <img src="Terms_and_conditions.png" alt="Studio Terms and Conditions"
+      style="width:100%;border-radius:12px;display:block;clear:both;box-shadow:0 8px 40px rgba(0,0,0,.4);">
+    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;margin:.8rem 0 2rem;">Tap outside or ✕ to close</p>
+  </div>
+</div>
 <div id="loyalty" class="section">
 
   <style>
@@ -1728,7 +1747,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <a href="#" title="TikTok">♪</a>
     <a href="https://www.instagram.com/clicklounge.studio" target="_blank" title="Instagram">◎</a>
   </div>
-  <div class="footer-bottom">© 2025 Click Lounge Studio. All rights reserved.</div>
+  <div class="footer-bottom">
+    © 2025 Click Lounge Studio. All rights reserved. &nbsp;·&nbsp;
+    <span onclick="openTnC()" style="cursor:pointer;text-decoration:underline;color:rgba(255,255,255,.45);">Terms &amp; Conditions</span>
+  </div>
 </footer>
 
 <script>
@@ -2067,6 +2089,22 @@ function restoreGift() {
   } catch(e) {}
 }
 document.addEventListener('DOMContentLoaded', restoreGift);
+
+// ── T&C MODAL ──
+function openTnC() {
+  const el = document.getElementById('tnc-overlay');
+  el.style.display = 'block';
+  document.body.style.overflow = 'hidden';
+  // Navigate to booking page if not already there
+  if (!document.getElementById('booking').classList.contains('active')) {
+    showPage('booking', document.querySelectorAll('nav a')[4]);
+  }
+}
+function closeTnC() {
+  document.getElementById('tnc-overlay').style.display = 'none';
+  document.body.style.overflow = '';
+}
+document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTnC(); });
 
 function showPage(id, navEl) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
