@@ -1986,7 +1986,7 @@ async function checkMyPoints() {
   try {
     // 1. Fetch clients
     const cData = await callScript({ action: 'getClients' });
-    const clients = (cData.clients || cData.data || []);
+    const clients = (cData.data || cData.clients || []);
     const qLower = q.toLowerCase().trim();
 
     // Search: name contains query OR query contains name (partial match OK for search)
@@ -2002,7 +2002,7 @@ async function checkMyPoints() {
     let txSpend = 0, txSessions = 0;
     try {
       const txData = await callScript({ action: 'getTransactions' });
-      const txs = txData.transactions || txData.data || [];
+      const txs = txData.data || txData.transactions || [];
       const searchName = match ? (match['FB Name'] || match['fbName'] || q) : q;
       txs.forEach(tx => {
         const txClient = (tx['Client Name'] || tx['clientName'] || '').trim();
@@ -2019,7 +2019,7 @@ async function checkMyPoints() {
     let ogSpend = 0, ogSessions = 0;
     try {
       const ogData = await callScript({ action: 'getOGSales' });
-      const ogs = ogData.sales || ogData.data || [];
+      const ogs = ogData.data || ogData.sales || [];
       const searchName = match ? (match['FB Name'] || match['fbName'] || q) : q;
       ogs.forEach(row => {
         const rowName = (row['Name'] || '').trim();
