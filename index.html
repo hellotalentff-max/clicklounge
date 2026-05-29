@@ -1932,27 +1932,34 @@ function calcPoints() {
 
 const CLS_SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
 
-// Safe name matching: exact OR shares at least 2 words
+// Mirrors admin nameMatch exactly — 2-word rule
 function namesMatch(a, b) {
-  a = (a || '').toLowerCase().trim();
-  b = (b || '').toLowerCase().trim();
-  if (!a || !b) return false;
-  if (a === b) return true;
-  const wa = a.split(/\s+/).filter(w => w.length > 1);
-  const wb = b.split(/\s+/).filter(w => w.length > 1);
-  return wa.filter(w => wb.includes(w)).length >= 2;
+  a = (a||'').toLowerCase().trim();
+  b = (b||'').toLowerCase().trim();
+  if (!a||!b) return false;
+  if (a===b) return true;
+  const wa = a.split(/\s+/).filter(w=>w.length>1);
+  const wb = b.split(/\s+/).filter(w=>w.length>1);
+  return wa.filter(w=>wb.includes(w)).length >= 2;
 }
 
-async function callScript(params) {
-  const payload = { action: params.action, payload: params.payload || {} };
-  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(payload))));
-  const url = CLS_SCRIPT_URL + '?d=' + encodeURIComponent(b64);
-  const res = await fetch(url);
+// Mirrors admin parseAmt exactly
+function parseAmt(val) {
+  if (val===null||val===undefined||val==='') return 0;
+  if (typeof val==='number') return val;
+  return parseFloat(String(val).replace(/[,₱\s]/g,'')) || 0;
+}
+
+async function callScript(action, payload={}) {
+  const obj = { action, payload };
+  const b64 = btoa(unescape(encodeURIComponent(JSON.stringify(obj))));
+  const url  = CLS_SCRIPT_URL + '?d=' + encodeURIComponent(b64);
+  const res  = await fetch(url);
   return res.json();
 }
 
 async function checkMyPoints() {
-  const q = document.getElementById('chk-query').value.trim();
+  const q   = document.getElementById('chk-query').value.trim();
   const box = document.getElementById('chk-result');
   if (!q) {
     box.innerHTML = '<p style="color:rgba(255,255,255,.5);font-size:.85rem;">Please type your name first!</p>';
@@ -1964,96 +1971,96 @@ async function checkMyPoints() {
     Looking up your account…
   </div>`;
 
-  // Perk redemption costs
+  const RATE = 100; // ₱100 = 1 pt
+
   const PERKS = [
-    { icon:'👗', name:'Free Outfit Change', cost:30 },
-    { icon:'⏱️', name:'+5 Extra Minutes', cost:50 },
-    { icon:'🖼️', name:'Digital Copy Upgrade', cost:50 },
-    { icon:'🖨️', name:'Free 4R Print', cost:80 },
-    { icon:'📸', name:'Extra Edited Photo', cost:100 },
-    { icon:'🖼️', name:'Free 8x10 Framed Print', cost:100 },
-    { icon:'🎬', name:'BTS Video Clip', cost:100 },
-    { icon:'🖼️', name:'A4 Framed Print', cost:300 },
-    { icon:'📲', name:'Social Media Feature', cost:300 },
-    { icon:'🎉', name:'Mini Birthday Session', cost:300 },
-    { icon:'💄', name:'Free Basic HMU', cost:500, tier:'Gold+' },
-    { icon:'🕐', name:'Free 30-min Self Shoot', cost:500, tier:'Gold+' },
-    { icon:'👥', name:'Bring 1 Friend FREE', cost:500, tier:'Gold+' },
-    { icon:'📷', name:'Free Photographer Session', cost:1000, tier:'VIP' },
-    { icon:'🎨', name:'Free Full Set Design', cost:1000, tier:'VIP' },
+    {icon:'👗',name:'Free Outfit Change',cost:30},
+    {icon:'⏱️',name:'+5 Extra Minutes',cost:50},
+    {icon:'🖼️',name:'Digital Copy Upgrade',cost:50},
+    {icon:'🖨️',name:'Free 4R Print',cost:80},
+    {icon:'📸',name:'Extra Edited Photo',cost:100},
+    {icon:'🖼️',name:'Free 8x10 Framed Print',cost:100},
+    {icon:'🎬',name:'BTS Video Clip',cost:100},
+    {icon:'🖼️',name:'A4 Framed Print',cost:300},
+    {icon:'📲',name:'Social Media Feature',cost:300},
+    {icon:'🎉',name:'Mini Birthday Session',cost:300},
+    {icon:'💄',name:'Free Basic HMU',cost:500,tier:'Gold+'},
+    {icon:'🕐',name:'Free 30-min Self Shoot',cost:500,tier:'Gold+'},
+    {icon:'👥',name:'Bring 1 Friend FREE',cost:500,tier:'Gold+'},
+    {icon:'📷',name:'Free Photographer Session',cost:1000,tier:'VIP'},
+    {icon:'🎨',name:'Free Full Set Design',cost:1000,tier:'VIP'},
   ];
 
   try {
-    // 1. Fetch clients
-    const cData = await callScript({ action: 'getClients' });
-    const clients = (cData.data || cData.clients || []);
+    // ── Fetch TX + OG in parallel (same as admin doSync)
+    const [tRes, ogRes] = await Promise.all([
+      callScript('getTransactions'),
+      callScript('getOGSales')
+    ]);
+
+    const TX = (tRes.data || tRes.transactions || [])
+      .filter(r => r['invoiceNum'] || r['Invoice #'] || r['id']);
+    const OG = (ogRes.sales || ogRes.data || [])
+      .filter(r => String(r['Name'] || r['name'] || '').trim());
+
     const qLower = q.toLowerCase().trim();
 
-    // Search: name contains query OR query contains name (partial match OK for search)
-    const match = clients.find(row => {
-      const name = (row['FB Name'] || row['fbName'] || '').toLowerCase().trim();
-      const phone = (row['Phone'] || row['phone'] || '').toLowerCase().trim();
-      const email = (row['Email'] || row['email'] || '').toLowerCase().trim();
-      return name.includes(qLower) || qLower.includes(name.split(' ')[0]) ||
-             phone.includes(qLower) || email.includes(qLower);
+    // ── Aggregate TX — sum all rows matching the query name
+    let txSpend = 0, txSessions = 0, txFoundName = '';
+    TX.forEach(tx => {
+      const txName = String(tx['clientName'] || tx['Client Name'] || '').trim();
+      if (!txName) return;
+      if (namesMatch(q, txName) || txName.toLowerCase().includes(qLower) || qLower.includes(txName.toLowerCase().split(' ')[0])) {
+        const amt = parseAmt(tx['total'] || tx['Total']);
+        if (amt > 0) { txSpend += amt; txSessions++; if (!txFoundName) txFoundName = txName; }
+      }
     });
 
-    // 2. Fetch transactions
-    let txSpend = 0, txSessions = 0;
-    try {
-      const txData = await callScript({ action: 'getTransactions' });
-      const txs = txData.data || txData.transactions || [];
-      const searchName = match ? (match['FB Name'] || match['fbName'] || q) : q;
-      txs.forEach(tx => {
-        const txClient = (tx['Client Name'] || tx['clientName'] || '').trim();
-        if (!txClient) return;
-        if (!tx['Invoice #'] && !tx['invoiceNum'] && !tx['ID'] && !tx['id']) return;
-        if (namesMatch(searchName, txClient) || txClient.toLowerCase().includes(qLower)) {
-          const amt = parseFloat(tx['Total'] || tx['total'] || 0);
-          if (amt > 0) { txSpend += amt; txSessions++; }
-        }
-      });
-    } catch(e) {}
+    // ── Aggregate OG — sum all rows matching the query name
+    let ogSpend = 0, ogSessions = 0, ogFoundName = '';
+    OG.forEach(row => {
+      const rowName = String(row['Name'] || row['name'] || '').trim();
+      if (!rowName) return;
+      if (namesMatch(q, rowName) || rowName.toLowerCase().includes(qLower) || qLower.includes(rowName.toLowerCase().split(' ')[0])) {
+        const amt = parseAmt(row['Total'] || row['total'] || row['TOTAL']);
+        if (amt > 0) { ogSpend += amt; ogSessions++; if (!ogFoundName) ogFoundName = rowName; }
+      }
+    });
 
-    // 3. Fetch SALES 2023
-    let ogSpend = 0, ogSessions = 0;
-    try {
-      const ogData = await callScript({ action: 'getOGSales' });
-      const ogs = ogData.data || ogData.sales || [];
-      const searchName = match ? (match['FB Name'] || match['fbName'] || q) : q;
-      ogs.forEach(row => {
-        const rowName = (row['Name'] || '').trim();
-        if (!rowName) return;
-        if (namesMatch(searchName, rowName) || rowName.toLowerCase().includes(qLower)) {
-          const amt = parseFloat(row['Total'] || 0);
-          if (amt > 0) { ogSpend += amt; ogSessions++; }
-        }
-      });
-    } catch(e) {}
-
-    const totalSpend = txSpend + ogSpend;
+    const foundAnything = txSessions > 0 || ogSessions > 0;
+    const clientName    = txFoundName || ogFoundName || q;
     const totalSessions = txSessions + ogSessions;
-    const pts = Math.floor(txSpend / 100) + Math.floor(ogSpend / 100);
-    const foundAnything = match || txSessions > 0 || ogSessions > 0;
+    const totalSpend    = txSpend + ogSpend;
+    const txPts         = Math.floor(txSpend / RATE);
+    const ogPts         = Math.floor(ogSpend / RATE);
+    const pts           = txPts + ogPts;
 
-    // NOT FOUND
+    const tier    = TIERS.find(t => pts >= t.min && pts <= t.max) || TIERS[0];
+    const next    = TIERS[TIERS.indexOf(tier) + 1];
+    const toNext  = next ? next.min - pts : 0;
+    const pct     = next ? Math.min(100, Math.round((pts - tier.min) / (next.min - tier.min) * 100)) : 100;
+
+    const tierColors = {Bronze:'#c8a070',Silver:'#8a96b0',Gold:'#c8a010',VIP:'#4a9082'};
+    const tierBgs    = {Bronze:'rgba(200,160,112,.15)',Silver:'rgba(138,150,176,.15)',Gold:'rgba(200,160,16,.15)',VIP:'rgba(74,144,130,.2)'};
+    const tc = tierColors[tier.name]||'#fff';
+    const tb = tierBgs[tier.name]||'rgba(255,255,255,.08)';
+
+    // ── NOT FOUND
     if (!foundAnything) {
       box.innerHTML = `
         <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.2);border-radius:16px;padding:1.5rem;text-align:center;">
           <div style="font-size:2rem;margin-bottom:.6rem;">🤔</div>
           <div style="font-size:1rem;color:#fff;font-weight:700;margin-bottom:.4rem;">We couldn't find "<span style="color:#ffd76e;">${q}</span>"</div>
-          <div style="font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.2rem;">
-            This could mean you're not enrolled yet, or the name you used is slightly different from what we have on file.
-          </div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.6);line-height:1.7;margin-bottom:1.2rem;">The name might be slightly different from what we have on file.</div>
           <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1rem;text-align:left;">
-            <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;">Try these tips 💡</div>
+            <div style="font-size:.78rem;font-weight:700;color:rgba(255,255,255,.5);text-transform:uppercase;letter-spacing:.08em;margin-bottom:.5rem;">Try these 💡</div>
             <div style="font-size:.83rem;color:rgba(255,255,255,.7);line-height:1.9;">
-              ✦ Use the name you gave us at the studio<br>
-              ✦ Try your first name and last name only<br>
+              ✦ Use the exact name you gave us at the studio<br>
+              ✦ Try first name + last name only<br>
               ✦ Try a different spelling
             </div>
           </div>
-          <div style="font-size:.85rem;color:rgba(255,255,255,.65);margin-bottom:1rem;">Still can't find it? No worries — we'll look it up for you!</div>
+          <div style="font-size:.85rem;color:rgba(255,255,255,.65);margin-bottom:1rem;">Still can't find it? Message us and we'll check for you!</div>
           <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
             <a href="https://www.facebook.com/clicklounge.studio" target="_blank"
               style="background:#1877f2;color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.7rem 1.2rem;border-radius:100px;text-decoration:none;">
@@ -2069,101 +2076,83 @@ async function checkMyPoints() {
       return;
     }
 
-    // FOUND — build result card
-    const clientName = match ? (match['FB Name'] || match['fbName'] || q) : q;
-    const tier = TIERS.find(t => pts >= t.min && pts <= t.max) || TIERS[0];
-    const nextTier = TIERS[TIERS.indexOf(tier) + 1];
-    const ptsToNext = nextTier ? nextTier.min - pts : 0;
-    const progressPct = nextTier ? Math.min(100, Math.round((pts - tier.min) / (nextTier.min - tier.min) * 100)) : 100;
-
-    // What can they redeem?
+    // ── FOUND
     const redeemable = PERKS.filter(p => pts >= p.cost && !p.tier);
-    const locked = PERKS.filter(p => pts < p.cost || p.tier);
-
-    const tierColors = { Bronze:'#c8a070', Silver:'#8a96b0', Gold:'#c8a010', VIP:'#4a9082' };
-    const tierBgs = { Bronze:'rgba(200,160,112,.15)', Silver:'rgba(138,150,176,.15)', Gold:'rgba(200,160,16,.15)', VIP:'rgba(74,144,130,.2)' };
-    const tc = tierColors[tier.name] || '#fff';
-    const tb = tierBgs[tier.name] || 'rgba(255,255,255,.08)';
 
     box.innerHTML = `
       <div style="background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.15);border-radius:20px;overflow:hidden;margin-top:.5rem;">
 
         <!-- Header -->
-        <div style="background:rgba(255,255,255,.08);padding:1.3rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.08);">
+        <div style="background:rgba(255,255,255,.08);padding:1.2rem 1.4rem;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:.8rem;border-bottom:1px solid rgba(255,255,255,.08);">
           <div>
-            <div style="font-size:.7rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;">ClickCard Member</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.2rem;">ClickCard Member</div>
             <div style="font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;">${clientName}</div>
           </div>
           <div style="background:${tb};border:1.5px solid ${tc};border-radius:100px;padding:.4rem 1.1rem;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;color:${tc};">${tier.emoji} ${tier.name}</div>
         </div>
 
-        <!-- Points big display -->
-        <div style="padding:1.4rem 1.4rem .8rem;text-align:center;">
-          <div style="font-size:.7rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.3rem;">Your Points Balance</div>
+        <!-- Points -->
+        <div style="padding:1.2rem 1.4rem .6rem;text-align:center;">
+          <div style="font-size:.68rem;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.12em;margin-bottom:.3rem;">Total Points Balance</div>
           <div style="font-family:'Space Mono',monospace;font-size:3rem;font-weight:700;color:#ffd76e;line-height:1;">${pts.toLocaleString()}</div>
-          <div style="font-size:.8rem;color:rgba(255,255,255,.5);margin-top:.2rem;">points</div>
+          <div style="font-size:.75rem;color:rgba(255,255,255,.4);margin-top:.3rem;">pts</div>
         </div>
 
-        <!-- Stats row -->
-        <div style="display:grid;grid-template-columns:1fr 1fr;gap:0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);">
-          <div style="padding:.9rem 1.2rem;text-align:center;border-right:1px solid rgba(255,255,255,.06);">
-            <div style="font-family:'Space Mono',monospace;font-size:1.1rem;color:#fff;">${totalSessions}</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.45);">total sessions</div>
+        <!-- Points breakdown — matches admin -->
+        <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:0;border-top:1px solid rgba(255,255,255,.06);border-bottom:1px solid rgba(255,255,255,.06);">
+          <div style="padding:.8rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.06);">
+            <div style="font-family:'Space Mono',monospace;font-size:1rem;color:#a8f0d8;font-weight:600;">+${txPts}</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:.15rem;">TX pts<br><span style="font-size:.65rem;">₱${txSpend.toLocaleString()}</span></div>
           </div>
-          <div style="padding:.9rem 1.2rem;text-align:center;">
-            <div style="font-family:'Space Mono',monospace;font-size:1.1rem;color:#fff;">₱${totalSpend.toLocaleString()}</div>
-            <div style="font-size:.72rem;color:rgba(255,255,255,.45);">total spent</div>
+          <div style="padding:.8rem .6rem;text-align:center;border-right:1px solid rgba(255,255,255,.06);">
+            <div style="font-family:'Space Mono',monospace;font-size:1rem;color:#f0c8a0;font-weight:600;">+${ogPts}</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:.15rem;">OG pts<br><span style="font-size:.65rem;">₱${ogSpend.toLocaleString()}</span></div>
+          </div>
+          <div style="padding:.8rem .6rem;text-align:center;">
+            <div style="font-family:'Space Mono',monospace;font-size:1rem;color:#fff;font-weight:600;">${totalSessions}</div>
+            <div style="font-size:.68rem;color:rgba(255,255,255,.4);margin-top:.15rem;">sessions<br><span style="font-size:.65rem;">${txSessions} tx · ${ogSessions} og</span></div>
           </div>
         </div>
 
-        <!-- Progress to next tier -->
-        ${nextTier ? `<div style="padding:1rem 1.4rem;">
-          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:.5rem;">
-            <span style="font-size:.78rem;color:rgba(255,255,255,.55);">Progress to ${nextTier.emoji} ${nextTier.name}</span>
-            <span style="font-family:'Space Mono',monospace;font-size:.75rem;color:rgba(255,255,255,.7);">${ptsToNext} pts to go</span>
+        <!-- Progress bar -->
+        ${next ? `<div style="padding:.9rem 1.4rem;">
+          <div style="display:flex;justify-content:space-between;font-size:.72rem;color:rgba(255,255,255,.5);margin-bottom:.4rem;">
+            <span>Progress to ${next.emoji} ${next.name}</span><span>${toNext} pts to go</span>
           </div>
-          <div style="background:rgba(255,255,255,.1);border-radius:100px;height:8px;overflow:hidden;">
-            <div style="background:linear-gradient(90deg,#ffd76e,#c8a010);height:100%;width:${progressPct}%;border-radius:100px;transition:width .5s;"></div>
+          <div style="background:rgba(255,255,255,.1);border-radius:100px;height:7px;overflow:hidden;">
+            <div style="background:linear-gradient(90deg,#ffd76e,#c8a010);height:100%;width:${pct}%;border-radius:100px;"></div>
           </div>
-        </div>` : `<div style="padding:1rem 1.4rem;background:rgba(74,144,130,.15);text-align:center;font-size:.82rem;color:rgba(255,255,255,.8);">💎 You're at the highest tier! You're amazing, thank you!</div>`}
+        </div>` : `<div style="padding:.8rem 1.4rem;background:rgba(74,144,130,.15);text-align:center;font-size:.82rem;color:rgba(255,255,255,.8);">💎 You're at the highest tier! Thank you for being a VIP! 🙏</div>`}
 
-        <!-- What you can redeem NOW -->
-        ${pts >= 30 ? `<div style="padding:1rem 1.4rem;border-top:1px solid rgba(255,255,255,.06);">
-          <div style="font-size:.72rem;font-weight:700;color:#ffd76e;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.8rem;">🎁 You can redeem NOW!</div>
-          <div style="display:flex;flex-wrap:wrap;gap:.5rem;">
-            ${redeemable.map(p=>`<div style="background:rgba(255,215,110,.12);border:1px solid rgba(255,215,110,.3);border-radius:10px;padding:.45rem .85rem;font-size:.78rem;color:#ffd76e;">${p.icon} ${p.name} <span style="opacity:.6;">(${p.cost} pts)</span></div>`).join('')}
+        <!-- Redeemable now -->
+        ${pts >= 30 ? `<div style="padding:.9rem 1.4rem;border-top:1px solid rgba(255,255,255,.06);">
+          <div style="font-size:.68rem;font-weight:700;color:#ffd76e;font-family:'Space Mono',monospace;text-transform:uppercase;letter-spacing:.1em;margin-bottom:.6rem;">🎁 You can redeem NOW!</div>
+          <div style="display:flex;flex-wrap:wrap;gap:.4rem;">
+            ${redeemable.map(p=>`<div style="background:rgba(255,215,110,.1);border:1px solid rgba(255,215,110,.25);border-radius:8px;padding:.35rem .75rem;font-size:.75rem;color:#ffd76e;">${p.icon} ${p.name} <span style="opacity:.55;">(${p.cost} pts)</span></div>`).join('')}
           </div>
-        </div>` : `<div style="padding:1rem 1.4rem;border-top:1px solid rgba(255,255,255,.06);">
-          <div style="font-size:.78rem;color:rgba(255,255,255,.5);line-height:1.7;">🎯 Earn <strong style="color:#ffd76e;">${30 - pts} more points</strong> to start redeeming your first reward — a free outfit change!</div>
+        </div>` : `<div style="padding:.9rem 1.4rem;border-top:1px solid rgba(255,255,255,.06);">
+          <div style="font-size:.78rem;color:rgba(255,255,255,.5);">🎯 Earn <strong style="color:#ffd76e;">${30 - pts} more points</strong> to unlock your first reward — a free outfit change!</div>
         </div>`}
 
-        <!-- Book CTA -->
-        <div style="padding:1.2rem 1.4rem;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.06);text-align:center;">
-          <div style="font-size:.82rem;color:rgba(255,255,255,.55);margin-bottom:.8rem;">Every session earns more points. Book now to level up! 🚀</div>
+        <!-- CTA -->
+        <div style="padding:1rem 1.4rem;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.06);text-align:center;">
+          <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.7rem;">Every session earns more points 🚀</div>
           <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
             onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
-            style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.6rem;border-radius:100px;text-decoration:none;">
+            style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
             📸 Book a Session →
           </a>
         </div>
 
       </div>`;
 
-    // OG sales note
-    if (ogSessions > 0) {
-      box.innerHTML += `<div style="margin-top:.6rem;font-size:.75rem;color:rgba(255,255,255,.35);text-align:center;">
-        Includes ${ogSessions} visit${ogSessions>1?'s':''} from our 2023 records (₱${ogSpend.toLocaleString()})
-      </div>`;
-    }
-
   } catch(err) {
     box.innerHTML = `
       <div style="background:rgba(255,255,255,.08);border:1px solid rgba(255,255,255,.15);border-radius:16px;padding:1.5rem;text-align:center;">
         <div style="font-size:2rem;margin-bottom:.5rem;">😕</div>
-        <div style="font-size:.9rem;color:#fff;font-weight:700;margin-bottom:.4rem;">Oops! Something went wrong.</div>
+        <div style="font-size:.9rem;color:#fff;font-weight:700;margin-bottom:.4rem;">Something went wrong.</div>
         <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.7;margin-bottom:1rem;">
-          We couldn't connect to our database right now. Don't worry — your points are safe!<br>
-          Please message us on Facebook and we'll check your balance right away. 😊
+          Can't reach the database right now. Your points are safe!<br>Message us on Facebook and we'll check your balance.
         </div>
         <a href="https://www.facebook.com/clicklounge.studio" target="_blank"
           style="display:inline-block;background:#1877f2;color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.7rem 1.3rem;border-radius:100px;text-decoration:none;">
