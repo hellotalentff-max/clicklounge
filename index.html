@@ -1816,6 +1816,28 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 </div>
 
 </div>
+<!-- ══ CLICKCARD MODAL ══ -->
+<div id="clickcard-overlay" onclick="closeClickCard(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:800;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;-webkit-overflow-scrolling:touch;">
+  <div style="position:relative;max-width:620px;width:100%;margin:auto;text-align:center;">
+    <button onclick="closeClickCard(null,true)" style="position:absolute;top:-14px;right:-14px;background:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:10;display:flex;align-items:center;justify-content:center;">✕</button>
+    <div style="background:rgba(255,255,255,.06);border-radius:20px;padding:1.5rem 1.2rem;">
+      <div style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.4rem;">Your Digital</div>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;">ClickCard 🪪</h2>
+      <!-- Canvas card -->
+      <canvas id="clickcard-canvas" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
+      <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+        <button onclick="downloadClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
+          💾 Save Card to Phone
+        </button>
+        <button onclick="shareClickCard()" id="share-btn" style="background:rgba(255,255,255,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
+          📤 Share
+        </button>
+      </div>
+      <p style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.8rem;">Show this card to our staff at the start of every session to access your perks!</p>
+    </div>
+  </div>
+</div>
+
 <!-- FOOTER -->
 <footer>
   <div style="margin-bottom:.8rem;"><img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="width:120px;height:auto;filter:brightness(0) invert(1);opacity:.85;"></div>
@@ -2137,11 +2159,17 @@ async function checkMyPoints() {
         <!-- CTA -->
         <div style="padding:1rem 1.4rem;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.06);text-align:center;">
           <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.7rem;">Every session earns more points 🚀</div>
-          <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
-            onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
-            style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
-            📸 Book a Session →
-          </a>
+          <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
+            <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
+              onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
+              style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
+              📸 Book a Session →
+            </a>
+            <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts})"
+              style="background:var(--green-dark);color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
+              🪪 Create My ClickCard →
+            </button>
+          </div>
         </div>
 
       </div>`;
@@ -2281,6 +2309,258 @@ function restoreGift() {
   } catch(e) {}
 }
 document.addEventListener('DOMContentLoaded', restoreGift);
+
+// ── CLICKCARD GENERATOR ──
+let _cardClientName = '';
+let _cardDataURL = null;
+
+// Generate a stable unique ID from name (same name always gets same ID)
+function genCardID(name) {
+  let hash = 0;
+  const str = name.toLowerCase().trim();
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  const abs = Math.abs(hash).toString(36).toUpperCase().padStart(6,'0');
+  return 'CLC-' + abs.slice(0,3) + '-' + abs.slice(3,6);
+}
+
+function getMemberYear(name) {
+  // Stable year based on name hash — between 2022 and 2024
+  let h = 0;
+  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
+  return 2022 + (Math.abs(h) % 3);
+}
+
+function generateClickCard(clientName, tierName, tierEmoji, pts) {
+  _cardClientName = clientName;
+  document.getElementById('clickcard-overlay').style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  const canvas  = document.getElementById('clickcard-canvas');
+  const ctx     = canvas.getContext('2d');
+  const W = 1000, H = 620;
+  canvas.width  = W;
+  canvas.height = H;
+
+  // Tier colors
+  const tierPalette = {
+    Bronze:{ accent:'#c8a070', accent2:'#8a5a2a' },
+    Silver:{ accent:'#8a96b0', accent2:'#4a5068' },
+    Gold:  { accent:'#c8a010', accent2:'#6a4a00' },
+    VIP:   { accent:'#4a9082', accent2:'#1a5040' },
+  };
+  const pal = tierPalette[tierName] || tierPalette.Bronze;
+
+  const cardID   = genCardID(clientName);
+  const memYear  = getMemberYear(clientName);
+
+  // Load card template image and draw on top
+  const img = new Image();
+  img.onload = () => {
+    // Draw base template
+    ctx.drawImage(img, 0, 0, W, H);
+
+    // Tier accent overlay (top-right corner tint)
+    if (tierName !== 'Bronze') {
+      ctx.save();
+      ctx.globalAlpha = 0.18;
+      ctx.fillStyle = pal.accent;
+      ctx.beginPath();
+      ctx.moveTo(W * 0.6, 0);
+      ctx.lineTo(W, 0);
+      ctx.lineTo(W, H * 0.5);
+      ctx.quadraticCurveTo(W * 0.85, H * 0.3, W * 0.6, 0);
+      ctx.fill();
+      ctx.restore();
+    }
+
+    // ── TIER BADGE (top right) ──
+    const badgeX = W - 30;
+    const badgeY = 32;
+    // Badge pill background
+    ctx.save();
+    ctx.fillStyle = pal.accent;
+    roundRect(ctx, badgeX - 130, badgeY - 24, 130, 42, 21);
+    ctx.fill();
+    // Badge text
+    ctx.fillStyle = '#fff';
+    ctx.font = `bold 20px "DM Sans", Arial`;
+    ctx.textAlign = 'right';
+    ctx.fillText(`${tierEmoji} ${tierName.toUpperCase()}`, badgeX - 12, badgeY + 8);
+    ctx.restore();
+
+    // ── POINTS (center right area) ──
+    ctx.save();
+    ctx.textAlign = 'right';
+    // Points label
+    ctx.font = `500 18px "DM Sans", Arial`;
+    ctx.fillStyle = '#1e3d35';
+    ctx.globalAlpha = 0.55;
+    ctx.fillText('POINTS BALANCE', W - 42, H * 0.44);
+    ctx.globalAlpha = 1;
+    // Points number
+    ctx.font = `bold 62px "DM Mono", "Courier New", monospace`;
+    ctx.fillStyle = pal.accent2;
+    ctx.fillText(pts.toLocaleString(), W - 42, H * 0.44 + 68);
+    ctx.restore();
+
+    // ── CLIENT NAME (bottom dark bar - left side, replacing THANK YOU) ──
+    // Clear the THANK YOU area with the dark bar color
+    ctx.save();
+    ctx.fillStyle = '#1e3d35';
+    ctx.fillRect(0, H * 0.735, W * 0.62, H * 0.265);
+    // Heart icon
+    ctx.font = '26px Arial';
+    ctx.fillStyle = pal.accent;
+    ctx.fillText('♥', 36, H * 0.83);
+    // Client name
+    ctx.font = `bold 24px "DM Sans", Arial`;
+    ctx.fillStyle = pal.accent;
+    ctx.textAlign = 'left';
+    // Truncate name if too long
+    let displayName = clientName;
+    if (ctx.measureText(displayName).width > W * 0.45) {
+      const parts = clientName.split(' ');
+      displayName = parts[0] + (parts[1] ? ' ' + parts[1].charAt(0) + '.' : '');
+    }
+    ctx.fillText(displayName, 72, H * 0.83);
+    // Card ID below name
+    ctx.font = `400 17px "DM Mono", "Courier New", monospace`;
+    ctx.fillStyle = 'rgba(255,255,255,0.55)';
+    ctx.fillText(cardID, 72, H * 0.83 + 28);
+    ctx.restore();
+
+    // ── MEMBER SINCE (bottom dark bar - right of divider) ──
+    ctx.save();
+    ctx.fillStyle = '#1e3d35';
+    ctx.fillRect(W * 0.62, H * 0.735, W * 0.22, H * 0.265);
+    ctx.font = `400 15px "DM Sans", Arial`;
+    ctx.fillStyle = 'rgba(255,255,255,0.65)';
+    ctx.textAlign = 'left';
+    ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
+    ctx.font = `bold 28px "DM Mono", "Courier New", monospace`;
+    ctx.fillStyle = pal.accent;
+    ctx.fillText(memYear, W * 0.63, H * 0.845);
+    ctx.restore();
+
+    // ── QR-LIKE UNIQUE PATTERN (small, decorative) ──
+    // Replace NFC icon area with card ID displayed as mini dots pattern
+    ctx.save();
+    ctx.fillStyle = '#f4f0e8';
+    roundRect(ctx, W - 108, H * 0.735 + 12, 82, 72, 12);
+    ctx.fill();
+    ctx.font = `bold 11px "DM Mono", "Courier New", monospace`;
+    ctx.fillStyle = '#1e3d35';
+    ctx.textAlign = 'center';
+    const idParts = cardID.split('-');
+    ctx.fillText(idParts[0], W - 67, H * 0.735 + 34);
+    ctx.fillText(idParts[1], W - 67, H * 0.735 + 50);
+    ctx.fillText(idParts[2], W - 67, H * 0.735 + 66);
+    ctx.restore();
+
+    _cardDataURL = canvas.toDataURL('image/png');
+  };
+  img.onerror = () => {
+    // Fallback: draw card from scratch if template fails to load
+    drawCardFallback(ctx, W, H, clientName, tierName, tierEmoji, pts, pal, genCardID(clientName), getMemberYear(clientName));
+    _cardDataURL = canvas.toDataURL('image/png');
+  };
+  img.src = 'clickcard_template.png';
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x + r, y);
+  ctx.lineTo(x + w - r, y);
+  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
+  ctx.lineTo(x + w, y + h - r);
+  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
+  ctx.lineTo(x + r, y + h);
+  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
+  ctx.lineTo(x, y + r);
+  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.closePath();
+}
+
+function drawCardFallback(ctx, W, H, name, tier, emoji, pts, pal, cardID, year) {
+  // Cream background
+  ctx.fillStyle = '#f5ede0';
+  roundRect(ctx, 0, 0, W, H, 32); ctx.fill();
+  // Teal top-right blob
+  ctx.fillStyle = '#1e3d35';
+  ctx.beginPath(); ctx.arc(W, 0, 240, 0, Math.PI/2); ctx.fill();
+  // Rust bottom-left blob
+  ctx.fillStyle = '#c8a070';
+  ctx.beginPath(); ctx.arc(0, H, 200, -Math.PI/2, 0); ctx.fill();
+  // Studio name
+  ctx.fillStyle = '#1e3d35';
+  ctx.font = 'bold 52px serif'; ctx.textAlign = 'left';
+  ctx.fillText('Click Lounge', 60, 130);
+  ctx.font = '500 24px sans-serif'; ctx.fillStyle = '#c8a070';
+  ctx.fillText('— STUDIO —', 64, 168);
+  // CLICKCARD label
+  ctx.font = 'bold 48px sans-serif'; ctx.fillStyle = '#1e3d35';
+  ctx.textAlign = 'right'; ctx.fillText('CLICKCARD', W - 44, H * 0.46);
+  ctx.font = '500 18px sans-serif'; ctx.fillStyle = '#c8a070';
+  ctx.fillText('— REWARDS PROGRAM —', W - 44, H * 0.46 + 32);
+  // Tier badge
+  ctx.fillStyle = pal.accent;
+  roundRect(ctx, W - 194, 24, 170, 48, 24); ctx.fill();
+  ctx.fillStyle = '#fff'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
+  ctx.fillText(`${emoji} ${tier.toUpperCase()}`, W - 109, 56);
+  // Points
+  ctx.fillStyle = pal.accent2; ctx.font = 'bold 60px monospace'; ctx.textAlign = 'right';
+  ctx.fillText(pts.toLocaleString(), W - 44, H * 0.46 + 90);
+  ctx.fillStyle = '#1e3d35'; ctx.globalAlpha = 0.5; ctx.font = '500 16px sans-serif';
+  ctx.fillText('POINTS BALANCE', W - 44, H * 0.46 + 110);
+  ctx.globalAlpha = 1;
+  // Dark bottom bar
+  ctx.fillStyle = '#1e3d35';
+  ctx.fillRect(0, H * 0.735, W, H * 0.265);
+  // Name
+  ctx.fillStyle = pal.accent; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'left';
+  ctx.fillText(name, 60, H * 0.83);
+  ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.font = '400 16px monospace';
+  ctx.fillText(cardID, 60, H * 0.83 + 28);
+  // Member since
+  ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '400 14px sans-serif';
+  ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
+  ctx.fillStyle = pal.accent; ctx.font = 'bold 28px monospace';
+  ctx.fillText(year, W * 0.63, H * 0.845);
+}
+
+function closeClickCard(event, force=false) {
+  if (force || (event && event.target === document.getElementById('clickcard-overlay'))) {
+    document.getElementById('clickcard-overlay').style.display = 'none';
+    document.body.style.overflow = '';
+  }
+}
+
+function downloadClickCard() {
+  if (!_cardDataURL) return;
+  const a = document.createElement('a');
+  a.href = _cardDataURL;
+  a.download = `ClickCard-${_cardClientName.replace(/\s+/g,'_')}.png`;
+  a.click();
+}
+
+async function shareClickCard() {
+  if (!_cardDataURL) return;
+  if (navigator.share && navigator.canShare) {
+    try {
+      const blob = await (await fetch(_cardDataURL)).blob();
+      const file = new File([blob], `ClickCard-${_cardClientName}.png`, {type:'image/png'});
+      if (navigator.canShare({files:[file]})) {
+        await navigator.share({ files:[file], title:'My CLS ClickCard', text:'My Click Lounge Studio ClickCard Rewards Card!' });
+        return;
+      }
+    } catch(e) {}
+  }
+  // Fallback — open in new tab
+  window.open(_cardDataURL, '_blank');
+}
 
 // ── T&C MODAL ──
 function openTnC() {
