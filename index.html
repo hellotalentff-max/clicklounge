@@ -2166,7 +2166,7 @@ async function checkMyPoints() {
               📸 Book a Session →
             </a>
             <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts})"
-              style="background:var(--green-dark);color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
+              style="background:linear-gradient(135deg,#2d6e5f,#1a3d35);color:#ffd76e;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:1.5px solid rgba(255,215,110,.3);cursor:pointer;animation:promoPulseBtn 2s ease-in-out infinite;">
               🪪 Create My ClickCard →
             </button>
           </div>
@@ -2220,6 +2220,192 @@ function toggleFaq(i) {
   const open = body.style.display === 'block';
   body.style.display = open ? 'none' : 'block';
   icon.textContent = open ? '+' : '−';
+}
+
+// ── CLICKCARD GENERATOR ──
+function genCardID(name) {
+  // Unique card ID: CLS-[initials][year][random6]
+  const initials = name.trim().split(/\s+/).map(w=>w[0].toUpperCase()).join('').slice(0,3).padEnd(2,'X');
+  const year = new Date().getFullYear().toString().slice(-2);
+  const rand = Math.random().toString(36).slice(2,8).toUpperCase();
+  return `CLS-${initials}${year}-${rand}`;
+}
+
+function generateClickCard(name, tierName, tierEmoji, pts) {
+  // Persist card ID in sessionStorage so same client gets same ID per session
+  const storageKey = 'cls_card_' + name.toLowerCase().replace(/\s+/g,'_');
+  let cardID = sessionStorage.getItem(storageKey);
+  if (!cardID) {
+    cardID = genCardID(name);
+    sessionStorage.setItem(storageKey, cardID);
+  }
+
+  const memberYear = new Date().getFullYear();
+  const tierColors = {
+    Bronze:{ bg:'#f7efe4', accent:'#c8a070', dark:'#6b3e10', badge:'🥉' },
+    Silver:{ bg:'#edf0f6', accent:'#8a96b0', dark:'#2a3560', badge:'🥈' },
+    Gold:  { bg:'#fffbe6', accent:'#c8a010', dark:'#6a4a00', badge:'🥇' },
+    VIP:   { bg:'#1a2a38', accent:'#4a9082', dark:'#fff',    badge:'💎' },
+  };
+  const tc = tierColors[tierName] || tierColors.Bronze;
+  const isVIP = tierName === 'VIP';
+
+  // Create overlay
+  let overlay = document.getElementById('clickcard-overlay');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.id = 'clickcard-overlay';
+    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;';
+    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.style.display='none'; });
+    document.body.appendChild(overlay);
+  }
+
+  overlay.style.display = 'flex';
+  overlay.innerHTML = `
+    <div style="max-width:480px;width:100%;text-align:center;">
+      <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1rem;">Your Digital ClickCard</div>
+
+      <!-- THE CARD -->
+      <div id="cls-card" style="
+        background:${isVIP?'linear-gradient(135deg,#1a2a38,#253545)':'#f5f0e8'};
+        border-radius:18px;
+        overflow:hidden;
+        position:relative;
+        box-shadow:0 24px 60px rgba(0,0,0,.5);
+        aspect-ratio:1.586;
+        width:100%;
+        font-family:'DM Sans',sans-serif;
+      ">
+        <!-- BG organic shapes -->
+        <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 480 302" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+          <!-- top right teal blob -->
+          <path d="M340 0 Q420 0 480 60 L480 0 Z" fill="${isVIP?'#4a9082':'#2d6e5f'}" opacity="${isVIP?'.5':'.9'}"/>
+          <path d="M360 0 Q460 20 480 120 L480 0 Z" fill="${isVIP?'#2d6e5f':'#1a3d35'}" opacity=".6"/>
+          <!-- bottom left warm blob -->
+          <path d="M0 200 Q60 160 140 200 Q180 220 160 302 L0 302 Z" fill="${isVIP?'rgba(74,144,130,.3)':'#c8a070'}" opacity="${isVIP?'1':'.7'}"/>
+          <path d="M0 240 Q80 200 120 260 Q140 280 100 302 L0 302 Z" fill="${isVIP?'rgba(45,110,95,.4)':'#b08050'}" opacity=".6"/>
+          <!-- subtle wave lines -->
+          <path d="M100 180 Q200 140 300 180 Q380 210 480 160" fill="none" stroke="${isVIP?'rgba(74,144,130,.3)':'rgba(200,160,112,.4)'}" stroke-width="1.2"/>
+          <path d="M0 220 Q120 190 220 220 Q320 250 480 200" fill="none" stroke="${isVIP?'rgba(74,144,130,.2)':'rgba(200,160,112,.25)'}" stroke-width="1"/>
+        </svg>
+
+        <!-- DARK FOOTER BAND -->
+        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;background:${isVIP?'rgba(255,255,255,.05)':'#1e3d35'};"></div>
+
+        <!-- LOGO AREA top-left -->
+        <div style="position:absolute;top:12%;left:7%;z-index:2;">
+          <!-- Camera icon SVG -->
+          <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="8" width="32" height="18" rx="3" stroke="#c8a070" stroke-width="2"/>
+            <circle cx="18" cy="17" r="5" stroke="#c8a070" stroke-width="2"/>
+            <path d="M12 8 L14 4 H22 L24 8" stroke="#c8a070" stroke-width="1.8"/>
+            <!-- rainbow arc -->
+            <path d="M8 17 Q18 8 28 17" stroke="#2d6e5f" stroke-width="2" fill="none"/>
+          </svg>
+        </div>
+        <div style="position:absolute;top:11%;left:18%;z-index:2;line-height:1.15;">
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Click</div>
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Lounge</div>
+          <div style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.7)':'#2d6e5f'};margin-top:.1rem;">— STUDIO —</div>
+        </div>
+
+        <!-- TIER badge top-left corner of name area -->
+        <div style="position:absolute;top:11%;right:7%;z-index:2;text-align:right;">
+          <div style="font-size:1.4rem;">${tierEmoji}</div>
+          <div style="font-size:clamp(.45rem,1.5vw,.58rem);font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.1em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">${tierName.toUpperCase()}</div>
+        </div>
+
+        <!-- CLICKCARD label — center right -->
+        <div style="position:absolute;top:42%;right:7%;z-index:2;text-align:right;">
+          <div style="font-family:'Space Mono',monospace;font-size:clamp(.9rem,3.5vw,1.35rem);font-weight:700;letter-spacing:.12em;color:${isVIP?'#fff':'#1a3d35'};">CLICKCARD</div>
+          <div style="font-size:clamp(.38rem,1.3vw,.55rem);letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">
+            <span style="color:#c8a070;">——</span> REWARDS PROGRAM <span style="color:#c8a070;">——</span>
+          </div>
+        </div>
+
+        <!-- POINTS chip -->
+        <div style="position:absolute;top:57%;right:7%;z-index:2;text-align:right;">
+          <div style="background:rgba(196,154,26,.2);border:1px solid rgba(196,154,26,.4);border-radius:100px;padding:.15rem .6rem;display:inline-block;">
+            <span style="font-family:'Space Mono',monospace;font-size:clamp(.55rem,2vw,.75rem);font-weight:700;color:#c8a070;">${pts.toLocaleString()} pts</span>
+          </div>
+        </div>
+
+        <!-- FOOTER band content -->
+        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;display:flex;align-items:center;padding:0 5%;z-index:2;">
+          <!-- Left: thank you -->
+          <div style="flex:1;">
+            <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.15rem;">
+              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10.5 C6 10.5 1 7 1 4 C1 2.3 2.3 1 4 1 C4.9 1 5.7 1.4 6 2 C6.3 1.4 7.1 1 8 1 C9.7 1 11 2.3 11 4 C11 7 6 10.5 6 10.5Z" stroke="#c8a070" stroke-width="1.2" fill="none"/></svg>
+              <span style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.1em;color:#c8a070;text-transform:uppercase;">Thank You</span>
+            </div>
+            <div style="font-size:clamp(.4rem,1.3vw,.55rem);color:rgba(255,255,255,.6);letter-spacing:.03em;">for being part of our studio family!</div>
+          </div>
+          <!-- Divider -->
+          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
+          <!-- Member since -->
+          <div style="text-align:center;min-width:60px;">
+            <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.1rem;">Member Since</div>
+            <div style="font-family:'Space Mono',monospace;font-size:clamp(.6rem,2.2vw,.9rem);font-weight:700;color:#c8a070;">${memberYear}</div>
+          </div>
+          <!-- Divider -->
+          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
+          <!-- NFC chip icon -->
+          <div style="background:rgba(245,240,232,.12);border-radius:6px;padding:.3rem .4rem;display:flex;align-items:center;justify-content:center;">
+            <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><path d="M10 1 C14 1 17 4.5 17 8 C17 11.5 14 15 10 15" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 3.5 C12.8 3.5 15 5.5 15 8 C15 10.5 12.8 12.5 10 12.5" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 6 C11.7 6 13 6.9 13 8 C13 9.1 11.7 10 10 10" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/></svg>
+          </div>
+        </div>
+
+        <!-- CLIENT NAME — bottom of main area, above footer -->
+        <div style="position:absolute;bottom:30%;left:7%;z-index:2;">
+          <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;">Cardholder</div>
+          <div style="font-family:'Playfair Display',serif;font-size:clamp(.7rem,2.5vw,1rem);color:#fff;font-weight:600;">${name}</div>
+        </div>
+
+        <!-- CARD ID — very bottom of footer left -->
+        <div style="position:absolute;bottom:2%;left:7%;z-index:3;">
+          <div style="font-family:'Space Mono',monospace;font-size:clamp(.3rem,.95vw,.42rem);color:rgba(255,255,255,.3);letter-spacing:.08em;">${cardID}</div>
+        </div>
+      </div>
+
+      <!-- Actions -->
+      <div style="margin-top:1.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
+        <button onclick="saveClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:none;cursor:pointer;">
+          📥 Save Card
+        </button>
+        <button onclick="shareClickCard('${name}','${tierName}',${pts},'${cardID}')" style="background:rgba(255,255,255,.1);color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
+          📤 Share
+        </button>
+        <button onclick="document.getElementById('clickcard-overlay').style.display='none'" style="background:transparent;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;font-size:.72rem;padding:.65rem 1rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);cursor:pointer;">
+          Close
+        </button>
+      </div>
+      <p style="color:rgba(255,255,255,.3);font-size:.72rem;margin-top:.8rem;line-height:1.6;">Screenshot or save this card. Show it to our staff on your next visit to claim your tier perks!</p>
+    </div>`;
+}
+
+function saveClickCard() {
+  const card = document.getElementById('cls-card');
+  if (!card) return;
+  // Use html2canvas if available, otherwise guide to screenshot
+  if (typeof html2canvas !== 'undefined') {
+    html2canvas(card, { scale:3, useCORS:true, backgroundColor:null }).then(canvas => {
+      const a = document.createElement('a');
+      a.download = 'my-clickcard.png';
+      a.href = canvas.toDataURL('image/png');
+      a.click();
+    });
+  } else {
+    alert('📸 To save your card: take a screenshot of this screen!\n\nOn phone: press Volume Down + Power button\nOn desktop: press Print Screen or use Snipping Tool');
+  }
+}
+
+function shareClickCard(name, tier, pts, cardID) {
+  const text = `🎉 I'm a ${tier} member of Click Lounge Studio's ClickCard Rewards Program!\n\n💳 Card: ${cardID}\n⭐ Points: ${pts}\n\nBook your session at: https://hellotalentff-max.github.io/clicklounge_booking/`;
+  if (navigator.share) {
+    navigator.share({ title:'My ClickCard — Click Lounge Studio', text }).catch(()=>{});
+  } else if (navigator.clipboard) {
+    navigator.clipboard.writeText(text).then(()=>alert('Card details copied to clipboard! Paste it anywhere to share.'));
+  }
 }
 
 // ── GIFT GENERATOR ──
