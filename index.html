@@ -2280,6 +2280,13 @@ function toggleFaq(i) {
 let _cardDataURL = null;
 let _cardClientName = '';
 
+// Preload the studio logo PNG so it's ready when drawPremiumCard is called
+(function preloadLogo() {
+  window._logoImg = new Image();
+  window._logoImg.crossOrigin = 'anonymous';
+  window._logoImg.src = 'logocl.png';
+})();
+
 // Generate a stable unique ID from name (same name always gets same ID)
 function genCardID(name, year) {
   let hash = 0;
@@ -2347,12 +2354,12 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
   const p   = CARD_PALETTES[tierName] || CARD_PALETTES.Bronze;
   const isVIP  = tierName === 'VIP';
   const isGold = tierName === 'Gold';
-  const R = 28; // corner radius
+  const R = 28;
 
   ctx.clearRect(0, 0, W, H);
 
-  // ── CLIPPING MASK (rounded rect) ──
-  roundRect(ctx, 0, 0, W, H, R); ctx.clip();
+  // ── CLIPPING MASK ──
+  roundRect(ctx, 0, 0, W, H, R); ctx.save(); ctx.clip();
 
   // ── BACKGROUND ──
   if (isVIP) {
@@ -2484,47 +2491,47 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
   ctx.beginPath(); ctx.moveTo(0, H*0.72); ctx.lineTo(W, H*0.72); ctx.stroke();
   ctx.restore();
 
-  // ── CAMERA LOGO (top left) ──
-  const cx = 44, cy = 52, cs = 38;
-  ctx.save(); ctx.strokeStyle = p.accent; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
-  // body
-  roundRect(ctx, cx-cs/2, cy-cs*0.38, cs, cs*0.72, 4); ctx.stroke();
-  // lens
-  ctx.beginPath(); ctx.arc(cx, cy+cs*0.05, cs*0.22, 0, Math.PI*2); ctx.stroke();
-  // viewfinder bump
-  ctx.beginPath(); ctx.moveTo(cx-cs*0.25,cy-cs*0.38); ctx.lineTo(cx-cs*0.15,cy-cs*0.55); ctx.lineTo(cx+cs*0.15,cy-cs*0.55); ctx.lineTo(cx+cs*0.25,cy-cs*0.38); ctx.stroke();
-  // rainbow arc inside lens
-  ctx.strokeStyle = isVIP?'#4a9082':isGold?'#c8a010':'#2d6e5f'; ctx.lineWidth = 2;
-  ctx.beginPath(); ctx.arc(cx, cy+cs*0.28, cs*0.36, Math.PI, 0); ctx.stroke();
-  ctx.restore();
-
-  // Studio name
-  ctx.save(); ctx.textAlign = 'left';
-  ctx.font = `bold ${Math.round(H*0.072)}px Georgia, serif`;
-  ctx.fillStyle = p.accent;
-  ctx.fillText('Click', cx + cs*0.7, cy - 4);
-  ctx.fillText('Lounge', cx + cs*0.7, cy + H*0.072 - 2);
-  ctx.font = `500 ${Math.round(H*0.03)}px Arial`;
-  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
-  ctx.globalAlpha = .75;
-  ctx.fillText('— STUDIO —', cx + cs*0.7 + 2, cy + H*0.072*2 - 2);
-  ctx.restore();
-
-  // ── TIER BADGE (top right) ──
-  const bW = 150, bH = 38, bX = W - 30 - bW, bY = 20;
+  // ── LOGO (top left) — draw PNG, fallback to text ──
   ctx.save();
+  const logoX = 28, logoY = 18, logoW = 130;
+  if (window._logoImg && window._logoImg.complete && window._logoImg.naturalWidth > 0) {
+    const ar = window._logoImg.naturalWidth / window._logoImg.naturalHeight;
+    const lH = logoW / ar;
+    ctx.drawImage(window._logoImg, logoX, logoY, logoW, lH);
+  } else {
+    // Simple text fallback
+    ctx.font = `bold ${Math.round(H*0.07)}px Georgia, serif`;
+    ctx.fillStyle = '#c8a070'; ctx.textAlign = 'left';
+    ctx.fillText('Click', logoX, logoY + H*0.09);
+    ctx.fillText('Lounge', logoX, logoY + H*0.09*2);
+    ctx.font = `500 ${Math.round(H*0.028)}px Arial`;
+    ctx.fillStyle = '#2d6e5f'; ctx.globalAlpha = .8;
+    ctx.fillText('— STUDIO —', logoX + 2, logoY + H*0.09*2 + H*0.036);
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+
+  // ── TIER BADGE (top right) — auto-size to fit text ──
+  ctx.save();
+  const badgeFontSize = Math.round(H * 0.038);
+  ctx.font = `bold ${badgeFontSize}px Arial`;
+  const badgeLabel = `${tierEmoji} ${tierName.toUpperCase()}`;
+  const badgeTW = ctx.measureText(badgeLabel).width;
+  const bPadX = 20, bPadY = 10;
+  const bW = badgeTW + bPadX * 2;
+  const bH = badgeFontSize + bPadY * 2;
+  const bX = W - 22 - bW, bY = 18;
   const badgeGrad = ctx.createLinearGradient(bX, bY, bX+bW, bY+bH);
   badgeGrad.addColorStop(0, p.badgeBg);
   badgeGrad.addColorStop(1, isVIP?'#1a5040':isGold?'#8a6000':p.badgeBg);
   ctx.fillStyle = badgeGrad;
   roundRect(ctx, bX, bY, bW, bH, bH/2); ctx.fill();
-  // subtle inner border
-  ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1;
+  ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1;
   roundRect(ctx, bX+0.5, bY+0.5, bW-1, bH-1, bH/2); ctx.stroke();
   ctx.fillStyle = p.badgeText;
-  ctx.font = `bold ${Math.round(H*0.043)}px Arial`;
-  ctx.textAlign = 'center';
-  ctx.fillText(`${tierEmoji} ${tierName.toUpperCase()}`, bX + bW/2, bY + bH*0.68);
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(badgeLabel, bX + bW/2, bY + bH/2);
+  ctx.textBaseline = 'alphabetic';
   ctx.restore();
 
   // ── CLICKCARD WORDMARK (center right) ──
@@ -2592,20 +2599,30 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
   });
   ctx.restore();
 
-  // ── CARDHOLDER NAME (above footer) ──
+  // ── CARDHOLDER NAME (above footer, fully within card body) ──
   ctx.save(); ctx.textAlign = 'left';
-  ctx.font = `400 ${Math.round(H*0.028)}px Arial`;
+  // "CARDHOLDER" label
+  ctx.font = `400 ${Math.round(H*0.026)}px Arial`;
   ctx.fillStyle = p.label;
-  ctx.fillText('CARDHOLDER', 40, H * 0.68);
-  ctx.font = `bold ${Math.round(H*0.052)}px Georgia, serif`;
+  ctx.fillText('CARDHOLDER', 40, H * 0.60);
+  // Name — sits clearly above the footer band (which starts at H*0.72)
+  const nameFontSize = Math.round(H * 0.06);
+  ctx.font = `bold ${nameFontSize}px Georgia, serif`;
   ctx.fillStyle = isGold||isVIP ? p.accent : '#1e3d35';
-  let dn = clientName;
-  ctx.font = `bold ${Math.round(H*0.052)}px Georgia, serif`;
-  if (ctx.measureText(dn).width > W*0.42) {
-    const parts = clientName.split(' ');
+  // Measure and truncate if needed
+  let dn = name || 'Cardholder';
+  const maxNameW = W * 0.44;
+  if (ctx.measureText(dn).width > maxNameW) {
+    const parts = dn.split(' ');
     dn = parts[0] + (parts[1] ? ' ' + parts[1][0] + '.' : '');
+    // Still too long? truncate further
+    while (ctx.measureText(dn + '…').width > maxNameW && dn.length > 3) {
+      dn = dn.slice(0, -1);
+    }
+    if (dn !== name.split(' ')[0] + (name.split(' ')[1] ? ' ' + name.split(' ')[1][0] + '.' : '')) dn += '…';
   }
-  ctx.fillText(dn, 40, H * 0.695 + H*0.052);
+  // Place name so its baseline is at H*0.695 — safely above H*0.72 footer
+  ctx.fillText(dn, 40, H * 0.695);
   ctx.restore();
 
   // ── CARD ID (bottom strip) ──
@@ -2615,7 +2632,8 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
   ctx.fillText(cardID, 40, H - 10);
   ctx.restore();
 
-  // ── BORDER GLOW (premium edge) ──
+  // ── BORDER GLOW (premium edge — drawn outside clip so it sits on top) ──
+  ctx.restore(); // end clip
   ctx.save();
   const edgeGlow = ctx.createLinearGradient(0,0,W,H);
   if (isVIP) {
@@ -2649,8 +2667,20 @@ function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
   const cardID  = genCardID(clientName, memberYear);
   const memYear = memberYear || new Date().getFullYear();
 
-  drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
-  _cardDataURL = canvas.toDataURL('image/png');
+  const doDraw = () => {
+    drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
+    _cardDataURL = canvas.toDataURL('image/png');
+  };
+
+  // If logo already loaded, draw immediately; otherwise wait for it
+  if (window._logoImg && window._logoImg.complete && window._logoImg.naturalWidth > 0) {
+    doDraw();
+  } else if (window._logoImg) {
+    window._logoImg.onload  = doDraw;
+    window._logoImg.onerror = doDraw; // draw with fallback
+  } else {
+    doDraw();
+  }
 }
 
 function roundRect(ctx, x, y, w, h, r) {
@@ -2673,27 +2703,42 @@ function closeClickCard() {
 }
 
 function downloadClickCard() {
-  if (!_cardDataURL) return;
+  // Always grab fresh from canvas in case _cardDataURL isn't set yet
+  const canvas = document.getElementById('clickcard-canvas');
+  const url = canvas.toDataURL('image/png');
   const a = document.createElement('a');
-  a.href = _cardDataURL;
-  a.download = `ClickCard-${_cardClientName.replace(/\s+/g,'_')}.png`;
+  a.href = url;
+  a.download = `ClickCard-${(_cardClientName||'card').replace(/\s+/g,'_')}.png`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
 }
 
 async function shareClickCard() {
-  if (!_cardDataURL) return;
-  if (navigator.share && navigator.canShare) {
-    try {
-      const blob = await (await fetch(_cardDataURL)).blob();
-      const file = new File([blob], `ClickCard-${_cardClientName}.png`, {type:'image/png'});
-      if (navigator.canShare({files:[file]})) {
-        await navigator.share({ files:[file], title:'My CLS ClickCard', text:'My Click Lounge Studio ClickCard Rewards Card!' });
+  const canvas = document.getElementById('clickcard-canvas');
+  canvas.toBlob(async blob => {
+    if (!blob) { alert('Card not ready yet — please wait a moment and try again.'); return; }
+    const fname = `ClickCard-${(_cardClientName||'card').replace(/\s+/g,'_')}.png`;
+    const file = new File([blob], fname, {type:'image/png'});
+    if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'My CLS ClickCard',
+          text: 'My Click Lounge Studio ClickCard Rewards Card! 📸'
+        });
         return;
-      }
-    } catch(e) {}
-  }
-  // Fallback — open in new tab
-  window.open(_cardDataURL, '_blank');
+      } catch(e) {}
+    }
+    // Fallback — open image in new tab for manual save
+    const url = URL.createObjectURL(blob);
+    const w = window.open();
+    w.document.write(`<html><body style="margin:0;background:#0e1a16;text-align:center;padding:2rem;">
+      <img src="${url}" style="max-width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+      <p style="color:rgba(255,255,255,.5);font-family:monospace;font-size:.85rem;margin-top:1rem;">
+        Long-press / right-click the image to save or share
+      </p></body></html>`);
+  }, 'image/png');
 }
 
 // ── T&C MODAL ──
