@@ -1826,7 +1826,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div style="background:rgba(255,255,255,.06);border-radius:20px;padding:1.5rem 1.2rem;">
       <div style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.4rem;">Your Digital</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;">ClickCard 🪪</h2>
-      <canvas id="clickcard-canvas" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
+      <canvas id="clickcard-canvas" width="1000" height="630" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
       <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
         <button onclick="downloadClickCard()" style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
           💾 Save Card
@@ -2659,6 +2659,7 @@ function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
   setTimeout(() => overlay.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
 
   const canvas = document.getElementById('clickcard-canvas');
+  if (!canvas) { console.error('No canvas found'); return; }
   const ctx    = canvas.getContext('2d');
   const W = 1000, H = 630;
   canvas.width = W; canvas.height = H;
@@ -2666,8 +2667,29 @@ function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
   const cardID  = genCardID(clientName, memberYear);
   const memYear = memberYear || new Date().getFullYear();
 
+  let drawn = false;
   const doDraw = () => {
-    drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
+    if (drawn) return;
+    drawn = true;
+    try {
+      drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
+    } catch(err) {
+      console.error('drawPremiumCard error:', err);
+      ctx.fillStyle = '#f5ede0';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#1e3d35';
+      ctx.font = 'bold 48px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('CLICKCARD', W/2, H*0.35);
+      ctx.font = 'bold 32px Georgia';
+      ctx.fillStyle = '#c8a070';
+      ctx.fillText(clientName, W/2, H*0.5);
+      ctx.font = 'bold 60px monospace';
+      ctx.fillText(pts + ' pts', W/2, H*0.65);
+      ctx.font = '20px Arial';
+      ctx.fillStyle = '#999';
+      ctx.fillText('Error: ' + err.message, W/2, H*0.8);
+    }
     _cardDataURL = canvas.toDataURL('image/png');
   };
 
@@ -2676,7 +2698,9 @@ function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
     doDraw();
   } else if (window._logoImg) {
     window._logoImg.onload  = doDraw;
-    window._logoImg.onerror = doDraw; // draw with fallback
+    window._logoImg.onerror = doDraw;
+    // Also set a timeout fallback in case logo never loads
+    setTimeout(doDraw, 2000);
   } else {
     doDraw();
   }
