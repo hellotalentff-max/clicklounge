@@ -1419,13 +1419,13 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 </div>
 
 <!-- ══ T&C FULLSCREEN MODAL ══ -->
-<div id="tnc-overlay" onclick="closeTnC()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:780px;width:92%;margin:1.5rem auto;position:relative;">
-    <button onclick="event.stopPropagation();closeTnC()"
-      style="position:sticky;top:.8rem;float:right;background:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:10;margin-bottom:.5rem;">✕</button>
+<div id="tnc-overlay" style="display:none;width:100%;background:rgba(0,0,0,.9);padding:1.5rem 1rem 3rem;">
+  <div style="max-width:780px;width:100%;margin:0 auto;">
+    <button onclick="closeTnC()"
+      style="display:block;margin:0 0 .8rem auto;background:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;line-height:36px;text-align:center;">✕</button>
     <img src="Terms_and_conditions.png" alt="Studio Terms and Conditions"
-      style="width:100%;border-radius:12px;display:block;clear:both;box-shadow:0 8px 40px rgba(0,0,0,.4);">
-    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;margin:.8rem 0 2rem;">Tap outside or ✕ to close</p>
+      style="width:100%;border-radius:12px;display:block;box-shadow:0 8px 40px rgba(0,0,0,.4);">
+    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;margin:.8rem 0 0;">Tap ✕ to close</p>
   </div>
 </div>
 <div id="loyalty" class="section">
@@ -1820,20 +1820,22 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
 </div>
 <!-- ══ CLICKCARD MODAL ══ -->
-<div id="clickcard-overlay" onclick="closeClickCard(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:800;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="position:relative;max-width:620px;width:100%;margin:auto;text-align:center;">
-    <button onclick="closeClickCard(null,true)" style="position:absolute;top:-14px;right:-14px;background:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:10;display:flex;align-items:center;justify-content:center;">✕</button>
+<div id="clickcard-overlay" style="display:none;width:100%;background:rgba(0,0,0,.88);padding:2rem 1rem 3rem;">
+  <div style="max-width:620px;margin:0 auto;text-align:center;">
+    <button onclick="closeClickCard()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;justify-content:center;">✕</button>
     <div style="background:rgba(255,255,255,.06);border-radius:20px;padding:1.5rem 1.2rem;">
       <div style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.4rem;">Your Digital</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;">ClickCard 🪪</h2>
-      <!-- Canvas card -->
       <canvas id="clickcard-canvas" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
       <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
-        <button onclick="downloadClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
-          💾 Save Card to Phone
+        <button onclick="downloadClickCard()" style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
+          💾 Save Card
         </button>
-        <button onclick="shareClickCard()" id="share-btn" style="background:rgba(255,255,255,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
+        <button onclick="shareClickCard()" style="background:rgba(255,255,255,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
           📤 Share
+        </button>
+        <button onclick="closeClickCard()" style="background:transparent;color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.7rem 1.2rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);cursor:pointer;">
+          Close
         </button>
       </div>
       <p style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.8rem;">Show this card to our staff at the start of every session to access your perks!</p>
@@ -2200,11 +2202,10 @@ async function checkMyPoints() {
           <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.7rem;">Every session earns more points 🚀</div>
           <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
             <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
-              onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
               style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
               📸 Book a Session →
             </a>
-            <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts},${firstVisitYear})"
+            <button id="make-card-btn"
               style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:none;cursor:pointer;box-shadow:0 2px 12px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;">
               🪪 Create My ClickCard →
             </button>
@@ -2212,6 +2213,20 @@ async function checkMyPoints() {
         </div>
 
       </div>`;
+
+    // Store card data globally so the button can access it without interpolation
+    window._pendingCard = { clientName, tierName: tier.name, tierEmoji: tier.emoji, pts, firstVisitYear };
+
+    // Wire the Create My ClickCard button safely after innerHTML is set
+    requestAnimationFrame(() => {
+      const btn = document.getElementById('make-card-btn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const d = window._pendingCard;
+          generateClickCard(d.clientName, d.tierName, d.tierEmoji, d.pts, d.firstVisitYear);
+        });
+      }
+    });
 
   } catch(err) {
     box.innerHTML = `
@@ -2262,6 +2277,8 @@ function toggleFaq(i) {
 }
 
 // ── CLICKCARD GENERATOR ──
+let _cardDataURL = null;
+let _cardClientName = '';
 
 // Generate a stable unique ID from name (same name always gets same ID)
 function genCardID(name, year) {
@@ -2621,8 +2638,8 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
 function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
   _cardClientName = clientName;
   const overlay = document.getElementById('clickcard-overlay');
-  overlay.style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+  overlay.style.display = 'block';
+  setTimeout(() => overlay.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
 
   const canvas = document.getElementById('clickcard-canvas');
   const ctx    = canvas.getContext('2d');
@@ -2648,161 +2665,11 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.quadraticCurveTo(x, y, x+r, y);
   ctx.closePath();
 }
-  _cardClientName = clientName;
-  document.getElementById('clickcard-overlay').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
-
-  const canvas  = document.getElementById('clickcard-canvas');
-  const ctx     = canvas.getContext('2d');
-  const W = 1000, H = 620;
-  canvas.width  = W;
-  canvas.height = H;
-
-  // Tier colors
-  const tierPalette = {
-    Bronze:{ accent:'#c8a070', accent2:'#8a5a2a' },
-    Silver:{ accent:'#8a96b0', accent2:'#4a5068' },
-    Gold:  { accent:'#c8a010', accent2:'#6a4a00' },
-    VIP:   { accent:'#4a9082', accent2:'#1a5040' },
-  };
-  const pal = tierPalette[tierName] || tierPalette.Bronze;
-
-  const cardID  = genCardID(clientName, memberYear);
-  const memYear = memberYear || new Date().getFullYear();
-
-  // Load card template image and draw on top
-  const img = new Image();
-  img.onload = () => {
-    // Draw base template
-    ctx.drawImage(img, 0, 0, W, H);
-
-    // Tier accent overlay (top-right corner tint)
-    if (tierName !== 'Bronze') {
-      ctx.save();
-      ctx.globalAlpha = 0.18;
-      ctx.fillStyle = pal.accent;
-      ctx.beginPath();
-      ctx.moveTo(W * 0.6, 0);
-      ctx.lineTo(W, 0);
-      ctx.lineTo(W, H * 0.5);
-      ctx.quadraticCurveTo(W * 0.85, H * 0.3, W * 0.6, 0);
-      ctx.fill();
-      ctx.restore();
-    }
-
-    // ── TIER BADGE (top right) ──
-    const badgeX = W - 30;
-    const badgeY = 32;
-    // Badge pill background
-    ctx.save();
-    ctx.fillStyle = pal.accent;
-    roundRect(ctx, badgeX - 130, badgeY - 24, 130, 42, 21);
-    ctx.fill();
-    // Badge text
-    ctx.fillStyle = '#fff';
-    ctx.font = `bold 20px "DM Sans", Arial`;
-    ctx.textAlign = 'right';
-    ctx.fillText(`${tierEmoji} ${tierName.toUpperCase()}`, badgeX - 12, badgeY + 8);
-    ctx.restore();
-
-    // ── POINTS (center right area) ──
-    ctx.save();
-    ctx.textAlign = 'right';
-    // Points label
-    ctx.font = `500 18px "DM Sans", Arial`;
-    ctx.fillStyle = '#1e3d35';
-    ctx.globalAlpha = 0.55;
-    ctx.fillText('POINTS BALANCE', W - 42, H * 0.44);
-    ctx.globalAlpha = 1;
-    // Points number
-    ctx.font = `bold 62px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = pal.accent2;
-    ctx.fillText(pts.toLocaleString(), W - 42, H * 0.44 + 68);
-    ctx.restore();
-
-    // ── CLIENT NAME (bottom dark bar - left side, replacing THANK YOU) ──
-    // Clear the THANK YOU area with the dark bar color
-    ctx.save();
-    ctx.fillStyle = '#1e3d35';
-    ctx.fillRect(0, H * 0.735, W * 0.62, H * 0.265);
-    // Heart icon
-    ctx.font = '26px Arial';
-    ctx.fillStyle = pal.accent;
-    ctx.fillText('♥', 36, H * 0.83);
-    // Client name
-    ctx.font = `bold 24px "DM Sans", Arial`;
-    ctx.fillStyle = pal.accent;
-    ctx.textAlign = 'left';
-    // Truncate name if too long
-    let displayName = clientName;
-    if (ctx.measureText(displayName).width > W * 0.45) {
-      const parts = clientName.split(' ');
-      displayName = parts[0] + (parts[1] ? ' ' + parts[1].charAt(0) + '.' : '');
-    }
-    ctx.fillText(displayName, 72, H * 0.83);
-    // Card ID below name
-    ctx.font = `400 17px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.fillText(cardID, 72, H * 0.83 + 28);
-    ctx.restore();
-
-    // ── MEMBER SINCE (bottom dark bar - right of divider) ──
-    ctx.save();
-    ctx.fillStyle = '#1e3d35';
-    ctx.fillRect(W * 0.62, H * 0.735, W * 0.22, H * 0.265);
-    ctx.font = `400 15px "DM Sans", Arial`;
-    ctx.fillStyle = 'rgba(255,255,255,0.65)';
-    ctx.textAlign = 'left';
-    ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
-    ctx.font = `bold 28px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = pal.accent;
-    ctx.fillText(memYear, W * 0.63, H * 0.845);
-    ctx.restore();
-
-    // ── QR-LIKE UNIQUE PATTERN (small, decorative) ──
-    // Replace NFC icon area with card ID displayed as mini dots pattern
-    ctx.save();
-    ctx.fillStyle = '#f4f0e8';
-    roundRect(ctx, W - 108, H * 0.735 + 12, 82, 72, 12);
-    ctx.fill();
-    ctx.font = `bold 11px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = '#1e3d35';
-    ctx.textAlign = 'center';
-    const idParts = cardID.split('-');
-    ctx.fillText(idParts[0], W - 67, H * 0.735 + 34);
-    ctx.fillText(idParts[1], W - 67, H * 0.735 + 50);
-    ctx.fillText(idParts[2], W - 67, H * 0.735 + 66);
-    ctx.restore();
-
-    _cardDataURL = canvas.toDataURL('image/png');
-  };
-  img.onerror = () => {
-    drawCardFallback(ctx, W, H, clientName, tierName, tierEmoji, pts, pal, cardID, memYear);
-    _cardDataURL = canvas.toDataURL('image/png');
-  };
-  img.src = 'clickcard_template.png';
-}
-
-function roundRect(ctx, x, y, w, h, r) {
-  ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
-  ctx.closePath();
-}
 
 
-function closeClickCard(event, force=false) {
-  if (force || (event && event.target === document.getElementById('clickcard-overlay'))) {
-    document.getElementById('clickcard-overlay').style.display = 'none';
-    document.body.style.overflow = '';
-  }
+function closeClickCard() {
+  document.getElementById('clickcard-overlay').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 function downloadClickCard() {
@@ -2833,17 +2700,11 @@ async function shareClickCard() {
 function openTnC() {
   const el = document.getElementById('tnc-overlay');
   el.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  // Navigate to booking page if not already there
-  if (!document.getElementById('booking').classList.contains('active')) {
-    showPage('booking', document.querySelectorAll('nav a')[4]);
-  }
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 function closeTnC() {
   document.getElementById('tnc-overlay').style.display = 'none';
-  document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTnC(); });
 
 function showPage(id, navEl) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
