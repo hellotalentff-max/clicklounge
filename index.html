@@ -2358,8 +2358,8 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
 
   ctx.clearRect(0, 0, W, H);
 
-  // ── CLIPPING MASK ──
-  roundRect(ctx, 0, 0, W, H, R); ctx.save(); ctx.clip();
+  // No clip — canvas is displayed with CSS border-radius on the <canvas> element
+  // so we just fill the entire canvas directly.
 
   // ── BACKGROUND ──
   if (isVIP) {
@@ -2632,8 +2632,7 @@ function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memY
   ctx.fillText(cardID, 40, H - 10);
   ctx.restore();
 
-  // ── BORDER GLOW (premium edge — drawn outside clip so it sits on top) ──
-  ctx.restore(); // end clip
+  // ── BORDER GLOW ──
   ctx.save();
   const edgeGlow = ctx.createLinearGradient(0,0,W,H);
   if (isVIP) {
