@@ -661,7 +661,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
   </div>
   <style>
-    @keyframes promoPulseBtn {
+    @keyframes goldBtn {
+      0%,100% { box-shadow:0 0 0 0 rgba(240,192,48,.6), 0 2px 12px rgba(240,192,48,.3); transform:scale(1); }
+      50%     { box-shadow:0 0 0 10px rgba(240,192,48,0), 0 2px 16px rgba(240,192,48,.4); transform:scale(1.03); }
+    }
       0%,100% { box-shadow:0 0 0 0 rgba(229,57,53,.7); transform:scale(1); }
       50%     { box-shadow:0 0 0 10px rgba(229,57,53,0); transform:scale(1.05); }
     }
@@ -2099,6 +2102,42 @@ async function checkMyPoints() {
     }
 
     // ── FOUND
+    // Capture earliest visit year from TX and OG for the card
+    let firstVisitYear = new Date().getFullYear();
+    TX.forEach(tx => {
+      const n = String(tx['clientName'] || tx['Client Name'] || '').trim();
+      if (!n) return;
+      if (namesMatch(q, n) || n.toLowerCase().includes(qLower)) {
+        const d = tx['date'] || tx['Date'];
+        if (d) {
+          let yr;
+          if (typeof d === 'number' && d > 1000 && d < 100000) {
+            yr = new Date((d - 25569) * 86400 * 1000).getFullYear();
+          } else {
+            yr = new Date(d).getFullYear();
+          }
+          if (!isNaN(yr) && yr > 2000 && yr < firstVisitYear) firstVisitYear = yr;
+        }
+      }
+    });
+    OG.forEach(row => {
+      const n = String(row['Name'] || '').trim();
+      if (!n) return;
+      if (namesMatch(q, n) || n.toLowerCase().includes(qLower)) {
+        const d = row['Date'];
+        if (d) {
+          let yr;
+          if (typeof d === 'number' && d > 1000 && d < 100000) {
+            yr = new Date((d - 25569) * 86400 * 1000).getFullYear();
+          } else {
+            yr = new Date(d).getFullYear();
+          }
+          if (!isNaN(yr) && yr > 2000 && yr < firstVisitYear) firstVisitYear = yr;
+        }
+      }
+    });
+
+    // What can they redeem right now
     const redeemable = PERKS.filter(p => pts >= p.cost && !p.tier);
 
     box.innerHTML = `
@@ -2165,8 +2204,8 @@ async function checkMyPoints() {
               style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
               📸 Book a Session →
             </a>
-            <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts})"
-              style="background:linear-gradient(135deg,#2d6e5f,#1a3d35);color:#ffd76e;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:1.5px solid rgba(255,215,110,.3);cursor:pointer;animation:promoPulseBtn 2s ease-in-out infinite;">
+            <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts},${firstVisitYear})"
+              style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:none;cursor:pointer;box-shadow:0 2px 12px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;">
               🪪 Create My ClickCard →
             </button>
           </div>
@@ -2223,285 +2262,9 @@ function toggleFaq(i) {
 }
 
 // ── CLICKCARD GENERATOR ──
-function genCardID(name) {
-  // Unique card ID: CLS-[initials][year][random6]
-  const initials = name.trim().split(/\s+/).map(w=>w[0].toUpperCase()).join('').slice(0,3).padEnd(2,'X');
-  const year = new Date().getFullYear().toString().slice(-2);
-  const rand = Math.random().toString(36).slice(2,8).toUpperCase();
-  return `CLS-${initials}${year}-${rand}`;
-}
-
-function generateClickCard(name, tierName, tierEmoji, pts) {
-  // Persist card ID in sessionStorage so same client gets same ID per session
-  const storageKey = 'cls_card_' + name.toLowerCase().replace(/\s+/g,'_');
-  let cardID = sessionStorage.getItem(storageKey);
-  if (!cardID) {
-    cardID = genCardID(name);
-    sessionStorage.setItem(storageKey, cardID);
-  }
-
-  const memberYear = new Date().getFullYear();
-  const tierColors = {
-    Bronze:{ bg:'#f7efe4', accent:'#c8a070', dark:'#6b3e10', badge:'🥉' },
-    Silver:{ bg:'#edf0f6', accent:'#8a96b0', dark:'#2a3560', badge:'🥈' },
-    Gold:  { bg:'#fffbe6', accent:'#c8a010', dark:'#6a4a00', badge:'🥇' },
-    VIP:   { bg:'#1a2a38', accent:'#4a9082', dark:'#fff',    badge:'💎' },
-  };
-  const tc = tierColors[tierName] || tierColors.Bronze;
-  const isVIP = tierName === 'VIP';
-
-  // Create overlay
-  let overlay = document.getElementById('clickcard-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'clickcard-overlay';
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;';
-    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.style.display='none'; });
-    document.body.appendChild(overlay);
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="max-width:480px;width:100%;text-align:center;">
-      <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1rem;">Your Digital ClickCard</div>
-
-      <!-- THE CARD -->
-      <div id="cls-card" style="
-        background:${isVIP?'linear-gradient(135deg,#1a2a38,#253545)':'#f5f0e8'};
-        border-radius:18px;
-        overflow:hidden;
-        position:relative;
-        box-shadow:0 24px 60px rgba(0,0,0,.5);
-        aspect-ratio:1.586;
-        width:100%;
-        font-family:'DM Sans',sans-serif;
-      ">
-        <!-- BG organic shapes -->
-        <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 480 302" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <!-- top right teal blob -->
-          <path d="M340 0 Q420 0 480 60 L480 0 Z" fill="${isVIP?'#4a9082':'#2d6e5f'}" opacity="${isVIP?'.5':'.9'}"/>
-          <path d="M360 0 Q460 20 480 120 L480 0 Z" fill="${isVIP?'#2d6e5f':'#1a3d35'}" opacity=".6"/>
-          <!-- bottom left warm blob -->
-          <path d="M0 200 Q60 160 140 200 Q180 220 160 302 L0 302 Z" fill="${isVIP?'rgba(74,144,130,.3)':'#c8a070'}" opacity="${isVIP?'1':'.7'}"/>
-          <path d="M0 240 Q80 200 120 260 Q140 280 100 302 L0 302 Z" fill="${isVIP?'rgba(45,110,95,.4)':'#b08050'}" opacity=".6"/>
-          <!-- subtle wave lines -->
-          <path d="M100 180 Q200 140 300 180 Q380 210 480 160" fill="none" stroke="${isVIP?'rgba(74,144,130,.3)':'rgba(200,160,112,.4)'}" stroke-width="1.2"/>
-          <path d="M0 220 Q120 190 220 220 Q320 250 480 200" fill="none" stroke="${isVIP?'rgba(74,144,130,.2)':'rgba(200,160,112,.25)'}" stroke-width="1"/>
-        </svg>
-
-        <!-- DARK FOOTER BAND -->
-        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;background:${isVIP?'rgba(255,255,255,.05)':'#1e3d35'};"></div>
-
-        <!-- LOGO AREA top-left -->
-        <div style="position:absolute;top:12%;left:7%;z-index:2;">
-          <!-- Camera icon SVG -->
-          <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="8" width="32" height="18" rx="3" stroke="#c8a070" stroke-width="2"/>
-            <circle cx="18" cy="17" r="5" stroke="#c8a070" stroke-width="2"/>
-            <path d="M12 8 L14 4 H22 L24 8" stroke="#c8a070" stroke-width="1.8"/>
-            <!-- rainbow arc -->
-            <path d="M8 17 Q18 8 28 17" stroke="#2d6e5f" stroke-width="2" fill="none"/>
-          </svg>
-        </div>
-        <div style="position:absolute;top:11%;left:18%;z-index:2;line-height:1.15;">
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Click</div>
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Lounge</div>
-          <div style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.7)':'#2d6e5f'};margin-top:.1rem;">— STUDIO —</div>
-        </div>
-
-        <!-- TIER badge top-left corner of name area -->
-        <div style="position:absolute;top:11%;right:7%;z-index:2;text-align:right;">
-          <div style="font-size:1.4rem;">${tierEmoji}</div>
-          <div style="font-size:clamp(.45rem,1.5vw,.58rem);font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.1em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">${tierName.toUpperCase()}</div>
-        </div>
-
-        <!-- CLICKCARD label — center right -->
-        <div style="position:absolute;top:42%;right:7%;z-index:2;text-align:right;">
-          <div style="font-family:'Space Mono',monospace;font-size:clamp(.9rem,3.5vw,1.35rem);font-weight:700;letter-spacing:.12em;color:${isVIP?'#fff':'#1a3d35'};">CLICKCARD</div>
-          <div style="font-size:clamp(.38rem,1.3vw,.55rem);letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">
-            <span style="color:#c8a070;">——</span> REWARDS PROGRAM <span style="color:#c8a070;">——</span>
-          </div>
-        </div>
-
-        <!-- POINTS chip -->
-        <div style="position:absolute;top:57%;right:7%;z-index:2;text-align:right;">
-          <div style="background:rgba(196,154,26,.2);border:1px solid rgba(196,154,26,.4);border-radius:100px;padding:.15rem .6rem;display:inline-block;">
-            <span style="font-family:'Space Mono',monospace;font-size:clamp(.55rem,2vw,.75rem);font-weight:700;color:#c8a070;">${pts.toLocaleString()} pts</span>
-          </div>
-        </div>
-
-        <!-- FOOTER band content -->
-        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;display:flex;align-items:center;padding:0 5%;z-index:2;">
-          <!-- Left: thank you -->
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.15rem;">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10.5 C6 10.5 1 7 1 4 C1 2.3 2.3 1 4 1 C4.9 1 5.7 1.4 6 2 C6.3 1.4 7.1 1 8 1 C9.7 1 11 2.3 11 4 C11 7 6 10.5 6 10.5Z" stroke="#c8a070" stroke-width="1.2" fill="none"/></svg>
-              <span style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.1em;color:#c8a070;text-transform:uppercase;">Thank You</span>
-            </div>
-            <div style="font-size:clamp(.4rem,1.3vw,.55rem);color:rgba(255,255,255,.6);letter-spacing:.03em;">for being part of our studio family!</div>
-          </div>
-          <!-- Divider -->
-          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
-          <!-- Member since -->
-          <div style="text-align:center;min-width:60px;">
-            <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.1rem;">Member Since</div>
-            <div style="font-family:'Space Mono',monospace;font-size:clamp(.6rem,2.2vw,.9rem);font-weight:700;color:#c8a070;">${memberYear}</div>
-          </div>
-          <!-- Divider -->
-          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
-          <!-- NFC chip icon -->
-          <div style="background:rgba(245,240,232,.12);border-radius:6px;padding:.3rem .4rem;display:flex;align-items:center;justify-content:center;">
-            <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><path d="M10 1 C14 1 17 4.5 17 8 C17 11.5 14 15 10 15" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 3.5 C12.8 3.5 15 5.5 15 8 C15 10.5 12.8 12.5 10 12.5" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 6 C11.7 6 13 6.9 13 8 C13 9.1 11.7 10 10 10" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/></svg>
-          </div>
-        </div>
-
-        <!-- CLIENT NAME — bottom of main area, above footer -->
-        <div style="position:absolute;bottom:30%;left:7%;z-index:2;">
-          <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;">Cardholder</div>
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(.7rem,2.5vw,1rem);color:#fff;font-weight:600;">${name}</div>
-        </div>
-
-        <!-- CARD ID — very bottom of footer left -->
-        <div style="position:absolute;bottom:2%;left:7%;z-index:3;">
-          <div style="font-family:'Space Mono',monospace;font-size:clamp(.3rem,.95vw,.42rem);color:rgba(255,255,255,.3);letter-spacing:.08em;">${cardID}</div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div style="margin-top:1.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
-        <button onclick="saveClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:none;cursor:pointer;">
-          📥 Save Card
-        </button>
-        <button onclick="shareClickCard('${name}','${tierName}',${pts},'${cardID}')" style="background:rgba(255,255,255,.1);color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
-          📤 Share
-        </button>
-        <button onclick="document.getElementById('clickcard-overlay').style.display='none'" style="background:transparent;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;font-size:.72rem;padding:.65rem 1rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);cursor:pointer;">
-          Close
-        </button>
-      </div>
-      <p style="color:rgba(255,255,255,.3);font-size:.72rem;margin-top:.8rem;line-height:1.6;">Screenshot or save this card. Show it to our staff on your next visit to claim your tier perks!</p>
-    </div>`;
-}
-
-function saveClickCard() {
-  const card = document.getElementById('cls-card');
-  if (!card) return;
-  // Use html2canvas if available, otherwise guide to screenshot
-  if (typeof html2canvas !== 'undefined') {
-    html2canvas(card, { scale:3, useCORS:true, backgroundColor:null }).then(canvas => {
-      const a = document.createElement('a');
-      a.download = 'my-clickcard.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
-    });
-  } else {
-    alert('📸 To save your card: take a screenshot of this screen!\n\nOn phone: press Volume Down + Power button\nOn desktop: press Print Screen or use Snipping Tool');
-  }
-}
-
-function shareClickCard(name, tier, pts, cardID) {
-  const text = `🎉 I'm a ${tier} member of Click Lounge Studio's ClickCard Rewards Program!\n\n💳 Card: ${cardID}\n⭐ Points: ${pts}\n\nBook your session at: https://hellotalentff-max.github.io/clicklounge_booking/`;
-  if (navigator.share) {
-    navigator.share({ title:'My ClickCard — Click Lounge Studio', text }).catch(()=>{});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(()=>alert('Card details copied to clipboard! Paste it anywhere to share.'));
-  }
-}
-
-// ── GIFT GENERATOR ──
-const GIFT_COOLDOWN = 20 * 60 * 1000; // 20 mins in ms
-const GIFT_PRIZES = [
-  { chance: 0.10, icon: '⏱️', name: 'FREE 5 Minutes!', desc: 'Enjoy an extra 5 minutes added to your birthday self-shoot session — on us!' },
-  { chance: 0.10, icon: '🖼️', name: 'FREE Print!',     desc: 'Get a complimentary print of your favourite shot from your birthday session!' },
-  { chance: 0.80, icon: '🧑‍🤝‍🧑', name: 'FREE Extra Pax!',  desc: 'Bring one extra person to your birthday self-shoot session at no extra charge!' },
-];
-
-function genCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let c = 'CLS-';
-  for (let i = 0; i < 8; i++) c += chars[Math.floor(Math.random() * chars.length)];
-  return c;
-}
-
-function spinGift() {
-  const now = Date.now();
-  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
-  const btn = document.getElementById('gift-btn');
-  const usedMsg = document.getElementById('gift-used-msg');
-
-  if (lastSpin && (now - lastSpin) < GIFT_COOLDOWN) {
-    // Already spun — show existing result silently, no message to user
-    document.getElementById('gift-result').style.display = 'block';
-    return;
-  }
-
-  // Disable button with animation
-  btn.disabled = true;
-  btn.textContent = '🎊 Revealing your gift…';
-  btn.style.animation = 'none';
-  btn.style.opacity = '.7';
-
-  setTimeout(() => {
-    // Pick prize
-    const r = Math.random();
-    let cumulative = 0, prize = GIFT_PRIZES[2];
-    for (const p of GIFT_PRIZES) {
-      cumulative += p.chance;
-      if (r < cumulative) { prize = p; break; }
-    }
-    const code = genCode();
-
-    // Store timestamp (hidden from user)
-    sessionStorage.setItem('_gts', now.toString());
-    sessionStorage.setItem('_gtr', JSON.stringify({ prize, code }));
-
-    // Show result
-    document.getElementById('gift-icon').textContent = prize.icon;
-    document.getElementById('gift-name').textContent = prize.name;
-    document.getElementById('gift-desc').textContent = prize.desc;
-    document.getElementById('gift-code').textContent = code;
-    // Set Control Hub link — opens Gifts tab with code in URL so staff can paste it
-    const hubLink = document.getElementById('gift-hub-link');
-    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
-    document.getElementById('gift-result').style.display = 'block';
-
-    // Update button
-    btn.textContent = '🎁 Gift Claimed!';
-    btn.style.background = 'var(--green)';
-    btn.style.opacity = '1';
-
-    // Scroll to result
-    document.getElementById('gift-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 1200);
-}
-
-// Restore gift result on page revisit within same session
-function restoreGift() {
-  const saved = sessionStorage.getItem('_gtr');
-  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
-  if (!saved || !lastSpin) return;
-  if ((Date.now() - lastSpin) >= GIFT_COOLDOWN) return;
-  try {
-    const { prize, code } = JSON.parse(saved);
-    document.getElementById('gift-icon').textContent = prize.icon;
-    document.getElementById('gift-name').textContent = prize.name;
-    document.getElementById('gift-desc').textContent = prize.desc;
-    document.getElementById('gift-code').textContent = code;
-    const hubLink = document.getElementById('gift-hub-link');
-    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
-    document.getElementById('gift-result').style.display = 'block';
-    const btn = document.getElementById('gift-btn');
-    if (btn) { btn.textContent = '🎁 Gift Claimed!'; btn.style.background = 'var(--green)'; btn.disabled = true; btn.style.animation = 'none'; }
-  } catch(e) {}
-}
-document.addEventListener('DOMContentLoaded', restoreGift);
-
-// ── CLICKCARD GENERATOR ──
-let _cardClientName = '';
-let _cardDataURL = null;
 
 // Generate a stable unique ID from name (same name always gets same ID)
-function genCardID(name) {
+function genCardID(name, year) {
   let hash = 0;
   const str = name.toLowerCase().trim();
   for (let i = 0; i < str.length; i++) {
@@ -2509,17 +2272,382 @@ function genCardID(name) {
     hash |= 0;
   }
   const abs = Math.abs(hash).toString(36).toUpperCase().padStart(6,'0');
-  return 'CLC-' + abs.slice(0,3) + '-' + abs.slice(3,6);
+  const yr  = String(year || new Date().getFullYear()).slice(-2);
+  return 'CLS-' + yr + abs.slice(0,3) + '-' + abs.slice(3,6);
 }
 
-function getMemberYear(name) {
-  // Stable year based on name hash — between 2022 and 2024
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
-  return 2022 + (Math.abs(h) % 3);
+// Tier-adaptive premium card palettes
+const CARD_PALETTES = {
+  Bronze: {
+    bg1:'#f5ede0', bg2:'#ede0cc',
+    blob1:'#1e3d35', blob2:'#2d6e5f',
+    blobRust:'#c8a070', blobRust2:'#a07848',
+    footer:'#1e3d35', footerLine:'rgba(255,255,255,.12)',
+    accent:'#c8a070', accentDark:'#8a5a2a',
+    text:'#1e2824', textLight:'rgba(255,255,255,.7)',
+    gloss1:'rgba(255,255,255,.45)', gloss2:'rgba(255,255,255,.08)',
+    badgeBg:'#c8a070', badgeText:'#fff',
+    label:'rgba(30,56,36,.5)', shimmer:'rgba(255,255,255,.6)',
+  },
+  Silver: {
+    bg1:'#e8ecf4', bg2:'#d8dce8',
+    blob1:'#1e3d35', blob2:'#2d5a6e',
+    blobRust:'#8a96c8', blobRust2:'#6a7aaa',
+    footer:'#1a2a3a', footerLine:'rgba(255,255,255,.12)',
+    accent:'#8a96c8', accentDark:'#3a4888',
+    text:'#1a2030', textLight:'rgba(255,255,255,.75)',
+    gloss1:'rgba(255,255,255,.5)', gloss2:'rgba(255,255,255,.1)',
+    badgeBg:'#6a78b8', badgeText:'#fff',
+    label:'rgba(30,40,80,.5)', shimmer:'rgba(255,255,255,.65)',
+  },
+  Gold: {
+    bg1:'#2a1a08', bg2:'#3a2610',
+    blob1:'#c8a010', blob2:'#8a6a00',
+    blobRust:'#4a3000', blobRust2:'#5a3800',
+    footer:'rgba(0,0,0,.45)', footerLine:'rgba(196,154,26,.3)',
+    accent:'#f0c040', accentDark:'#c8a010',
+    text:'#f0e8d0', textLight:'rgba(240,192,64,.8)',
+    gloss1:'rgba(255,220,100,.22)', gloss2:'rgba(255,200,60,.06)',
+    badgeBg:'#c8a010', badgeText:'#1a1000',
+    label:'rgba(240,192,64,.45)', shimmer:'rgba(255,220,80,.5)',
+  },
+  VIP: {
+    bg1:'#080e18', bg2:'#0d1520',
+    blob1:'#0a2030', blob2:'#0f1a28',
+    blobRust:'#1a3048', blobRust2:'#142038',
+    footer:'rgba(0,0,0,.6)', footerLine:'rgba(74,144,130,.35)',
+    accent:'#4a9082', accentDark:'#2a6055',
+    text:'#e8f0ee', textLight:'rgba(255,255,255,.7)',
+    gloss1:'rgba(74,144,130,.18)', gloss2:'rgba(74,144,130,.04)',
+    badgeBg:'#4a9082', badgeText:'#fff',
+    label:'rgba(74,144,130,.5)', shimmer:'rgba(74,255,200,.25)',
+    // VIP extras
+    starColor:'rgba(74,144,130,.25)',
+  },
+};
+
+function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memYear) {
+  const p   = CARD_PALETTES[tierName] || CARD_PALETTES.Bronze;
+  const isVIP  = tierName === 'VIP';
+  const isGold = tierName === 'Gold';
+  const R = 28; // corner radius
+
+  ctx.clearRect(0, 0, W, H);
+
+  // ── CLIPPING MASK (rounded rect) ──
+  roundRect(ctx, 0, 0, W, H, R); ctx.clip();
+
+  // ── BACKGROUND ──
+  if (isVIP) {
+    // VIP: deep space gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0,   '#060c14');
+    bgGrad.addColorStop(0.4, '#0a1520');
+    bgGrad.addColorStop(1,   '#080e18');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
+
+    // Star field — scattered tiny dots
+    ctx.fillStyle = 'rgba(255,255,255,.55)';
+    const stars = [[60,40],[120,90],[200,30],[310,70],[420,20],[550,55],[660,35],[780,80],[900,25],
+                   [80,160],[180,200],[350,140],[480,180],[620,130],[850,170],[950,100],
+                   [40,280],[150,310],[270,260],[400,300],[530,270],[700,290],[820,240]];
+    stars.forEach(([sx,sy]) => {
+      ctx.beginPath(); ctx.arc(sx, sy, Math.random()<.3?1.2:.7, 0, Math.PI*2); ctx.fill();
+    });
+
+    // Teal nebula glow — top left
+    const neb1 = ctx.createRadialGradient(160, 120, 0, 160, 120, 280);
+    neb1.addColorStop(0, 'rgba(74,144,130,.22)'); neb1.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb1; ctx.fillRect(0, 0, W, H);
+
+    // Subtle blue glow — bottom right
+    const neb2 = ctx.createRadialGradient(W-100, H+60, 0, W-100, H+60, 320);
+    neb2.addColorStop(0, 'rgba(40,80,140,.18)'); neb2.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb2; ctx.fillRect(0, 0, W, H);
+
+    // Teal arc — top right corner
+    const arcGrad = ctx.createRadialGradient(W, 0, 0, W, 0, 340);
+    arcGrad.addColorStop(0, 'rgba(74,144,130,.35)');
+    arcGrad.addColorStop(0.5, 'rgba(74,144,130,.08)');
+    arcGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = arcGrad; ctx.fillRect(0, 0, W, H);
+
+    // Thin teal ring — decorative top right
+    ctx.save();
+    ctx.strokeStyle = 'rgba(74,144,130,.25)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(W+30, -30, 200, 0, Math.PI*2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(74,144,130,.12)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(W+30, -30, 260, 0, Math.PI*2); ctx.stroke();
+    ctx.restore();
+
+  } else if (isGold) {
+    // Gold: deep dark with gold shimmer
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0,   '#1e1408');
+    bgGrad.addColorStop(0.5, '#2a1c0c');
+    bgGrad.addColorStop(1,   '#1a1006');
+    ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+
+    // Gold radial glow top-right
+    const gGlow = ctx.createRadialGradient(W*0.85, 0, 0, W*0.85, 0, 400);
+    gGlow.addColorStop(0, 'rgba(196,154,26,.4)');
+    gGlow.addColorStop(0.4, 'rgba(196,154,26,.08)');
+    gGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = gGlow; ctx.fillRect(0, 0, W, H);
+
+    // Warm amber glow bottom-left
+    const aGlow = ctx.createRadialGradient(W*0.1, H, 0, W*0.1, H, 300);
+    aGlow.addColorStop(0, 'rgba(140,80,10,.35)');
+    aGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = aGlow; ctx.fillRect(0, 0, W, H);
+
+    // Fine horizontal scan lines — premium dark card texture
+    ctx.save(); ctx.globalAlpha = 0.04;
+    ctx.fillStyle = '#c8a010';
+    for (let y = 0; y < H; y += 4) { ctx.fillRect(0, y, W, 1); }
+    ctx.restore();
+
+  } else {
+    // Bronze / Silver: cream/steel base
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, p.bg1);
+    bgGrad.addColorStop(1, p.bg2);
+    ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+
+    // Teal blob — top right
+    ctx.save();
+    ctx.globalAlpha = 1;
+    const tBlob = ctx.createRadialGradient(W, 0, 0, W*0.7, H*0.05, W*0.55);
+    tBlob.addColorStop(0, p.blob1);
+    tBlob.addColorStop(0.55, p.blob2);
+    tBlob.addColorStop(1, 'transparent');
+    ctx.fillStyle = tBlob;
+    ctx.beginPath();
+    ctx.moveTo(W*0.52, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H*0.62);
+    ctx.quadraticCurveTo(W*0.72, H*0.35, W*0.52, 0);
+    ctx.fill(); ctx.restore();
+
+    // Rust/steel blob — bottom left
+    ctx.save();
+    const rBlob = ctx.createRadialGradient(0, H, 0, W*0.18, H*0.75, W*0.45);
+    rBlob.addColorStop(0, p.blobRust);
+    rBlob.addColorStop(0.6, p.blobRust2);
+    rBlob.addColorStop(1, 'transparent');
+    ctx.fillStyle = rBlob;
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.55); ctx.lineTo(0, H); ctx.lineTo(W*0.38, H);
+    ctx.quadraticCurveTo(W*0.28, H*0.7, 0, H*0.55);
+    ctx.fill(); ctx.restore();
+
+    // Subtle wave curves
+    ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.55); ctx.bezierCurveTo(W*0.25,H*0.42, W*0.6,H*0.58, W,H*0.48);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.65); ctx.bezierCurveTo(W*0.3,H*0.55, W*0.65,H*0.68, W,H*0.6);
+    ctx.stroke(); ctx.restore();
+  }
+
+  // ── GLOSS OVERLAY (premium light sweep) ──
+  const gloss = ctx.createLinearGradient(0, 0, W*0.7, H*0.7);
+  gloss.addColorStop(0, p.gloss1);
+  gloss.addColorStop(0.3, 'rgba(255,255,255,.06)');
+  gloss.addColorStop(0.6, 'rgba(255,255,255,0)');
+  gloss.addColorStop(1, p.gloss2);
+  ctx.fillStyle = gloss; ctx.fillRect(0, 0, W, H);
+
+  // ── FOOTER BAND ──
+  ctx.save();
+  ctx.fillStyle = p.footer;
+  ctx.fillRect(0, H * 0.72, W, H * 0.28);
+  // top border line of footer
+  ctx.strokeStyle = p.footerLine; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, H*0.72); ctx.lineTo(W, H*0.72); ctx.stroke();
+  ctx.restore();
+
+  // ── CAMERA LOGO (top left) ──
+  const cx = 44, cy = 52, cs = 38;
+  ctx.save(); ctx.strokeStyle = p.accent; ctx.lineWidth = 2.2; ctx.lineJoin = 'round';
+  // body
+  roundRect(ctx, cx-cs/2, cy-cs*0.38, cs, cs*0.72, 4); ctx.stroke();
+  // lens
+  ctx.beginPath(); ctx.arc(cx, cy+cs*0.05, cs*0.22, 0, Math.PI*2); ctx.stroke();
+  // viewfinder bump
+  ctx.beginPath(); ctx.moveTo(cx-cs*0.25,cy-cs*0.38); ctx.lineTo(cx-cs*0.15,cy-cs*0.55); ctx.lineTo(cx+cs*0.15,cy-cs*0.55); ctx.lineTo(cx+cs*0.25,cy-cs*0.38); ctx.stroke();
+  // rainbow arc inside lens
+  ctx.strokeStyle = isVIP?'#4a9082':isGold?'#c8a010':'#2d6e5f'; ctx.lineWidth = 2;
+  ctx.beginPath(); ctx.arc(cx, cy+cs*0.28, cs*0.36, Math.PI, 0); ctx.stroke();
+  ctx.restore();
+
+  // Studio name
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `bold ${Math.round(H*0.072)}px Georgia, serif`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText('Click', cx + cs*0.7, cy - 4);
+  ctx.fillText('Lounge', cx + cs*0.7, cy + H*0.072 - 2);
+  ctx.font = `500 ${Math.round(H*0.03)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
+  ctx.globalAlpha = .75;
+  ctx.fillText('— STUDIO —', cx + cs*0.7 + 2, cy + H*0.072*2 - 2);
+  ctx.restore();
+
+  // ── TIER BADGE (top right) ──
+  const bW = 150, bH = 38, bX = W - 30 - bW, bY = 20;
+  ctx.save();
+  const badgeGrad = ctx.createLinearGradient(bX, bY, bX+bW, bY+bH);
+  badgeGrad.addColorStop(0, p.badgeBg);
+  badgeGrad.addColorStop(1, isVIP?'#1a5040':isGold?'#8a6000':p.badgeBg);
+  ctx.fillStyle = badgeGrad;
+  roundRect(ctx, bX, bY, bW, bH, bH/2); ctx.fill();
+  // subtle inner border
+  ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1;
+  roundRect(ctx, bX+0.5, bY+0.5, bW-1, bH-1, bH/2); ctx.stroke();
+  ctx.fillStyle = p.badgeText;
+  ctx.font = `bold ${Math.round(H*0.043)}px Arial`;
+  ctx.textAlign = 'center';
+  ctx.fillText(`${tierEmoji} ${tierName.toUpperCase()}`, bX + bW/2, bY + bH*0.68);
+  ctx.restore();
+
+  // ── CLICKCARD WORDMARK (center right) ──
+  ctx.save(); ctx.textAlign = 'right';
+  ctx.font = `bold ${Math.round(H*0.095)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#1e3d35';
+  ctx.fillText('CLICKCARD', W - 40, H * 0.47);
+  // subtitle
+  ctx.font = `400 ${Math.round(H*0.033)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
+  ctx.globalAlpha = .65;
+  ctx.fillText('— REWARDS PROGRAM —', W - 40, H * 0.47 + H*0.052);
+  // points balance
+  ctx.globalAlpha = 1;
+  ctx.font = `bold ${Math.round(H*0.057)}px "Courier New", monospace`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText(pts.toLocaleString() + ' pts', W - 40, H * 0.47 + H*0.052 + H*0.076);
+  // pts label
+  ctx.font = `400 ${Math.round(H*0.027)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
+  ctx.globalAlpha = .55;
+  ctx.fillText('POINTS BALANCE', W - 40, H * 0.47 + H*0.052 + H*0.076 + H*0.038);
+  ctx.restore();
+
+  // ── FOOTER CONTENT ──
+  const fY = H * 0.72;
+  // Heart + thank you
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `500 ${Math.round(H*0.032)}px Arial`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText('♥  THANK YOU', 40, fY + H*0.1);
+  ctx.font = `400 ${Math.round(H*0.028)}px Arial`;
+  ctx.fillStyle = p.textLight;
+  ctx.fillText('for being part of our studio family!', 40, fY + H*0.15);
+
+  // Vertical divider
+  ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(W*0.52, fY+H*0.05); ctx.lineTo(W*0.52, fY+H*0.22); ctx.stroke();
+
+  // Member since
+  ctx.font = `400 ${Math.round(H*0.027)}px Arial`;
+  ctx.fillStyle = 'rgba(255,255,255,.55)';
+  ctx.fillText('MEMBER SINCE', W*0.555, fY + H*0.1);
+  ctx.font = `bold ${Math.round(H*0.07)}px "Courier New", monospace`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText(memYear, W*0.555, fY + H*0.19);
+
+  // Vertical divider 2
+  ctx.strokeStyle = 'rgba(255,255,255,.2)';
+  ctx.beginPath(); ctx.moveTo(W*0.72, fY+H*0.05); ctx.lineTo(W*0.72, fY+H*0.22); ctx.stroke();
+
+  // NFC icon box
+  const nX = W*0.745, nY = fY + H*0.055, nW = W*0.21, nH = H*0.17;
+  ctx.fillStyle = 'rgba(255,255,255,.08)';
+  roundRect(ctx, nX, nY, nW, nH, 10); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1;
+  roundRect(ctx, nX, nY, nW, nH, 10); ctx.stroke();
+  // NFC arcs
+  const nCx = nX + nW/2, nCy = nY + nH/2;
+  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 2;
+  [22,38,54].forEach(r => {
+    ctx.beginPath();
+    ctx.arc(nCx - r*0.4, nCy, r, -Math.PI*0.4, Math.PI*0.4);
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  // ── CARDHOLDER NAME (above footer) ──
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `400 ${Math.round(H*0.028)}px Arial`;
+  ctx.fillStyle = p.label;
+  ctx.fillText('CARDHOLDER', 40, H * 0.68);
+  ctx.font = `bold ${Math.round(H*0.052)}px Georgia, serif`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#1e3d35';
+  let dn = clientName;
+  ctx.font = `bold ${Math.round(H*0.052)}px Georgia, serif`;
+  if (ctx.measureText(dn).width > W*0.42) {
+    const parts = clientName.split(' ');
+    dn = parts[0] + (parts[1] ? ' ' + parts[1][0] + '.' : '');
+  }
+  ctx.fillText(dn, 40, H * 0.695 + H*0.052);
+  ctx.restore();
+
+  // ── CARD ID (bottom strip) ──
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `400 ${Math.round(H*0.027)}px "Courier New", monospace`;
+  ctx.fillStyle = 'rgba(255,255,255,.28)';
+  ctx.fillText(cardID, 40, H - 10);
+  ctx.restore();
+
+  // ── BORDER GLOW (premium edge) ──
+  ctx.save();
+  const edgeGlow = ctx.createLinearGradient(0,0,W,H);
+  if (isVIP) {
+    edgeGlow.addColorStop(0, 'rgba(74,144,130,.7)');
+    edgeGlow.addColorStop(0.5, 'rgba(74,144,130,.15)');
+    edgeGlow.addColorStop(1, 'rgba(74,144,130,.5)');
+  } else if (isGold) {
+    edgeGlow.addColorStop(0, 'rgba(196,154,26,.8)');
+    edgeGlow.addColorStop(0.5, 'rgba(196,154,26,.2)');
+    edgeGlow.addColorStop(1, 'rgba(196,154,26,.6)');
+  } else {
+    edgeGlow.addColorStop(0, 'rgba(200,160,112,.5)');
+    edgeGlow.addColorStop(1, 'rgba(45,110,95,.4)');
+  }
+  ctx.strokeStyle = edgeGlow; ctx.lineWidth = 2;
+  roundRect(ctx, 1, 1, W-2, H-2, R-1); ctx.stroke();
+  ctx.restore();
 }
 
-function generateClickCard(clientName, tierName, tierEmoji, pts) {
+function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
+  _cardClientName = clientName;
+  const overlay = document.getElementById('clickcard-overlay');
+  overlay.style.display = 'flex';
+  document.body.style.overflow = 'hidden';
+
+  const canvas = document.getElementById('clickcard-canvas');
+  const ctx    = canvas.getContext('2d');
+  const W = 1000, H = 630;
+  canvas.width = W; canvas.height = H;
+
+  const cardID  = genCardID(clientName, memberYear);
+  const memYear = memberYear || new Date().getFullYear();
+
+  drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
+  _cardDataURL = canvas.toDataURL('image/png');
+}
+
+function roundRect(ctx, x, y, w, h, r) {
+  ctx.beginPath();
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
+  ctx.closePath();
+}
   _cardClientName = clientName;
   document.getElementById('clickcard-overlay').style.display = 'flex';
   document.body.style.overflow = 'hidden';
@@ -2539,8 +2667,8 @@ function generateClickCard(clientName, tierName, tierEmoji, pts) {
   };
   const pal = tierPalette[tierName] || tierPalette.Bronze;
 
-  const cardID   = genCardID(clientName);
-  const memYear  = getMemberYear(clientName);
+  const cardID  = genCardID(clientName, memberYear);
+  const memYear = memberYear || new Date().getFullYear();
 
   // Load card template image and draw on top
   const img = new Image();
@@ -2649,8 +2777,7 @@ function generateClickCard(clientName, tierName, tierEmoji, pts) {
     _cardDataURL = canvas.toDataURL('image/png');
   };
   img.onerror = () => {
-    // Fallback: draw card from scratch if template fails to load
-    drawCardFallback(ctx, W, H, clientName, tierName, tierEmoji, pts, pal, genCardID(clientName), getMemberYear(clientName));
+    drawCardFallback(ctx, W, H, clientName, tierName, tierEmoji, pts, pal, cardID, memYear);
     _cardDataURL = canvas.toDataURL('image/png');
   };
   img.src = 'clickcard_template.png';
@@ -2670,52 +2797,6 @@ function roundRect(ctx, x, y, w, h, r) {
   ctx.closePath();
 }
 
-function drawCardFallback(ctx, W, H, name, tier, emoji, pts, pal, cardID, year) {
-  // Cream background
-  ctx.fillStyle = '#f5ede0';
-  roundRect(ctx, 0, 0, W, H, 32); ctx.fill();
-  // Teal top-right blob
-  ctx.fillStyle = '#1e3d35';
-  ctx.beginPath(); ctx.arc(W, 0, 240, 0, Math.PI/2); ctx.fill();
-  // Rust bottom-left blob
-  ctx.fillStyle = '#c8a070';
-  ctx.beginPath(); ctx.arc(0, H, 200, -Math.PI/2, 0); ctx.fill();
-  // Studio name
-  ctx.fillStyle = '#1e3d35';
-  ctx.font = 'bold 52px serif'; ctx.textAlign = 'left';
-  ctx.fillText('Click Lounge', 60, 130);
-  ctx.font = '500 24px sans-serif'; ctx.fillStyle = '#c8a070';
-  ctx.fillText('— STUDIO —', 64, 168);
-  // CLICKCARD label
-  ctx.font = 'bold 48px sans-serif'; ctx.fillStyle = '#1e3d35';
-  ctx.textAlign = 'right'; ctx.fillText('CLICKCARD', W - 44, H * 0.46);
-  ctx.font = '500 18px sans-serif'; ctx.fillStyle = '#c8a070';
-  ctx.fillText('— REWARDS PROGRAM —', W - 44, H * 0.46 + 32);
-  // Tier badge
-  ctx.fillStyle = pal.accent;
-  roundRect(ctx, W - 194, 24, 170, 48, 24); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText(`${emoji} ${tier.toUpperCase()}`, W - 109, 56);
-  // Points
-  ctx.fillStyle = pal.accent2; ctx.font = 'bold 60px monospace'; ctx.textAlign = 'right';
-  ctx.fillText(pts.toLocaleString(), W - 44, H * 0.46 + 90);
-  ctx.fillStyle = '#1e3d35'; ctx.globalAlpha = 0.5; ctx.font = '500 16px sans-serif';
-  ctx.fillText('POINTS BALANCE', W - 44, H * 0.46 + 110);
-  ctx.globalAlpha = 1;
-  // Dark bottom bar
-  ctx.fillStyle = '#1e3d35';
-  ctx.fillRect(0, H * 0.735, W, H * 0.265);
-  // Name
-  ctx.fillStyle = pal.accent; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText(name, 60, H * 0.83);
-  ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.font = '400 16px monospace';
-  ctx.fillText(cardID, 60, H * 0.83 + 28);
-  // Member since
-  ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '400 14px sans-serif';
-  ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
-  ctx.fillStyle = pal.accent; ctx.font = 'bold 28px monospace';
-  ctx.fillText(year, W * 0.63, H * 0.845);
-}
 
 function closeClickCard(event, force=false) {
   if (force || (event && event.target === document.getElementById('clickcard-overlay'))) {
