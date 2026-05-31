@@ -2854,7 +2854,7 @@ function openBooking(pkg, price) {
       <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;text-align:left;max-width:380px;margin-left:auto;margin-right:auto;">
         <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;">
           📌 ₱300 non-refundable reservation fee<br>
-          📌 Studio is closed every <strong>Tuesday</strong><br>
+          📌 Studio is closed every <strong>Sunday</strong><br>
           📌 Book at least 1 day in advance<br>
           📌 Walk-ins accepted 11 AM – 5 PM
         </div>
@@ -2916,21 +2916,21 @@ function renderBookingStep() {
           <input type="date" class="bk-input" id="bk-date" min="${minStr}" max="${maxStr}" value="${bookingState.date}">
         </div>
         <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.4rem;line-height:1.5;">
-          📌 Studio is closed on <strong>Tuesdays</strong><br>
+          📌 Studio is closed on <strong>Sundays</strong><br>
           📌 ₱300 non-refundable reservation fee required<br>
           📌 Bookings must be at least 1 day in advance
         </div>
       </div>
       <button class="bk-action" id="bk-next1" onclick="goStep2()">Choose Time Slot →</button>`;
 
-    // Disable Tuesday selection
+    // Disable Sunday selection
     setTimeout(() => {
       const dateInput = document.getElementById('bk-date');
       if (dateInput) {
         dateInput.addEventListener('input', function() {
           const d = new Date(this.value + 'T00:00:00');
-          if (d.getDay() === 2) { // Tuesday
-            alert('Sorry, the studio is closed on Tuesdays. Please pick another day.');
+          if (d.getDay() === 0) { // Sunday
+            alert('Sorry, the studio is closed on Sundays. Please pick another day.');
             this.value = '';
           }
         });
@@ -3009,7 +3009,7 @@ function goStep2() {
   const date = document.getElementById('bk-date').value;
   if (!date) { alert('Please pick a date.'); return; }
   const d = new Date(date + 'T00:00:00');
-  if (d.getDay() === 2) { alert('Studio is closed on Tuesdays.'); return; }
+  if (d.getDay() === 0) { alert('Studio is closed on Sundays.'); return; }
   bookingState.date = date;
   bookingState.step = 2;
   renderBookingStep();
