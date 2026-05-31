@@ -137,6 +137,7 @@ nav a.active { color:var(--green); border-bottom-color:var(--green); }
   background:var(--green); color:#fff; font-weight:600; font-size:.85rem;
   letter-spacing:.04em; padding:.8rem; border-radius:10px;
   text-decoration:none; transition:background .2s;
+  border:none; width:100%; font-family:'DM Sans',sans-serif; cursor:pointer;
 }
 .pkg-cta:hover{background:var(--green-dark);}
 .pkg-badge {
@@ -420,7 +421,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('SELFIE','₱500')">Book Now →</button>
         </div>
       </div>
 
@@ -443,7 +444,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('TIME','₱800')">Book Now →</button>
         </div>
       </div>
 
@@ -465,7 +466,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('CAM','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -487,7 +488,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('CAPTURES','₱1,200')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -517,7 +518,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Frenzy Snaps','₱700')">Book Now →</button>
         </div>
       </div>
 
@@ -538,7 +539,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Party Clicks','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -558,7 +559,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: Framed 8R in Double Glass Frame</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Click Capture','₱1,500')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -634,7 +635,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="text-align:center;padding:2rem;">
-      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+      <button class="book-btn" onclick="openBooking('Studio Session + Add-ons','')">Book Now →</button>
     </div>
   </div>
 </div>
@@ -661,7 +662,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
   </div>
   <style>
-    @keyframes promoPulseBtn {
+    @keyframes goldBtn {
+      0%,100% { box-shadow:0 0 0 0 rgba(240,192,48,.6), 0 2px 12px rgba(240,192,48,.3); transform:scale(1); }
+      50%     { box-shadow:0 0 0 10px rgba(240,192,48,0), 0 2px 16px rgba(240,192,48,.4); transform:scale(1.03); }
+    }
       0%,100% { box-shadow:0 0 0 0 rgba(229,57,53,.7); transform:scale(1); }
       50%     { box-shadow:0 0 0 10px rgba(229,57,53,0); transform:scale(1.05); }
     }
@@ -837,7 +841,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .modal-addon-row:last-child { border:none; }
 .modal-addon-price { font-family:'Space Mono',monospace; font-weight:700; color:var(--amber); font-size:.82rem; }
 .modal-note { background:var(--cream); border-radius:10px; padding:1rem 1.2rem; font-size:.8rem; color:var(--text-mid); line-height:1.65; margin-top:1.2rem; }
-.modal-book { display:block; text-align:center; margin-top:1.5rem; background:var(--green); color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.04em; padding:.9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+.modal-book { display:block; text-align:center; margin-top:1.5rem; background:var(--green); color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.04em; padding:.9rem; border-radius:10px; text-decoration:none; transition:background .2s; border:none; width:100%; font-family:'DM Sans',sans-serif; cursor:pointer; }
 .modal-book:hover { background:var(--green-dark); }
 .modal-section-title { font-family:'Playfair Display',serif; font-size:1rem; color:var(--green-dark); margin:1.2rem 0 .5rem; padding-bottom:.3rem; border-bottom:1px solid rgba(45,110,95,.12); }
 </style>
@@ -854,7 +858,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <img src="11.png" alt="Promo 3" style="width:100%;border-radius:12px;display:block;">
       <img src="12.png" alt="Promo 4" style="width:100%;border-radius:12px;display:block;">
     </div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')" style="margin-top:1.2rem;">Book a Session Now</a>
+    <button class="modal-book" onclick="openBooking('Promo Session','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Promo Session →</button>
   </div>
 </div>
 
@@ -898,7 +902,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Styleshots','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Styleshots →</button>
   </div>
 </div>
 
@@ -943,7 +947,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Couple Styleshots','₱2,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Couple Styleshots →</button>
   </div>
 </div>
 
@@ -952,7 +956,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div class="modal-close"><button onclick="closeModal()">✕</button></div>
   <div class="modal-inner" style="padding:.5rem 1rem 1.5rem;">
     <img src="img_popreveal_content.png" alt="Pop Reveal Package" style="width:100%;border-radius:12px;display:block;margin-bottom:1.2rem;">
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Pop Reveal','₱3,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Pop Reveal →</button>
   </div>
 </div>
 
@@ -1004,7 +1008,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Hair &amp; Makeup</span><span class="modal-addon-price">₱2,000</span></div>
     <div class="modal-addon-row"><span>Additional Time</span><span class="modal-addon-price">₱500/10 min</span></div>
     <div class="modal-addon-row"><span>Discount on Frames</span><span class="modal-addon-price">Available</span></div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Radiant Mama','₱2,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Radiant Mama →</button>
   </div>
 </div>
 
@@ -1089,7 +1093,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Digital Backdrop Edit</span><span class="modal-addon-price">₱300/pic</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱100/pic</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Candid Kids','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Candid Kids →</button>
   </div>
 </div>
 
@@ -1146,7 +1150,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: ₱800)</span><span class="modal-addon-price">₱1,500</span></div>
     <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: ₱500)</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Family Portraits','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Family Portraits →</button>
   </div>
 </div>
 
@@ -1229,7 +1233,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>5R Frame Matted</span><span class="modal-addon-price">₱600</span></div>
     <div class="modal-addon-row"><span>5R Double Glass Frame</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-note">Let us know what hood color you need. School emblems can be edited to your chosen file. Stole shall be provided by the graduate. Please wear a black or nude tube top for Filipiana shots (women) and white shirt with no collar for Barong shots (men). Our barong fits Large to XL size only. We provide pearl earrings and necklace for women. Hair and Make Up Services is subject to booking. Please advise upon booking if you will avail the VIP Grad Glam package.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Graduation','₱700')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Graduation →</button>
   </div>
 </div>
 
@@ -1278,7 +1282,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Per pet (max of 3)</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Per person</span><span class="modal-addon-price">₱100</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. Booking is a must for Pawsome Package. Pet Guidelines must be followed.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('PAWtraits','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book PAWtraits →</button>
   </div>
 </div>
 
@@ -1296,7 +1300,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <span class="save-chip">Save ₱3,000</span>
     </div>
     <p style="color:var(--text-mid);font-size:.9rem;margin-bottom:1.5rem;">Exclusive bridal shoot for up to 7 pax</p>
-    <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+      <button class="book-btn" onclick="openBooking('Bridal Bliss','₱5,000')">Book Now →</button>
   </div>
 
   <div style="max-width:800px;margin:0 auto;padding:2.5rem 2rem 0;">
@@ -1385,7 +1389,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="margin-top:2rem;">
-      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Studio Booth</a>
+      <a class="book-btn" href="#" onclick="openBooking('Studio Booth','');return false;">Book Studio Booth</a>
     </div>
   </div>
 </div>
@@ -1399,7 +1403,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <div style="text-align:center;padding:2rem 2rem 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-    <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="book-btn green" onclick="openBooking('Studio Session','')">Book Now →</button>
     <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
   </div>
 
@@ -1416,13 +1420,13 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 </div>
 
 <!-- ══ T&C FULLSCREEN MODAL ══ -->
-<div id="tnc-overlay" onclick="closeTnC()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.9);z-index:800;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="max-width:780px;width:92%;margin:1.5rem auto;position:relative;">
-    <button onclick="event.stopPropagation();closeTnC()"
-      style="position:sticky;top:.8rem;float:right;background:#fff;border:none;width:38px;height:38px;border-radius:50%;font-size:1.1rem;cursor:pointer;box-shadow:0 2px 12px rgba(0,0,0,.4);display:flex;align-items:center;justify-content:center;z-index:10;margin-bottom:.5rem;">✕</button>
+<div id="tnc-overlay" style="display:none;width:100%;background:rgba(0,0,0,.9);padding:1.5rem 1rem 3rem;">
+  <div style="max-width:780px;width:100%;margin:0 auto;">
+    <button onclick="closeTnC()"
+      style="display:block;margin:0 0 .8rem auto;background:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;line-height:36px;text-align:center;">✕</button>
     <img src="Terms_and_conditions.png" alt="Studio Terms and Conditions"
-      style="width:100%;border-radius:12px;display:block;clear:both;box-shadow:0 8px 40px rgba(0,0,0,.4);">
-    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;margin:.8rem 0 2rem;">Tap outside or ✕ to close</p>
+      style="width:100%;border-radius:12px;display:block;box-shadow:0 8px 40px rgba(0,0,0,.4);">
+    <p style="text-align:center;color:rgba(255,255,255,.35);font-size:.75rem;margin:.8rem 0 0;">Tap ✕ to close</p>
   </div>
 </div>
 <div id="loyalty" class="section">
@@ -1817,24 +1821,74 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
 </div>
 <!-- ══ CLICKCARD MODAL ══ -->
-<div id="clickcard-overlay" onclick="closeClickCard(event)" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.88);z-index:800;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;-webkit-overflow-scrolling:touch;">
-  <div style="position:relative;max-width:620px;width:100%;margin:auto;text-align:center;">
-    <button onclick="closeClickCard(null,true)" style="position:absolute;top:-14px;right:-14px;background:#fff;border:none;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;box-shadow:0 2px 8px rgba(0,0,0,.3);z-index:10;display:flex;align-items:center;justify-content:center;">✕</button>
+<div id="clickcard-overlay" style="display:none;width:100%;background:rgba(0,0,0,.88);padding:2rem 1rem 3rem;">
+  <div style="max-width:620px;margin:0 auto;text-align:center;">
+    <button onclick="closeClickCard()" style="background:rgba(255,255,255,.15);border:1px solid rgba(255,255,255,.25);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;margin-bottom:1rem;display:inline-flex;align-items:center;justify-content:center;">✕</button>
     <div style="background:rgba(255,255,255,.06);border-radius:20px;padding:1.5rem 1.2rem;">
       <div style="font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:rgba(255,255,255,.5);margin-bottom:.4rem;">Your Digital</div>
       <h2 style="font-family:'Playfair Display',serif;font-size:1.6rem;color:#fff;margin-bottom:1.2rem;">ClickCard 🪪</h2>
-      <!-- Canvas card -->
-      <canvas id="clickcard-canvas" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
+      <canvas id="clickcard-canvas" width="1000" height="630" style="width:100%;border-radius:16px;box-shadow:0 12px 48px rgba(0,0,0,.5);display:block;"></canvas>
       <div style="margin-top:1.2rem;display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
-        <button onclick="downloadClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
-          💾 Save Card to Phone
+        <button onclick="downloadClickCard()" style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:none;cursor:pointer;">
+          💾 Save Card
         </button>
-        <button onclick="shareClickCard()" id="share-btn" style="background:rgba(255,255,255,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
+        <button onclick="shareClickCard()" style="background:rgba(255,255,255,.12);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.75rem 1.5rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
           📤 Share
+        </button>
+        <button onclick="closeClickCard()" style="background:transparent;color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.7rem 1.2rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);cursor:pointer;">
+          Close
         </button>
       </div>
       <p style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.8rem;">Show this card to our staff at the start of every session to access your perks!</p>
     </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<style>
+#booking-modal{display:none;width:100%;background:linear-gradient(180deg,#0e1a16 0%,#1a3020 100%);padding:2rem 1rem 3rem;}
+.bk-inner{max-width:500px;margin:0 auto;}
+.bk-close{display:block;margin:0 0 .8rem auto;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;text-align:center;line-height:36px;}
+.bk-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.4rem;margin-bottom:.8rem;}
+.bk-step-indicator{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;}
+.bk-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);}
+.bk-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(240,192,48,.4);}
+.bk-dot.done{background:var(--green);}
+.bk-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:.5rem;text-align:center;}
+.bk-sub{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:1.2rem;line-height:1.6;}
+.bk-pkg-banner{background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.bk-pkg-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;}
+.bk-pkg-price{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:var(--gold);}
+.bk-label{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);display:block;margin-bottom:.4rem;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;}
+.bk-input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:#fff;outline:none;transition:border-color .2s;}
+.bk-input:focus{border-color:var(--gold);}
+.bk-input::placeholder{color:rgba(255,255,255,.25);}
+.bk-row{margin-bottom:.9rem;}
+.bk-row:last-child{margin-bottom:0;}
+.bk-time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.bk-time-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:.6rem;text-align:center;font-family:'DM Mono',monospace;font-size:.82rem;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}
+.bk-time-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);}
+.bk-time-btn.selected{background:rgba(240,192,48,.15);border-color:var(--gold);color:var(--gold);}
+.bk-time-btn.disabled{opacity:.3;pointer-events:none;}
+.bk-action{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:#3d2000;font-family:'DM Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.06em;padding:.85rem;border-radius:10px;border:none;cursor:pointer;margin-top:.8rem;}
+.bk-action:disabled{opacity:.4;cursor:not-allowed;}
+.bk-back{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;font-size:.75rem;padding:.55rem 1rem;border-radius:8px;cursor:pointer;margin-right:.5rem;}
+.bk-success{text-align:center;padding:1.5rem 0;}
+.bk-check{width:64px;height:64px;border-radius:50%;background:rgba(45,110,95,.2);display:flex;align-items:center;justify-content:center;margin:0 auto .8rem;font-size:2rem;border:2px solid var(--green);}
+.bk-summary-row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem;}
+.bk-summary-label{color:rgba(255,255,255,.5);}
+.bk-summary-val{color:#fff;font-weight:500;text-align:right;}
+</style>
+
+<div id="booking-modal">
+  <div class="bk-inner">
+    <button class="bk-close" onclick="closeBooking()">✕</button>
+    <div class="bk-step-indicator" id="bk-steps">
+      <div class="bk-dot active"></div>
+      <div class="bk-dot"></div>
+      <div class="bk-dot"></div>
+    </div>
+    <div id="bk-content"></div>
   </div>
 </div>
 
@@ -2099,6 +2153,42 @@ async function checkMyPoints() {
     }
 
     // ── FOUND
+    // Capture earliest visit year from TX and OG for the card
+    let firstVisitYear = new Date().getFullYear();
+    TX.forEach(tx => {
+      const n = String(tx['clientName'] || tx['Client Name'] || '').trim();
+      if (!n) return;
+      if (namesMatch(q, n) || n.toLowerCase().includes(qLower)) {
+        const d = tx['date'] || tx['Date'];
+        if (d) {
+          let yr;
+          if (typeof d === 'number' && d > 1000 && d < 100000) {
+            yr = new Date((d - 25569) * 86400 * 1000).getFullYear();
+          } else {
+            yr = new Date(d).getFullYear();
+          }
+          if (!isNaN(yr) && yr > 2000 && yr < firstVisitYear) firstVisitYear = yr;
+        }
+      }
+    });
+    OG.forEach(row => {
+      const n = String(row['Name'] || '').trim();
+      if (!n) return;
+      if (namesMatch(q, n) || n.toLowerCase().includes(qLower)) {
+        const d = row['Date'];
+        if (d) {
+          let yr;
+          if (typeof d === 'number' && d > 1000 && d < 100000) {
+            yr = new Date((d - 25569) * 86400 * 1000).getFullYear();
+          } else {
+            yr = new Date(d).getFullYear();
+          }
+          if (!isNaN(yr) && yr > 2000 && yr < firstVisitYear) firstVisitYear = yr;
+        }
+      }
+    });
+
+    // What can they redeem right now
     const redeemable = PERKS.filter(p => pts >= p.cost && !p.tier);
 
     box.innerHTML = `
@@ -2161,18 +2251,31 @@ async function checkMyPoints() {
           <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.7rem;">Every session earns more points 🚀</div>
           <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
             <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
-              onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
               style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
               📸 Book a Session →
             </a>
-            <button onclick="generateClickCard('${clientName}','${tier.name}','${tier.emoji}',${pts})"
-              style="background:linear-gradient(135deg,#2d6e5f,#1a3d35);color:#ffd76e;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:1.5px solid rgba(255,215,110,.3);cursor:pointer;animation:promoPulseBtn 2s ease-in-out infinite;">
+            <button id="make-card-btn"
+              style="background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.2rem;border-radius:100px;border:none;cursor:pointer;box-shadow:0 2px 12px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;">
               🪪 Create My ClickCard →
             </button>
           </div>
         </div>
 
       </div>`;
+
+    // Store card data globally so the button can access it without interpolation
+    window._pendingCard = { clientName, tierName: tier.name, tierEmoji: tier.emoji, pts, firstVisitYear };
+
+    // Wire the Create My ClickCard button safely after innerHTML is set
+    requestAnimationFrame(() => {
+      const btn = document.getElementById('make-card-btn');
+      if (btn) {
+        btn.addEventListener('click', () => {
+          const d = window._pendingCard;
+          generateClickCard(d.clientName, d.tierName, d.tierEmoji, d.pts, d.firstVisitYear);
+        });
+      }
+    });
 
   } catch(err) {
     box.innerHTML = `
@@ -2223,285 +2326,18 @@ function toggleFaq(i) {
 }
 
 // ── CLICKCARD GENERATOR ──
-function genCardID(name) {
-  // Unique card ID: CLS-[initials][year][random6]
-  const initials = name.trim().split(/\s+/).map(w=>w[0].toUpperCase()).join('').slice(0,3).padEnd(2,'X');
-  const year = new Date().getFullYear().toString().slice(-2);
-  const rand = Math.random().toString(36).slice(2,8).toUpperCase();
-  return `CLS-${initials}${year}-${rand}`;
-}
-
-function generateClickCard(name, tierName, tierEmoji, pts) {
-  // Persist card ID in sessionStorage so same client gets same ID per session
-  const storageKey = 'cls_card_' + name.toLowerCase().replace(/\s+/g,'_');
-  let cardID = sessionStorage.getItem(storageKey);
-  if (!cardID) {
-    cardID = genCardID(name);
-    sessionStorage.setItem(storageKey, cardID);
-  }
-
-  const memberYear = new Date().getFullYear();
-  const tierColors = {
-    Bronze:{ bg:'#f7efe4', accent:'#c8a070', dark:'#6b3e10', badge:'🥉' },
-    Silver:{ bg:'#edf0f6', accent:'#8a96b0', dark:'#2a3560', badge:'🥈' },
-    Gold:  { bg:'#fffbe6', accent:'#c8a010', dark:'#6a4a00', badge:'🥇' },
-    VIP:   { bg:'#1a2a38', accent:'#4a9082', dark:'#fff',    badge:'💎' },
-  };
-  const tc = tierColors[tierName] || tierColors.Bronze;
-  const isVIP = tierName === 'VIP';
-
-  // Create overlay
-  let overlay = document.getElementById('clickcard-overlay');
-  if (!overlay) {
-    overlay = document.createElement('div');
-    overlay.id = 'clickcard-overlay';
-    overlay.style.cssText = 'position:fixed;inset:0;background:rgba(0,0,0,.85);z-index:900;display:flex;align-items:center;justify-content:center;padding:1rem;overflow-y:auto;';
-    overlay.addEventListener('click', e => { if(e.target===overlay) overlay.style.display='none'; });
-    document.body.appendChild(overlay);
-  }
-
-  overlay.style.display = 'flex';
-  overlay.innerHTML = `
-    <div style="max-width:480px;width:100%;text-align:center;">
-      <div style="font-family:'Space Mono',monospace;font-size:.65rem;font-weight:700;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.45);margin-bottom:1rem;">Your Digital ClickCard</div>
-
-      <!-- THE CARD -->
-      <div id="cls-card" style="
-        background:${isVIP?'linear-gradient(135deg,#1a2a38,#253545)':'#f5f0e8'};
-        border-radius:18px;
-        overflow:hidden;
-        position:relative;
-        box-shadow:0 24px 60px rgba(0,0,0,.5);
-        aspect-ratio:1.586;
-        width:100%;
-        font-family:'DM Sans',sans-serif;
-      ">
-        <!-- BG organic shapes -->
-        <svg style="position:absolute;inset:0;width:100%;height:100%;" viewBox="0 0 480 302" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
-          <!-- top right teal blob -->
-          <path d="M340 0 Q420 0 480 60 L480 0 Z" fill="${isVIP?'#4a9082':'#2d6e5f'}" opacity="${isVIP?'.5':'.9'}"/>
-          <path d="M360 0 Q460 20 480 120 L480 0 Z" fill="${isVIP?'#2d6e5f':'#1a3d35'}" opacity=".6"/>
-          <!-- bottom left warm blob -->
-          <path d="M0 200 Q60 160 140 200 Q180 220 160 302 L0 302 Z" fill="${isVIP?'rgba(74,144,130,.3)':'#c8a070'}" opacity="${isVIP?'1':'.7'}"/>
-          <path d="M0 240 Q80 200 120 260 Q140 280 100 302 L0 302 Z" fill="${isVIP?'rgba(45,110,95,.4)':'#b08050'}" opacity=".6"/>
-          <!-- subtle wave lines -->
-          <path d="M100 180 Q200 140 300 180 Q380 210 480 160" fill="none" stroke="${isVIP?'rgba(74,144,130,.3)':'rgba(200,160,112,.4)'}" stroke-width="1.2"/>
-          <path d="M0 220 Q120 190 220 220 Q320 250 480 200" fill="none" stroke="${isVIP?'rgba(74,144,130,.2)':'rgba(200,160,112,.25)'}" stroke-width="1"/>
-        </svg>
-
-        <!-- DARK FOOTER BAND -->
-        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;background:${isVIP?'rgba(255,255,255,.05)':'#1e3d35'};"></div>
-
-        <!-- LOGO AREA top-left -->
-        <div style="position:absolute;top:12%;left:7%;z-index:2;">
-          <!-- Camera icon SVG -->
-          <svg width="36" height="28" viewBox="0 0 36 28" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <rect x="2" y="8" width="32" height="18" rx="3" stroke="#c8a070" stroke-width="2"/>
-            <circle cx="18" cy="17" r="5" stroke="#c8a070" stroke-width="2"/>
-            <path d="M12 8 L14 4 H22 L24 8" stroke="#c8a070" stroke-width="1.8"/>
-            <!-- rainbow arc -->
-            <path d="M8 17 Q18 8 28 17" stroke="#2d6e5f" stroke-width="2" fill="none"/>
-          </svg>
-        </div>
-        <div style="position:absolute;top:11%;left:18%;z-index:2;line-height:1.15;">
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Click</div>
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(1rem,4vw,1.35rem);font-weight:700;color:#c8a070;">Lounge</div>
-          <div style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.7)':'#2d6e5f'};margin-top:.1rem;">— STUDIO —</div>
-        </div>
-
-        <!-- TIER badge top-left corner of name area -->
-        <div style="position:absolute;top:11%;right:7%;z-index:2;text-align:right;">
-          <div style="font-size:1.4rem;">${tierEmoji}</div>
-          <div style="font-size:clamp(.45rem,1.5vw,.58rem);font-family:'Space Mono',monospace;font-weight:700;letter-spacing:.1em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">${tierName.toUpperCase()}</div>
-        </div>
-
-        <!-- CLICKCARD label — center right -->
-        <div style="position:absolute;top:42%;right:7%;z-index:2;text-align:right;">
-          <div style="font-family:'Space Mono',monospace;font-size:clamp(.9rem,3.5vw,1.35rem);font-weight:700;letter-spacing:.12em;color:${isVIP?'#fff':'#1a3d35'};">CLICKCARD</div>
-          <div style="font-size:clamp(.38rem,1.3vw,.55rem);letter-spacing:.25em;color:${isVIP?'rgba(255,255,255,.5)':'#2d6e5f'};margin-top:.1rem;">
-            <span style="color:#c8a070;">——</span> REWARDS PROGRAM <span style="color:#c8a070;">——</span>
-          </div>
-        </div>
-
-        <!-- POINTS chip -->
-        <div style="position:absolute;top:57%;right:7%;z-index:2;text-align:right;">
-          <div style="background:rgba(196,154,26,.2);border:1px solid rgba(196,154,26,.4);border-radius:100px;padding:.15rem .6rem;display:inline-block;">
-            <span style="font-family:'Space Mono',monospace;font-size:clamp(.55rem,2vw,.75rem);font-weight:700;color:#c8a070;">${pts.toLocaleString()} pts</span>
-          </div>
-        </div>
-
-        <!-- FOOTER band content -->
-        <div style="position:absolute;bottom:0;left:0;right:0;height:28%;display:flex;align-items:center;padding:0 5%;z-index:2;">
-          <!-- Left: thank you -->
-          <div style="flex:1;">
-            <div style="display:flex;align-items:center;gap:.4rem;margin-bottom:.15rem;">
-              <svg width="12" height="12" viewBox="0 0 12 12" fill="none"><path d="M6 10.5 C6 10.5 1 7 1 4 C1 2.3 2.3 1 4 1 C4.9 1 5.7 1.4 6 2 C6.3 1.4 7.1 1 8 1 C9.7 1 11 2.3 11 4 C11 7 6 10.5 6 10.5Z" stroke="#c8a070" stroke-width="1.2" fill="none"/></svg>
-              <span style="font-size:clamp(.45rem,1.5vw,.6rem);font-weight:700;letter-spacing:.1em;color:#c8a070;text-transform:uppercase;">Thank You</span>
-            </div>
-            <div style="font-size:clamp(.4rem,1.3vw,.55rem);color:rgba(255,255,255,.6);letter-spacing:.03em;">for being part of our studio family!</div>
-          </div>
-          <!-- Divider -->
-          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
-          <!-- Member since -->
-          <div style="text-align:center;min-width:60px;">
-            <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.5);letter-spacing:.1em;text-transform:uppercase;margin-bottom:.1rem;">Member Since</div>
-            <div style="font-family:'Space Mono',monospace;font-size:clamp(.6rem,2.2vw,.9rem);font-weight:700;color:#c8a070;">${memberYear}</div>
-          </div>
-          <!-- Divider -->
-          <div style="width:1px;height:55%;background:rgba(255,255,255,.15);margin:0 4%;"></div>
-          <!-- NFC chip icon -->
-          <div style="background:rgba(245,240,232,.12);border-radius:6px;padding:.3rem .4rem;display:flex;align-items:center;justify-content:center;">
-            <svg width="20" height="16" viewBox="0 0 20 16" fill="none"><path d="M10 1 C14 1 17 4.5 17 8 C17 11.5 14 15 10 15" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 3.5 C12.8 3.5 15 5.5 15 8 C15 10.5 12.8 12.5 10 12.5" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/><path d="M10 6 C11.7 6 13 6.9 13 8 C13 9.1 11.7 10 10 10" stroke="rgba(255,255,255,.5)" stroke-width="1.2"/></svg>
-          </div>
-        </div>
-
-        <!-- CLIENT NAME — bottom of main area, above footer -->
-        <div style="position:absolute;bottom:30%;left:7%;z-index:2;">
-          <div style="font-size:clamp(.38rem,1.2vw,.52rem);color:rgba(255,255,255,.4);font-family:'Space Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.2rem;">Cardholder</div>
-          <div style="font-family:'Playfair Display',serif;font-size:clamp(.7rem,2.5vw,1rem);color:#fff;font-weight:600;">${name}</div>
-        </div>
-
-        <!-- CARD ID — very bottom of footer left -->
-        <div style="position:absolute;bottom:2%;left:7%;z-index:3;">
-          <div style="font-family:'Space Mono',monospace;font-size:clamp(.3rem,.95vw,.42rem);color:rgba(255,255,255,.3);letter-spacing:.08em;">${cardID}</div>
-        </div>
-      </div>
-
-      <!-- Actions -->
-      <div style="margin-top:1.2rem;display:flex;gap:.7rem;flex-wrap:wrap;justify-content:center;">
-        <button onclick="saveClickCard()" style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:none;cursor:pointer;">
-          📥 Save Card
-        </button>
-        <button onclick="shareClickCard('${name}','${tierName}',${pts},'${cardID}')" style="background:rgba(255,255,255,.1);color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:1px solid rgba(255,255,255,.2);cursor:pointer;">
-          📤 Share
-        </button>
-        <button onclick="document.getElementById('clickcard-overlay').style.display='none'" style="background:transparent;color:rgba(255,255,255,.45);font-family:'Space Mono',monospace;font-size:.72rem;padding:.65rem 1rem;border-radius:100px;border:1px solid rgba(255,255,255,.15);cursor:pointer;">
-          Close
-        </button>
-      </div>
-      <p style="color:rgba(255,255,255,.3);font-size:.72rem;margin-top:.8rem;line-height:1.6;">Screenshot or save this card. Show it to our staff on your next visit to claim your tier perks!</p>
-    </div>`;
-}
-
-function saveClickCard() {
-  const card = document.getElementById('cls-card');
-  if (!card) return;
-  // Use html2canvas if available, otherwise guide to screenshot
-  if (typeof html2canvas !== 'undefined') {
-    html2canvas(card, { scale:3, useCORS:true, backgroundColor:null }).then(canvas => {
-      const a = document.createElement('a');
-      a.download = 'my-clickcard.png';
-      a.href = canvas.toDataURL('image/png');
-      a.click();
-    });
-  } else {
-    alert('📸 To save your card: take a screenshot of this screen!\n\nOn phone: press Volume Down + Power button\nOn desktop: press Print Screen or use Snipping Tool');
-  }
-}
-
-function shareClickCard(name, tier, pts, cardID) {
-  const text = `🎉 I'm a ${tier} member of Click Lounge Studio's ClickCard Rewards Program!\n\n💳 Card: ${cardID}\n⭐ Points: ${pts}\n\nBook your session at: https://hellotalentff-max.github.io/clicklounge_booking/`;
-  if (navigator.share) {
-    navigator.share({ title:'My ClickCard — Click Lounge Studio', text }).catch(()=>{});
-  } else if (navigator.clipboard) {
-    navigator.clipboard.writeText(text).then(()=>alert('Card details copied to clipboard! Paste it anywhere to share.'));
-  }
-}
-
-// ── GIFT GENERATOR ──
-const GIFT_COOLDOWN = 20 * 60 * 1000; // 20 mins in ms
-const GIFT_PRIZES = [
-  { chance: 0.10, icon: '⏱️', name: 'FREE 5 Minutes!', desc: 'Enjoy an extra 5 minutes added to your birthday self-shoot session — on us!' },
-  { chance: 0.10, icon: '🖼️', name: 'FREE Print!',     desc: 'Get a complimentary print of your favourite shot from your birthday session!' },
-  { chance: 0.80, icon: '🧑‍🤝‍🧑', name: 'FREE Extra Pax!',  desc: 'Bring one extra person to your birthday self-shoot session at no extra charge!' },
-];
-
-function genCode() {
-  const chars = 'ABCDEFGHJKLMNPQRSTUVWXYZ23456789';
-  let c = 'CLS-';
-  for (let i = 0; i < 8; i++) c += chars[Math.floor(Math.random() * chars.length)];
-  return c;
-}
-
-function spinGift() {
-  const now = Date.now();
-  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
-  const btn = document.getElementById('gift-btn');
-  const usedMsg = document.getElementById('gift-used-msg');
-
-  if (lastSpin && (now - lastSpin) < GIFT_COOLDOWN) {
-    // Already spun — show existing result silently, no message to user
-    document.getElementById('gift-result').style.display = 'block';
-    return;
-  }
-
-  // Disable button with animation
-  btn.disabled = true;
-  btn.textContent = '🎊 Revealing your gift…';
-  btn.style.animation = 'none';
-  btn.style.opacity = '.7';
-
-  setTimeout(() => {
-    // Pick prize
-    const r = Math.random();
-    let cumulative = 0, prize = GIFT_PRIZES[2];
-    for (const p of GIFT_PRIZES) {
-      cumulative += p.chance;
-      if (r < cumulative) { prize = p; break; }
-    }
-    const code = genCode();
-
-    // Store timestamp (hidden from user)
-    sessionStorage.setItem('_gts', now.toString());
-    sessionStorage.setItem('_gtr', JSON.stringify({ prize, code }));
-
-    // Show result
-    document.getElementById('gift-icon').textContent = prize.icon;
-    document.getElementById('gift-name').textContent = prize.name;
-    document.getElementById('gift-desc').textContent = prize.desc;
-    document.getElementById('gift-code').textContent = code;
-    // Set Control Hub link — opens Gifts tab with code in URL so staff can paste it
-    const hubLink = document.getElementById('gift-hub-link');
-    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
-    document.getElementById('gift-result').style.display = 'block';
-
-    // Update button
-    btn.textContent = '🎁 Gift Claimed!';
-    btn.style.background = 'var(--green)';
-    btn.style.opacity = '1';
-
-    // Scroll to result
-    document.getElementById('gift-result').scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 1200);
-}
-
-// Restore gift result on page revisit within same session
-function restoreGift() {
-  const saved = sessionStorage.getItem('_gtr');
-  const lastSpin = parseInt(sessionStorage.getItem('_gts') || '0');
-  if (!saved || !lastSpin) return;
-  if ((Date.now() - lastSpin) >= GIFT_COOLDOWN) return;
-  try {
-    const { prize, code } = JSON.parse(saved);
-    document.getElementById('gift-icon').textContent = prize.icon;
-    document.getElementById('gift-name').textContent = prize.name;
-    document.getElementById('gift-desc').textContent = prize.desc;
-    document.getElementById('gift-code').textContent = code;
-    const hubLink = document.getElementById('gift-hub-link');
-    if (hubLink) hubLink.href = `https://hellotalentff-max.github.io/clicklounge_pos/#gifts?code=${encodeURIComponent(code)}`;
-    document.getElementById('gift-result').style.display = 'block';
-    const btn = document.getElementById('gift-btn');
-    if (btn) { btn.textContent = '🎁 Gift Claimed!'; btn.style.background = 'var(--green)'; btn.disabled = true; btn.style.animation = 'none'; }
-  } catch(e) {}
-}
-document.addEventListener('DOMContentLoaded', restoreGift);
-
-// ── CLICKCARD GENERATOR ──
-let _cardClientName = '';
 let _cardDataURL = null;
+let _cardClientName = '';
+
+// Preload the studio logo PNG so it's ready when drawPremiumCard is called
+(function preloadLogo() {
+  window._logoImg = new Image();
+  window._logoImg.crossOrigin = 'anonymous';
+  window._logoImg.src = 'logocl.png';
+})();
 
 // Generate a stable unique ID from name (same name always gets same ID)
-function genCardID(name) {
+function genCardID(name, year) {
   let hash = 0;
   const str = name.toLowerCase().trim();
   for (let i = 0; i < str.length; i++) {
@@ -2509,260 +2345,761 @@ function genCardID(name) {
     hash |= 0;
   }
   const abs = Math.abs(hash).toString(36).toUpperCase().padStart(6,'0');
-  return 'CLC-' + abs.slice(0,3) + '-' + abs.slice(3,6);
+  const yr  = String(year || new Date().getFullYear()).slice(-2);
+  return 'CLS-' + yr + abs.slice(0,3) + '-' + abs.slice(3,6);
 }
 
-function getMemberYear(name) {
-  // Stable year based on name hash — between 2022 and 2024
-  let h = 0;
-  for (let i = 0; i < name.length; i++) h = (h * 31 + name.charCodeAt(i)) | 0;
-  return 2022 + (Math.abs(h) % 3);
-}
+// Tier-adaptive premium card palettes
+const CARD_PALETTES = {
+  Bronze: {
+    bg1:'#f5ede0', bg2:'#ede0cc',
+    blob1:'#1e3d35', blob2:'#2d6e5f',
+    blobRust:'#c8a070', blobRust2:'#a07848',
+    footer:'#1e3d35', footerLine:'rgba(255,255,255,.12)',
+    accent:'#c8a070', accentDark:'#8a5a2a',
+    text:'#1e2824', textLight:'rgba(255,255,255,.7)',
+    gloss1:'rgba(255,255,255,.45)', gloss2:'rgba(255,255,255,.08)',
+    badgeBg:'#c8a070', badgeText:'#fff',
+    label:'rgba(30,56,36,.5)', shimmer:'rgba(255,255,255,.6)',
+  },
+  Silver: {
+    bg1:'#e8ecf4', bg2:'#d8dce8',
+    blob1:'#1e3d35', blob2:'#2d5a6e',
+    blobRust:'#8a96c8', blobRust2:'#6a7aaa',
+    footer:'#1a2a3a', footerLine:'rgba(255,255,255,.12)',
+    accent:'#8a96c8', accentDark:'#3a4888',
+    text:'#1a2030', textLight:'rgba(255,255,255,.75)',
+    gloss1:'rgba(255,255,255,.5)', gloss2:'rgba(255,255,255,.1)',
+    badgeBg:'#6a78b8', badgeText:'#fff',
+    label:'rgba(30,40,80,.5)', shimmer:'rgba(255,255,255,.65)',
+  },
+  Gold: {
+    bg1:'#2a1a08', bg2:'#3a2610',
+    blob1:'#c8a010', blob2:'#8a6a00',
+    blobRust:'#4a3000', blobRust2:'#5a3800',
+    footer:'rgba(0,0,0,.45)', footerLine:'rgba(196,154,26,.3)',
+    accent:'#f0c040', accentDark:'#c8a010',
+    text:'#f0e8d0', textLight:'rgba(240,192,64,.8)',
+    gloss1:'rgba(255,220,100,.22)', gloss2:'rgba(255,200,60,.06)',
+    badgeBg:'#c8a010', badgeText:'#1a1000',
+    label:'rgba(240,192,64,.45)', shimmer:'rgba(255,220,80,.5)',
+  },
+  VIP: {
+    bg1:'#080e18', bg2:'#0d1520',
+    blob1:'#0a2030', blob2:'#0f1a28',
+    blobRust:'#1a3048', blobRust2:'#142038',
+    footer:'rgba(0,0,0,.6)', footerLine:'rgba(74,144,130,.35)',
+    accent:'#4a9082', accentDark:'#2a6055',
+    text:'#e8f0ee', textLight:'rgba(255,255,255,.7)',
+    gloss1:'rgba(74,144,130,.18)', gloss2:'rgba(74,144,130,.04)',
+    badgeBg:'#4a9082', badgeText:'#fff',
+    label:'rgba(74,144,130,.5)', shimmer:'rgba(74,255,200,.25)',
+    // VIP extras
+    starColor:'rgba(74,144,130,.25)',
+  },
+};
 
-function generateClickCard(clientName, tierName, tierEmoji, pts) {
-  _cardClientName = clientName;
-  document.getElementById('clickcard-overlay').style.display = 'flex';
-  document.body.style.overflow = 'hidden';
+function drawPremiumCard(ctx, W, H, name, tierName, tierEmoji, pts, cardID, memYear) {
+  const p   = CARD_PALETTES[tierName] || CARD_PALETTES.Bronze;
+  const isVIP  = tierName === 'VIP';
+  const isGold = tierName === 'Gold';
+  const R = 28;
 
-  const canvas  = document.getElementById('clickcard-canvas');
-  const ctx     = canvas.getContext('2d');
-  const W = 1000, H = 620;
-  canvas.width  = W;
-  canvas.height = H;
+  ctx.clearRect(0, 0, W, H);
 
-  // Tier colors
-  const tierPalette = {
-    Bronze:{ accent:'#c8a070', accent2:'#8a5a2a' },
-    Silver:{ accent:'#8a96b0', accent2:'#4a5068' },
-    Gold:  { accent:'#c8a010', accent2:'#6a4a00' },
-    VIP:   { accent:'#4a9082', accent2:'#1a5040' },
-  };
-  const pal = tierPalette[tierName] || tierPalette.Bronze;
+  // No clip — canvas is displayed with CSS border-radius on the <canvas> element
+  // so we just fill the entire canvas directly.
 
-  const cardID   = genCardID(clientName);
-  const memYear  = getMemberYear(clientName);
+  // ── BACKGROUND ──
+  if (isVIP) {
+    // VIP: deep space gradient
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0,   '#060c14');
+    bgGrad.addColorStop(0.4, '#0a1520');
+    bgGrad.addColorStop(1,   '#080e18');
+    ctx.fillStyle = bgGrad;
+    ctx.fillRect(0, 0, W, H);
 
-  // Load card template image and draw on top
-  const img = new Image();
-  img.onload = () => {
-    // Draw base template
-    ctx.drawImage(img, 0, 0, W, H);
+    // Star field — scattered tiny dots
+    ctx.fillStyle = 'rgba(255,255,255,.55)';
+    const stars = [[60,40],[120,90],[200,30],[310,70],[420,20],[550,55],[660,35],[780,80],[900,25],
+                   [80,160],[180,200],[350,140],[480,180],[620,130],[850,170],[950,100],
+                   [40,280],[150,310],[270,260],[400,300],[530,270],[700,290],[820,240]];
+    stars.forEach(([sx,sy]) => {
+      ctx.beginPath(); ctx.arc(sx, sy, Math.random()<.3?1.2:.7, 0, Math.PI*2); ctx.fill();
+    });
 
-    // Tier accent overlay (top-right corner tint)
-    if (tierName !== 'Bronze') {
-      ctx.save();
-      ctx.globalAlpha = 0.18;
-      ctx.fillStyle = pal.accent;
-      ctx.beginPath();
-      ctx.moveTo(W * 0.6, 0);
-      ctx.lineTo(W, 0);
-      ctx.lineTo(W, H * 0.5);
-      ctx.quadraticCurveTo(W * 0.85, H * 0.3, W * 0.6, 0);
-      ctx.fill();
-      ctx.restore();
-    }
+    // Teal nebula glow — top left
+    const neb1 = ctx.createRadialGradient(160, 120, 0, 160, 120, 280);
+    neb1.addColorStop(0, 'rgba(74,144,130,.22)'); neb1.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb1; ctx.fillRect(0, 0, W, H);
 
-    // ── TIER BADGE (top right) ──
-    const badgeX = W - 30;
-    const badgeY = 32;
-    // Badge pill background
+    // Subtle blue glow — bottom right
+    const neb2 = ctx.createRadialGradient(W-100, H+60, 0, W-100, H+60, 320);
+    neb2.addColorStop(0, 'rgba(40,80,140,.18)'); neb2.addColorStop(1, 'transparent');
+    ctx.fillStyle = neb2; ctx.fillRect(0, 0, W, H);
+
+    // Teal arc — top right corner
+    const arcGrad = ctx.createRadialGradient(W, 0, 0, W, 0, 340);
+    arcGrad.addColorStop(0, 'rgba(74,144,130,.35)');
+    arcGrad.addColorStop(0.5, 'rgba(74,144,130,.08)');
+    arcGrad.addColorStop(1, 'transparent');
+    ctx.fillStyle = arcGrad; ctx.fillRect(0, 0, W, H);
+
+    // Thin teal ring — decorative top right
     ctx.save();
-    ctx.fillStyle = pal.accent;
-    roundRect(ctx, badgeX - 130, badgeY - 24, 130, 42, 21);
-    ctx.fill();
-    // Badge text
-    ctx.fillStyle = '#fff';
-    ctx.font = `bold 20px "DM Sans", Arial`;
-    ctx.textAlign = 'right';
-    ctx.fillText(`${tierEmoji} ${tierName.toUpperCase()}`, badgeX - 12, badgeY + 8);
+    ctx.strokeStyle = 'rgba(74,144,130,.25)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(W+30, -30, 200, 0, Math.PI*2); ctx.stroke();
+    ctx.strokeStyle = 'rgba(74,144,130,.12)'; ctx.lineWidth = 1;
+    ctx.beginPath(); ctx.arc(W+30, -30, 260, 0, Math.PI*2); ctx.stroke();
     ctx.restore();
 
-    // ── POINTS (center right area) ──
+  } else if (isGold) {
+    // Gold: deep dark with gold shimmer
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0,   '#1e1408');
+    bgGrad.addColorStop(0.5, '#2a1c0c');
+    bgGrad.addColorStop(1,   '#1a1006');
+    ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+
+    // Gold radial glow top-right
+    const gGlow = ctx.createRadialGradient(W*0.85, 0, 0, W*0.85, 0, 400);
+    gGlow.addColorStop(0, 'rgba(196,154,26,.4)');
+    gGlow.addColorStop(0.4, 'rgba(196,154,26,.08)');
+    gGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = gGlow; ctx.fillRect(0, 0, W, H);
+
+    // Warm amber glow bottom-left
+    const aGlow = ctx.createRadialGradient(W*0.1, H, 0, W*0.1, H, 300);
+    aGlow.addColorStop(0, 'rgba(140,80,10,.35)');
+    aGlow.addColorStop(1, 'transparent');
+    ctx.fillStyle = aGlow; ctx.fillRect(0, 0, W, H);
+
+    // Fine horizontal scan lines — premium dark card texture
+    ctx.save(); ctx.globalAlpha = 0.04;
+    ctx.fillStyle = '#c8a010';
+    for (let y = 0; y < H; y += 4) { ctx.fillRect(0, y, W, 1); }
+    ctx.restore();
+
+  } else {
+    // Bronze / Silver: cream/steel base
+    const bgGrad = ctx.createLinearGradient(0, 0, W, H);
+    bgGrad.addColorStop(0, p.bg1);
+    bgGrad.addColorStop(1, p.bg2);
+    ctx.fillStyle = bgGrad; ctx.fillRect(0, 0, W, H);
+
+    // Teal blob — top right
     ctx.save();
-    ctx.textAlign = 'right';
-    // Points label
-    ctx.font = `500 18px "DM Sans", Arial`;
-    ctx.fillStyle = '#1e3d35';
-    ctx.globalAlpha = 0.55;
-    ctx.fillText('POINTS BALANCE', W - 42, H * 0.44);
     ctx.globalAlpha = 1;
-    // Points number
-    ctx.font = `bold 62px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = pal.accent2;
-    ctx.fillText(pts.toLocaleString(), W - 42, H * 0.44 + 68);
-    ctx.restore();
+    const tBlob = ctx.createRadialGradient(W, 0, 0, W*0.7, H*0.05, W*0.55);
+    tBlob.addColorStop(0, p.blob1);
+    tBlob.addColorStop(0.55, p.blob2);
+    tBlob.addColorStop(1, 'transparent');
+    ctx.fillStyle = tBlob;
+    ctx.beginPath();
+    ctx.moveTo(W*0.52, 0); ctx.lineTo(W, 0); ctx.lineTo(W, H*0.62);
+    ctx.quadraticCurveTo(W*0.72, H*0.35, W*0.52, 0);
+    ctx.fill(); ctx.restore();
 
-    // ── CLIENT NAME (bottom dark bar - left side, replacing THANK YOU) ──
-    // Clear the THANK YOU area with the dark bar color
+    // Rust/steel blob — bottom left
     ctx.save();
-    ctx.fillStyle = '#1e3d35';
-    ctx.fillRect(0, H * 0.735, W * 0.62, H * 0.265);
-    // Heart icon
-    ctx.font = '26px Arial';
-    ctx.fillStyle = pal.accent;
-    ctx.fillText('♥', 36, H * 0.83);
-    // Client name
-    ctx.font = `bold 24px "DM Sans", Arial`;
-    ctx.fillStyle = pal.accent;
-    ctx.textAlign = 'left';
-    // Truncate name if too long
-    let displayName = clientName;
-    if (ctx.measureText(displayName).width > W * 0.45) {
-      const parts = clientName.split(' ');
-      displayName = parts[0] + (parts[1] ? ' ' + parts[1].charAt(0) + '.' : '');
+    const rBlob = ctx.createRadialGradient(0, H, 0, W*0.18, H*0.75, W*0.45);
+    rBlob.addColorStop(0, p.blobRust);
+    rBlob.addColorStop(0.6, p.blobRust2);
+    rBlob.addColorStop(1, 'transparent');
+    ctx.fillStyle = rBlob;
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.55); ctx.lineTo(0, H); ctx.lineTo(W*0.38, H);
+    ctx.quadraticCurveTo(W*0.28, H*0.7, 0, H*0.55);
+    ctx.fill(); ctx.restore();
+
+    // Subtle wave curves
+    ctx.save(); ctx.strokeStyle = 'rgba(255,255,255,.12)'; ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.55); ctx.bezierCurveTo(W*0.25,H*0.42, W*0.6,H*0.58, W,H*0.48);
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.moveTo(0, H*0.65); ctx.bezierCurveTo(W*0.3,H*0.55, W*0.65,H*0.68, W,H*0.6);
+    ctx.stroke(); ctx.restore();
+  }
+
+  // ── GLOSS OVERLAY (premium light sweep) ──
+  const gloss = ctx.createLinearGradient(0, 0, W*0.7, H*0.7);
+  gloss.addColorStop(0, p.gloss1);
+  gloss.addColorStop(0.3, 'rgba(255,255,255,.06)');
+  gloss.addColorStop(0.6, 'rgba(255,255,255,0)');
+  gloss.addColorStop(1, p.gloss2);
+  ctx.fillStyle = gloss; ctx.fillRect(0, 0, W, H);
+
+  // ── FOOTER BAND ──
+  ctx.save();
+  ctx.fillStyle = p.footer;
+  ctx.fillRect(0, H * 0.72, W, H * 0.28);
+  // top border line of footer
+  ctx.strokeStyle = p.footerLine; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(0, H*0.72); ctx.lineTo(W, H*0.72); ctx.stroke();
+  ctx.restore();
+
+  // ── LOGO (top left) — draw PNG, fallback to text ──
+  ctx.save();
+  const logoX = 28, logoY = 18, logoW = 130;
+  if (window._logoImg && window._logoImg.complete && window._logoImg.naturalWidth > 0) {
+    const ar = window._logoImg.naturalWidth / window._logoImg.naturalHeight;
+    const lH = logoW / ar;
+    ctx.drawImage(window._logoImg, logoX, logoY, logoW, lH);
+  } else {
+    // Simple text fallback
+    ctx.font = `bold ${Math.round(H*0.07)}px Georgia, serif`;
+    ctx.fillStyle = '#c8a070'; ctx.textAlign = 'left';
+    ctx.fillText('Click', logoX, logoY + H*0.09);
+    ctx.fillText('Lounge', logoX, logoY + H*0.09*2);
+    ctx.font = `500 ${Math.round(H*0.028)}px Arial`;
+    ctx.fillStyle = '#2d6e5f'; ctx.globalAlpha = .8;
+    ctx.fillText('— STUDIO —', logoX + 2, logoY + H*0.09*2 + H*0.036);
+    ctx.globalAlpha = 1;
+  }
+  ctx.restore();
+
+  // ── TIER BADGE (top right) — auto-size to fit text ──
+  ctx.save();
+  const badgeFontSize = Math.round(H * 0.038);
+  ctx.font = `bold ${badgeFontSize}px Arial`;
+  const badgeLabel = `${tierEmoji} ${tierName.toUpperCase()}`;
+  const badgeTW = ctx.measureText(badgeLabel).width;
+  const bPadX = 20, bPadY = 10;
+  const bW = badgeTW + bPadX * 2;
+  const bH = badgeFontSize + bPadY * 2;
+  const bX = W - 22 - bW, bY = 18;
+  const badgeGrad = ctx.createLinearGradient(bX, bY, bX+bW, bY+bH);
+  badgeGrad.addColorStop(0, p.badgeBg);
+  badgeGrad.addColorStop(1, isVIP?'#1a5040':isGold?'#8a6000':p.badgeBg);
+  ctx.fillStyle = badgeGrad;
+  roundRect(ctx, bX, bY, bW, bH, bH/2); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.25)'; ctx.lineWidth = 1;
+  roundRect(ctx, bX+0.5, bY+0.5, bW-1, bH-1, bH/2); ctx.stroke();
+  ctx.fillStyle = p.badgeText;
+  ctx.textAlign = 'center'; ctx.textBaseline = 'middle';
+  ctx.fillText(badgeLabel, bX + bW/2, bY + bH/2);
+  ctx.textBaseline = 'alphabetic';
+  ctx.restore();
+
+  // ── CLICKCARD WORDMARK (center right) ──
+  ctx.save(); ctx.textAlign = 'right';
+  ctx.font = `bold ${Math.round(H*0.095)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#1e3d35';
+  ctx.fillText('CLICKCARD', W - 40, H * 0.47);
+  // subtitle
+  ctx.font = `400 ${Math.round(H*0.033)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
+  ctx.globalAlpha = .65;
+  ctx.fillText('— REWARDS PROGRAM —', W - 40, H * 0.47 + H*0.052);
+  // points balance
+  ctx.globalAlpha = 1;
+  ctx.font = `bold ${Math.round(H*0.057)}px "Courier New", monospace`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText(pts.toLocaleString() + ' pts', W - 40, H * 0.47 + H*0.052 + H*0.076);
+  // pts label
+  ctx.font = `400 ${Math.round(H*0.027)}px Arial`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#2d6e5f';
+  ctx.globalAlpha = .55;
+  ctx.fillText('POINTS BALANCE', W - 40, H * 0.47 + H*0.052 + H*0.076 + H*0.038);
+  ctx.restore();
+
+  // ── FOOTER CONTENT ──
+  const fY = H * 0.72;
+  // Heart + thank you
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `500 ${Math.round(H*0.032)}px Arial`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText('♥  THANK YOU', 40, fY + H*0.1);
+  ctx.font = `400 ${Math.round(H*0.028)}px Arial`;
+  ctx.fillStyle = p.textLight;
+  ctx.fillText('for being part of our studio family!', 40, fY + H*0.15);
+
+  // Vertical divider
+  ctx.strokeStyle = 'rgba(255,255,255,.2)'; ctx.lineWidth = 1;
+  ctx.beginPath(); ctx.moveTo(W*0.52, fY+H*0.05); ctx.lineTo(W*0.52, fY+H*0.22); ctx.stroke();
+
+  // Member since
+  ctx.font = `400 ${Math.round(H*0.027)}px Arial`;
+  ctx.fillStyle = 'rgba(255,255,255,.55)';
+  ctx.fillText('MEMBER SINCE', W*0.555, fY + H*0.1);
+  ctx.font = `bold ${Math.round(H*0.07)}px "Courier New", monospace`;
+  ctx.fillStyle = p.accent;
+  ctx.fillText(memYear, W*0.555, fY + H*0.19);
+
+  // Vertical divider 2
+  ctx.strokeStyle = 'rgba(255,255,255,.2)';
+  ctx.beginPath(); ctx.moveTo(W*0.72, fY+H*0.05); ctx.lineTo(W*0.72, fY+H*0.22); ctx.stroke();
+
+  // NFC icon box
+  const nX = W*0.745, nY = fY + H*0.055, nW = W*0.21, nH = H*0.17;
+  ctx.fillStyle = 'rgba(255,255,255,.08)';
+  roundRect(ctx, nX, nY, nW, nH, 10); ctx.fill();
+  ctx.strokeStyle = 'rgba(255,255,255,.15)'; ctx.lineWidth = 1;
+  roundRect(ctx, nX, nY, nW, nH, 10); ctx.stroke();
+  // NFC arcs
+  const nCx = nX + nW/2, nCy = nY + nH/2;
+  ctx.strokeStyle = 'rgba(255,255,255,.5)'; ctx.lineWidth = 2;
+  [22,38,54].forEach(r => {
+    ctx.beginPath();
+    ctx.arc(nCx - r*0.4, nCy, r, -Math.PI*0.4, Math.PI*0.4);
+    ctx.stroke();
+  });
+  ctx.restore();
+
+  // ── CARDHOLDER NAME (above footer, fully within card body) ──
+  ctx.save(); ctx.textAlign = 'left';
+  // "CARDHOLDER" label
+  ctx.font = `400 ${Math.round(H*0.026)}px Arial`;
+  ctx.fillStyle = p.label;
+  ctx.fillText('CARDHOLDER', 40, H * 0.60);
+  // Name — sits clearly above the footer band (which starts at H*0.72)
+  const nameFontSize = Math.round(H * 0.06);
+  ctx.font = `bold ${nameFontSize}px Georgia, serif`;
+  ctx.fillStyle = isGold||isVIP ? p.accent : '#1e3d35';
+  // Measure and truncate if needed
+  let dn = name || 'Cardholder';
+  const maxNameW = W * 0.44;
+  if (ctx.measureText(dn).width > maxNameW) {
+    const parts = dn.split(' ');
+    dn = parts[0] + (parts[1] ? ' ' + parts[1][0] + '.' : '');
+    // Still too long? truncate further
+    while (ctx.measureText(dn + '…').width > maxNameW && dn.length > 3) {
+      dn = dn.slice(0, -1);
     }
-    ctx.fillText(displayName, 72, H * 0.83);
-    // Card ID below name
-    ctx.font = `400 17px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = 'rgba(255,255,255,0.55)';
-    ctx.fillText(cardID, 72, H * 0.83 + 28);
-    ctx.restore();
+    if (dn !== name.split(' ')[0] + (name.split(' ')[1] ? ' ' + name.split(' ')[1][0] + '.' : '')) dn += '…';
+  }
+  // Place name so its baseline is at H*0.695 — safely above H*0.72 footer
+  ctx.fillText(dn, 40, H * 0.695);
+  ctx.restore();
 
-    // ── MEMBER SINCE (bottom dark bar - right of divider) ──
-    ctx.save();
-    ctx.fillStyle = '#1e3d35';
-    ctx.fillRect(W * 0.62, H * 0.735, W * 0.22, H * 0.265);
-    ctx.font = `400 15px "DM Sans", Arial`;
-    ctx.fillStyle = 'rgba(255,255,255,0.65)';
-    ctx.textAlign = 'left';
-    ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
-    ctx.font = `bold 28px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = pal.accent;
-    ctx.fillText(memYear, W * 0.63, H * 0.845);
-    ctx.restore();
+  // ── CARD ID (bottom strip) ──
+  ctx.save(); ctx.textAlign = 'left';
+  ctx.font = `400 ${Math.round(H*0.027)}px "Courier New", monospace`;
+  ctx.fillStyle = 'rgba(255,255,255,.28)';
+  ctx.fillText(cardID, 40, H - 10);
+  ctx.restore();
 
-    // ── QR-LIKE UNIQUE PATTERN (small, decorative) ──
-    // Replace NFC icon area with card ID displayed as mini dots pattern
-    ctx.save();
-    ctx.fillStyle = '#f4f0e8';
-    roundRect(ctx, W - 108, H * 0.735 + 12, 82, 72, 12);
-    ctx.fill();
-    ctx.font = `bold 11px "DM Mono", "Courier New", monospace`;
-    ctx.fillStyle = '#1e3d35';
-    ctx.textAlign = 'center';
-    const idParts = cardID.split('-');
-    ctx.fillText(idParts[0], W - 67, H * 0.735 + 34);
-    ctx.fillText(idParts[1], W - 67, H * 0.735 + 50);
-    ctx.fillText(idParts[2], W - 67, H * 0.735 + 66);
-    ctx.restore();
+  // ── BORDER GLOW ──
+  ctx.save();
+  const edgeGlow = ctx.createLinearGradient(0,0,W,H);
+  if (isVIP) {
+    edgeGlow.addColorStop(0, 'rgba(74,144,130,.7)');
+    edgeGlow.addColorStop(0.5, 'rgba(74,144,130,.15)');
+    edgeGlow.addColorStop(1, 'rgba(74,144,130,.5)');
+  } else if (isGold) {
+    edgeGlow.addColorStop(0, 'rgba(196,154,26,.8)');
+    edgeGlow.addColorStop(0.5, 'rgba(196,154,26,.2)');
+    edgeGlow.addColorStop(1, 'rgba(196,154,26,.6)');
+  } else {
+    edgeGlow.addColorStop(0, 'rgba(200,160,112,.5)');
+    edgeGlow.addColorStop(1, 'rgba(45,110,95,.4)');
+  }
+  ctx.strokeStyle = edgeGlow; ctx.lineWidth = 2;
+  roundRect(ctx, 1, 1, W-2, H-2, R-1); ctx.stroke();
+  ctx.restore();
+}
 
+function generateClickCard(clientName, tierName, tierEmoji, pts, memberYear) {
+  _cardClientName = clientName;
+  const overlay = document.getElementById('clickcard-overlay');
+  overlay.style.display = 'block';
+  setTimeout(() => overlay.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+
+  const canvas = document.getElementById('clickcard-canvas');
+  if (!canvas) { console.error('No canvas found'); return; }
+  const ctx    = canvas.getContext('2d');
+  const W = 1000, H = 630;
+  canvas.width = W; canvas.height = H;
+
+  const cardID  = genCardID(clientName, memberYear);
+  const memYear = memberYear || new Date().getFullYear();
+
+  let drawn = false;
+  const doDraw = () => {
+    if (drawn) return;
+    drawn = true;
+    try {
+      drawPremiumCard(ctx, W, H, clientName, tierName, tierEmoji, pts, cardID, memYear);
+    } catch(err) {
+      console.error('drawPremiumCard error:', err);
+      ctx.fillStyle = '#f5ede0';
+      ctx.fillRect(0, 0, W, H);
+      ctx.fillStyle = '#1e3d35';
+      ctx.font = 'bold 48px Arial';
+      ctx.textAlign = 'center';
+      ctx.fillText('CLICKCARD', W/2, H*0.35);
+      ctx.font = 'bold 32px Georgia';
+      ctx.fillStyle = '#c8a070';
+      ctx.fillText(clientName, W/2, H*0.5);
+      ctx.font = 'bold 60px monospace';
+      ctx.fillText(pts + ' pts', W/2, H*0.65);
+      ctx.font = '20px Arial';
+      ctx.fillStyle = '#999';
+      ctx.fillText('Error: ' + err.message, W/2, H*0.8);
+    }
     _cardDataURL = canvas.toDataURL('image/png');
   };
-  img.onerror = () => {
-    // Fallback: draw card from scratch if template fails to load
-    drawCardFallback(ctx, W, H, clientName, tierName, tierEmoji, pts, pal, genCardID(clientName), getMemberYear(clientName));
-    _cardDataURL = canvas.toDataURL('image/png');
-  };
-  img.src = 'clickcard_template.png';
+
+  // If logo already loaded, draw immediately; otherwise wait for it
+  if (window._logoImg && window._logoImg.complete && window._logoImg.naturalWidth > 0) {
+    doDraw();
+  } else if (window._logoImg) {
+    window._logoImg.onload  = doDraw;
+    window._logoImg.onerror = doDraw;
+    // Also set a timeout fallback in case logo never loads
+    setTimeout(doDraw, 2000);
+  } else {
+    doDraw();
+  }
 }
 
 function roundRect(ctx, x, y, w, h, r) {
   ctx.beginPath();
-  ctx.moveTo(x + r, y);
-  ctx.lineTo(x + w - r, y);
-  ctx.quadraticCurveTo(x + w, y, x + w, y + r);
-  ctx.lineTo(x + w, y + h - r);
-  ctx.quadraticCurveTo(x + w, y + h, x + w - r, y + h);
-  ctx.lineTo(x + r, y + h);
-  ctx.quadraticCurveTo(x, y + h, x, y + h - r);
-  ctx.lineTo(x, y + r);
-  ctx.quadraticCurveTo(x, y, x + r, y);
+  ctx.moveTo(x+r, y); ctx.lineTo(x+w-r, y);
+  ctx.quadraticCurveTo(x+w, y, x+w, y+r);
+  ctx.lineTo(x+w, y+h-r);
+  ctx.quadraticCurveTo(x+w, y+h, x+w-r, y+h);
+  ctx.lineTo(x+r, y+h);
+  ctx.quadraticCurveTo(x, y+h, x, y+h-r);
+  ctx.lineTo(x, y+r);
+  ctx.quadraticCurveTo(x, y, x+r, y);
   ctx.closePath();
 }
 
-function drawCardFallback(ctx, W, H, name, tier, emoji, pts, pal, cardID, year) {
-  // Cream background
-  ctx.fillStyle = '#f5ede0';
-  roundRect(ctx, 0, 0, W, H, 32); ctx.fill();
-  // Teal top-right blob
-  ctx.fillStyle = '#1e3d35';
-  ctx.beginPath(); ctx.arc(W, 0, 240, 0, Math.PI/2); ctx.fill();
-  // Rust bottom-left blob
-  ctx.fillStyle = '#c8a070';
-  ctx.beginPath(); ctx.arc(0, H, 200, -Math.PI/2, 0); ctx.fill();
-  // Studio name
-  ctx.fillStyle = '#1e3d35';
-  ctx.font = 'bold 52px serif'; ctx.textAlign = 'left';
-  ctx.fillText('Click Lounge', 60, 130);
-  ctx.font = '500 24px sans-serif'; ctx.fillStyle = '#c8a070';
-  ctx.fillText('— STUDIO —', 64, 168);
-  // CLICKCARD label
-  ctx.font = 'bold 48px sans-serif'; ctx.fillStyle = '#1e3d35';
-  ctx.textAlign = 'right'; ctx.fillText('CLICKCARD', W - 44, H * 0.46);
-  ctx.font = '500 18px sans-serif'; ctx.fillStyle = '#c8a070';
-  ctx.fillText('— REWARDS PROGRAM —', W - 44, H * 0.46 + 32);
-  // Tier badge
-  ctx.fillStyle = pal.accent;
-  roundRect(ctx, W - 194, 24, 170, 48, 24); ctx.fill();
-  ctx.fillStyle = '#fff'; ctx.font = 'bold 22px sans-serif'; ctx.textAlign = 'center';
-  ctx.fillText(`${emoji} ${tier.toUpperCase()}`, W - 109, 56);
-  // Points
-  ctx.fillStyle = pal.accent2; ctx.font = 'bold 60px monospace'; ctx.textAlign = 'right';
-  ctx.fillText(pts.toLocaleString(), W - 44, H * 0.46 + 90);
-  ctx.fillStyle = '#1e3d35'; ctx.globalAlpha = 0.5; ctx.font = '500 16px sans-serif';
-  ctx.fillText('POINTS BALANCE', W - 44, H * 0.46 + 110);
-  ctx.globalAlpha = 1;
-  // Dark bottom bar
-  ctx.fillStyle = '#1e3d35';
-  ctx.fillRect(0, H * 0.735, W, H * 0.265);
-  // Name
-  ctx.fillStyle = pal.accent; ctx.font = 'bold 26px sans-serif'; ctx.textAlign = 'left';
-  ctx.fillText(name, 60, H * 0.83);
-  ctx.fillStyle = 'rgba(255,255,255,.5)'; ctx.font = '400 16px monospace';
-  ctx.fillText(cardID, 60, H * 0.83 + 28);
-  // Member since
-  ctx.fillStyle = 'rgba(255,255,255,.6)'; ctx.font = '400 14px sans-serif';
-  ctx.fillText('MEMBER SINCE', W * 0.63, H * 0.81);
-  ctx.fillStyle = pal.accent; ctx.font = 'bold 28px monospace';
-  ctx.fillText(year, W * 0.63, H * 0.845);
-}
 
-function closeClickCard(event, force=false) {
-  if (force || (event && event.target === document.getElementById('clickcard-overlay'))) {
-    document.getElementById('clickcard-overlay').style.display = 'none';
-    document.body.style.overflow = '';
-  }
+function closeClickCard() {
+  document.getElementById('clickcard-overlay').style.display = 'none';
+  document.body.style.overflow = '';
 }
 
 function downloadClickCard() {
-  if (!_cardDataURL) return;
+  // Always grab fresh from canvas in case _cardDataURL isn't set yet
+  const canvas = document.getElementById('clickcard-canvas');
+  const url = canvas.toDataURL('image/png');
   const a = document.createElement('a');
-  a.href = _cardDataURL;
-  a.download = `ClickCard-${_cardClientName.replace(/\s+/g,'_')}.png`;
+  a.href = url;
+  a.download = `ClickCard-${(_cardClientName||'card').replace(/\s+/g,'_')}.png`;
+  document.body.appendChild(a);
   a.click();
+  document.body.removeChild(a);
 }
 
 async function shareClickCard() {
-  if (!_cardDataURL) return;
-  if (navigator.share && navigator.canShare) {
-    try {
-      const blob = await (await fetch(_cardDataURL)).blob();
-      const file = new File([blob], `ClickCard-${_cardClientName}.png`, {type:'image/png'});
-      if (navigator.canShare({files:[file]})) {
-        await navigator.share({ files:[file], title:'My CLS ClickCard', text:'My Click Lounge Studio ClickCard Rewards Card!' });
+  const canvas = document.getElementById('clickcard-canvas');
+  canvas.toBlob(async blob => {
+    if (!blob) { alert('Card not ready yet — please wait a moment and try again.'); return; }
+    const fname = `ClickCard-${(_cardClientName||'card').replace(/\s+/g,'_')}.png`;
+    const file = new File([blob], fname, {type:'image/png'});
+    if (navigator.share && navigator.canShare && navigator.canShare({files:[file]})) {
+      try {
+        await navigator.share({
+          files: [file],
+          title: 'My CLS ClickCard',
+          text: 'My Click Lounge Studio ClickCard Rewards Card! 📸'
+        });
         return;
+      } catch(e) {}
+    }
+    // Fallback — open image in new tab for manual save
+    const url = URL.createObjectURL(blob);
+    const w = window.open();
+    w.document.write(`<html><body style="margin:0;background:#0e1a16;text-align:center;padding:2rem;">
+      <img src="${url}" style="max-width:100%;border-radius:16px;box-shadow:0 20px 60px rgba(0,0,0,.6);">
+      <p style="color:rgba(255,255,255,.5);font-family:monospace;font-size:.85rem;margin-top:1rem;">
+        Long-press / right-click the image to save or share
+      </p></body></html>`);
+  }, 'image/png');
+}
+
+// ── BOOKING FLOW ──
+let bookingState = { pkg:'', price:'', date:'', time:'', name:'', phone:'', notes:'', step:1 };
+
+const BK_TIME_SLOTS = [
+  '10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+  '12:00 PM','12:30 PM','1:00 PM','1:30 PM',
+  '2:00 PM','2:30 PM','3:00 PM','3:30 PM',
+  '4:00 PM','4:30 PM'
+];
+
+function openBooking(pkg, price) {
+  // Close any open modals first
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+
+  // Build confirmation overlay
+  const BOOKING_URL = 'https://hellotalentff-max.github.io/clicklounge_booking/';
+  const params = new URLSearchParams({ package: pkg });
+  if (price) params.set('price', price);
+  const bookUrl = BOOKING_URL + '?' + params.toString();
+
+  bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
+  const modal = document.getElementById('booking-modal');
+  const box   = document.getElementById('bk-content');
+
+  // Hide step indicator for confirmation
+  document.getElementById('bk-steps').style.display = 'none';
+
+  box.innerHTML = `
+    <div style="text-align:center;padding:.5rem 0 0;">
+      <div style="font-size:2.5rem;margin-bottom:.6rem;">📸</div>
+      <div class="bk-title" style="margin-bottom:.3rem;">You're booking:</div>
+      <div class="bk-pkg-banner" style="margin:0 auto 1.2rem;max-width:380px;">
+        <div>
+          <div style="font-size:.6rem;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.12rem;">Package Selected</div>
+          <div class="bk-pkg-name">${pkg}</div>
+        </div>
+        ${price ? `<div class="bk-pkg-price">${price}</div>` : ''}
+      </div>
+      <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;text-align:left;max-width:380px;margin-left:auto;margin-right:auto;">
+        <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;">
+          📌 ₱300 non-refundable reservation fee<br>
+          📌 Studio is closed every <strong>Tuesday</strong><br>
+          📌 Book at least 1 day in advance<br>
+          📌 Walk-ins accepted 11 AM – 5 PM
+        </div>
+      </div>
+      <a href="${bookUrl}" target="_blank"
+        onclick="if(typeof fbq!=='undefined')fbq('track','InitiateCheckout')"
+        style="display:inline-block;background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.85rem 2rem;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;margin-bottom:.8rem;">
+        Proceed to Booking →
+      </a>
+      <div style="margin-top:.3rem;">
+        <button onclick="closeBooking()" style="background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.5rem 1.2rem;border-radius:100px;cursor:pointer;">
+          ← Go Back
+        </button>
+      </div>
+      <div style="font-size:.72rem;color:rgba(255,255,255,.25);margin-top:1rem;">
+        You'll be redirected to our booking page to choose your date and time.
+      </div>
+    </div>`;
+
+  modal.style.display = 'block';
+  setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: pkg });
+}
+
+function closeBooking() {
+  document.getElementById('booking-modal').style.display = 'none';
+}
+
+function renderBookingStep() {
+  const box = document.getElementById('bk-content');
+  const dots = document.querySelectorAll('#bk-steps .bk-dot');
+  dots.forEach((d,i) => {
+    d.className = 'bk-dot';
+    if (i+1 < bookingState.step) d.classList.add('done');
+    if (i+1 === bookingState.step) d.classList.add('active');
+  });
+
+  if (bookingState.step === 1) {
+    // Step 1: Confirm package + pick date
+    const today = new Date();
+    const minDate = new Date(today.getTime() + 86400000); // tomorrow
+    const minStr = minDate.toISOString().split('T')[0];
+    const maxDate = new Date(today.getTime() + 90*86400000);
+    const maxStr = maxDate.toISOString().split('T')[0];
+
+    box.innerHTML = `
+      <div class="bk-title">Confirm Your Package</div>
+      <div class="bk-sub">You're booking this package. Pick your preferred date below.</div>
+      <div class="bk-pkg-banner">
+        <div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.15rem;">Package Selected</div>
+          <div class="bk-pkg-name">${bookingState.pkg}</div>
+        </div>
+        ${bookingState.price ? `<div class="bk-pkg-price">${bookingState.price}</div>` : ''}
+      </div>
+      <div class="bk-card">
+        <div class="bk-row">
+          <label class="bk-label">Preferred Date</label>
+          <input type="date" class="bk-input" id="bk-date" min="${minStr}" max="${maxStr}" value="${bookingState.date}">
+        </div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.4rem;line-height:1.5;">
+          📌 Studio is closed on <strong>Tuesdays</strong><br>
+          📌 ₱300 non-refundable reservation fee required<br>
+          📌 Bookings must be at least 1 day in advance
+        </div>
+      </div>
+      <button class="bk-action" id="bk-next1" onclick="goStep2()">Choose Time Slot →</button>`;
+
+    // Disable Tuesday selection
+    setTimeout(() => {
+      const dateInput = document.getElementById('bk-date');
+      if (dateInput) {
+        dateInput.addEventListener('input', function() {
+          const d = new Date(this.value + 'T00:00:00');
+          if (d.getDay() === 2) { // Tuesday
+            alert('Sorry, the studio is closed on Tuesdays. Please pick another day.');
+            this.value = '';
+          }
+        });
       }
-    } catch(e) {}
+    }, 50);
+
+  } else if (bookingState.step === 2) {
+    // Step 2: Pick time slot
+    const dateObj = new Date(bookingState.date + 'T00:00:00');
+    const dateStr = dateObj.toLocaleDateString('en-PH', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+    box.innerHTML = `
+      <div class="bk-title">Pick Your Time Slot</div>
+      <div class="bk-sub">${bookingState.pkg} — ${dateStr}</div>
+      <div class="bk-card">
+        <div class="bk-label">Available Slots</div>
+        <div class="bk-time-grid">
+          ${BK_TIME_SLOTS.map(t => `<button class="bk-time-btn ${bookingState.time===t?'selected':''}" onclick="selectTime('${t}',this)">${t}</button>`).join('')}
+        </div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.6rem;">
+          Each session is approximately 20–30 minutes. Walk-ins 11AM–5PM.
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem;">
+        <button class="bk-back" onclick="bookingState.step=1;renderBookingStep()">← Back</button>
+        <button class="bk-action" id="bk-next2" onclick="goStep3()" style="flex:1;" ${!bookingState.time?'disabled':''}>Enter Your Details →</button>
+      </div>`;
+
+  } else if (bookingState.step === 3) {
+    // Step 3: Client info
+    box.innerHTML = `
+      <div class="bk-title">Your Details</div>
+      <div class="bk-sub">Almost done! Tell us how to reach you.</div>
+      <div class="bk-card">
+        <div class="bk-row">
+          <label class="bk-label">Full Name *</label>
+          <input class="bk-input" id="bk-name" placeholder="Maria Santos" value="${bookingState.name}">
+        </div>
+        <div class="bk-row">
+          <label class="bk-label">Phone / Messenger *</label>
+          <input class="bk-input" id="bk-phone" placeholder="09XXXXXXXXX or FB name" value="${bookingState.phone}">
+        </div>
+        <div class="bk-row">
+          <label class="bk-label">Special Requests (optional)</label>
+          <input class="bk-input" id="bk-notes" placeholder="e.g. birthday setup, extra pax, HMU…" value="${bookingState.notes}">
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="bk-card" style="background:rgba(45,110,95,.1);border-color:rgba(45,110,95,.25);">
+        <div class="bk-label" style="color:var(--green);margin-bottom:.6rem;">Booking Summary</div>
+        <div class="bk-summary-row"><span class="bk-summary-label">Package</span><span class="bk-summary-val">${bookingState.pkg}</span></div>
+        ${bookingState.price ? `<div class="bk-summary-row"><span class="bk-summary-label">Price</span><span class="bk-summary-val">${bookingState.price}</span></div>` : ''}
+        <div class="bk-summary-row"><span class="bk-summary-label">Date</span><span class="bk-summary-val">${new Date(bookingState.date+'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span></div>
+        <div class="bk-summary-row"><span class="bk-summary-label">Time</span><span class="bk-summary-val" style="color:var(--gold);font-family:'DM Mono',monospace;">${bookingState.time}</span></div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.5rem;line-height:1.5;">
+          📌 ₱300 non-refundable reservation fee will be requested via GCash/BPI after confirmation.
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.5rem;">
+        <button class="bk-back" onclick="bookingState.step=2;renderBookingStep()">← Back</button>
+        <button class="bk-action" id="bk-submit" onclick="submitBooking()" style="flex:1;">✓ Submit Booking Request</button>
+      </div>`;
   }
-  // Fallback — open in new tab
-  window.open(_cardDataURL, '_blank');
+}
+
+function selectTime(time, btn) {
+  bookingState.time = time;
+  document.querySelectorAll('.bk-time-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('bk-next2').disabled = false;
+}
+
+function goStep2() {
+  const date = document.getElementById('bk-date').value;
+  if (!date) { alert('Please pick a date.'); return; }
+  const d = new Date(date + 'T00:00:00');
+  if (d.getDay() === 2) { alert('Studio is closed on Tuesdays.'); return; }
+  bookingState.date = date;
+  bookingState.step = 2;
+  renderBookingStep();
+  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function goStep3() {
+  if (!bookingState.time) { alert('Please pick a time slot.'); return; }
+  bookingState.step = 3;
+  renderBookingStep();
+  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+async function submitBooking() {
+  const name  = document.getElementById('bk-name').value.trim();
+  const phone = document.getElementById('bk-phone').value.trim();
+  const notes = document.getElementById('bk-notes').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  if (!phone) { alert('Please enter your phone number or Messenger name.'); return; }
+
+  bookingState.name  = name;
+  bookingState.phone = phone;
+  bookingState.notes = notes;
+
+  const btn = document.getElementById('bk-submit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await callScript('createBooking', {
+      clientName: name,
+      phone: phone,
+      package: bookingState.pkg,
+      price: bookingState.price,
+      date: bookingState.date,
+      time: bookingState.time,
+      notes: notes,
+      source: 'website'
+    });
+
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+
+    // Success!
+    const box = document.getElementById('bk-content');
+    document.querySelectorAll('#bk-steps .bk-dot').forEach(d => d.className = 'bk-dot done');
+
+    box.innerHTML = `
+      <div class="bk-success">
+        <div class="bk-check">✓</div>
+        <div class="bk-title">Booking Request Sent! 🎉</div>
+        <div class="bk-sub">We'll confirm your booking shortly via Messenger or text. Please prepare the ₱300 reservation fee.</div>
+        <div class="bk-card" style="text-align:left;">
+          <div class="bk-summary-row"><span class="bk-summary-label">Package</span><span class="bk-summary-val">${bookingState.pkg}</span></div>
+          ${bookingState.price ? `<div class="bk-summary-row"><span class="bk-summary-label">Price</span><span class="bk-summary-val">${bookingState.price}</span></div>` : ''}
+          <div class="bk-summary-row"><span class="bk-summary-label">Date</span><span class="bk-summary-val">${new Date(bookingState.date+'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Time</span><span class="bk-summary-val" style="color:var(--gold);">${bookingState.time}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Name</span><span class="bk-summary-val">${name}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Contact</span><span class="bk-summary-val">${phone}</span></div>
+          ${notes ? `<div class="bk-summary-row"><span class="bk-summary-label">Notes</span><span class="bk-summary-val">${notes}</span></div>` : ''}
+        </div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:.8rem;line-height:1.6;">
+          Need to change something? Message us on
+          <a href="https://www.facebook.com/clicklounge.studio" target="_blank" style="color:var(--gold);text-decoration:underline;">Facebook</a>
+        </div>
+        <button class="bk-action" onclick="closeBooking()" style="margin-top:1rem;">Done ✓</button>
+      </div>`;
+
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = '✓ Submit Booking Request';
+
+    const box = document.getElementById('bk-content');
+    box.innerHTML += `
+      <div style="background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);border-radius:10px;padding:1rem;margin-top:.8rem;font-size:.84rem;color:#ff6b6b;text-align:center;">
+        ⚠ Couldn't submit right now. Please try again, or message us on
+        <a href="https://www.facebook.com/clicklounge.studio" target="_blank" style="color:#ff6b6b;text-decoration:underline;">Facebook</a>
+        with your booking details.
+      </div>`;
+  }
 }
 
 // ── T&C MODAL ──
 function openTnC() {
   const el = document.getElementById('tnc-overlay');
   el.style.display = 'block';
-  document.body.style.overflow = 'hidden';
-  // Navigate to booking page if not already there
-  if (!document.getElementById('booking').classList.contains('active')) {
-    showPage('booking', document.querySelectorAll('nav a')[4]);
-  }
+  setTimeout(() => el.scrollIntoView({ behavior: 'smooth', block: 'start' }), 50);
 }
 function closeTnC() {
   document.getElementById('tnc-overlay').style.display = 'none';
-  document.body.style.overflow = '';
 }
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeTnC(); });
 
 function showPage(id, navEl) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
