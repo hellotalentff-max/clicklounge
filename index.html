@@ -137,6 +137,7 @@ nav a.active { color:var(--green); border-bottom-color:var(--green); }
   background:var(--green); color:#fff; font-weight:600; font-size:.85rem;
   letter-spacing:.04em; padding:.8rem; border-radius:10px;
   text-decoration:none; transition:background .2s;
+  border:none; width:100%; font-family:'DM Sans',sans-serif; cursor:pointer;
 }
 .pkg-cta:hover{background:var(--green-dark);}
 .pkg-badge {
@@ -420,7 +421,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('SELFIE','₱500')">Book Now →</button>
         </div>
       </div>
 
@@ -443,7 +444,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('TIME','₱800')">Book Now →</button>
         </div>
       </div>
 
@@ -465,7 +466,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('CAM','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -487,7 +488,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('CAPTURES','₱1,200')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -517,7 +518,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Frenzy Snaps','₱700')">Book Now →</button>
         </div>
       </div>
 
@@ -538,7 +539,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Party Clicks','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -558,7 +559,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: Framed 8R in Double Glass Frame</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <a class="pkg-cta" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+          <button class="pkg-cta" onclick="openBooking('Click Capture','₱1,500')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -634,7 +635,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="text-align:center;padding:2rem;">
-      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+      <button class="book-btn" onclick="openBooking('Studio Session','')">Book Now →</button>
     </div>
   </div>
 </div>
@@ -840,7 +841,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .modal-addon-row:last-child { border:none; }
 .modal-addon-price { font-family:'Space Mono',monospace; font-weight:700; color:var(--amber); font-size:.82rem; }
 .modal-note { background:var(--cream); border-radius:10px; padding:1rem 1.2rem; font-size:.8rem; color:var(--text-mid); line-height:1.65; margin-top:1.2rem; }
-.modal-book { display:block; text-align:center; margin-top:1.5rem; background:var(--green); color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.04em; padding:.9rem; border-radius:10px; text-decoration:none; transition:background .2s; }
+.modal-book { display:block; text-align:center; margin-top:1.5rem; background:var(--green); color:#fff; font-weight:700; font-size:.85rem; letter-spacing:.04em; padding:.9rem; border-radius:10px; text-decoration:none; transition:background .2s; border:none; width:100%; font-family:'DM Sans',sans-serif; cursor:pointer; }
 .modal-book:hover { background:var(--green-dark); }
 .modal-section-title { font-family:'Playfair Display',serif; font-size:1rem; color:var(--green-dark); margin:1.2rem 0 .5rem; padding-bottom:.3rem; border-bottom:1px solid rgba(45,110,95,.12); }
 </style>
@@ -857,7 +858,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <img src="11.png" alt="Promo 3" style="width:100%;border-radius:12px;display:block;">
       <img src="12.png" alt="Promo 4" style="width:100%;border-radius:12px;display:block;">
     </div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')" style="margin-top:1.2rem;">Book a Session Now</a>
+    <button class="modal-book" onclick="openBooking('Promo Session','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Promo Session →</button>
   </div>
 </div>
 
@@ -901,7 +902,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Styleshots','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Styleshots →</button>
   </div>
 </div>
 
@@ -946,7 +947,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Couple Styleshots','₱2,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Couple Styleshots →</button>
   </div>
 </div>
 
@@ -955,7 +956,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div class="modal-close"><button onclick="closeModal()">✕</button></div>
   <div class="modal-inner" style="padding:.5rem 1rem 1.5rem;">
     <img src="img_popreveal_content.png" alt="Pop Reveal Package" style="width:100%;border-radius:12px;display:block;margin-bottom:1.2rem;">
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Pop Reveal','₱3,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Pop Reveal →</button>
   </div>
 </div>
 
@@ -1007,7 +1008,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Hair &amp; Makeup</span><span class="modal-addon-price">₱2,000</span></div>
     <div class="modal-addon-row"><span>Additional Time</span><span class="modal-addon-price">₱500/10 min</span></div>
     <div class="modal-addon-row"><span>Discount on Frames</span><span class="modal-addon-price">Available</span></div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Radiant Mama','₱2,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Radiant Mama →</button>
   </div>
 </div>
 
@@ -1092,7 +1093,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Digital Backdrop Edit</span><span class="modal-addon-price">₱300/pic</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱100/pic</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg. Booking is a must.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Candid Kids','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Candid Kids →</button>
   </div>
 </div>
 
@@ -1149,7 +1150,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: ₱800)</span><span class="modal-addon-price">₱1,500</span></div>
     <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: ₱500)</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Family Portraits','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Family Portraits →</button>
   </div>
 </div>
 
@@ -1232,7 +1233,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>5R Frame Matted</span><span class="modal-addon-price">₱600</span></div>
     <div class="modal-addon-row"><span>5R Double Glass Frame</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-note">Let us know what hood color you need. School emblems can be edited to your chosen file. Stole shall be provided by the graduate. Please wear a black or nude tube top for Filipiana shots (women) and white shirt with no collar for Barong shots (men). Our barong fits Large to XL size only. We provide pearl earrings and necklace for women. Hair and Make Up Services is subject to booking. Please advise upon booking if you will avail the VIP Grad Glam package.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('Graduation','₱700')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Graduation →</button>
   </div>
 </div>
 
@@ -1281,7 +1282,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Per pet (max of 3)</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Per person</span><span class="modal-addon-price">₱100</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. Booking is a must for Pawsome Package. Pet Guidelines must be followed.</div>
-    <a class="modal-book" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="modal-book" onclick="openBooking('PAWtraits','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book PAWtraits →</button>
   </div>
 </div>
 
@@ -1299,7 +1300,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <span class="save-chip">Save ₱3,000</span>
     </div>
     <p style="color:var(--text-mid);font-size:.9rem;margin-bottom:1.5rem;">Exclusive bridal shoot for up to 7 pax</p>
-    <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+      <button class="book-btn" onclick="openBooking('Events & Rentals','')">Book Now →</button>
   </div>
 
   <div style="max-width:800px;margin:0 auto;padding:2.5rem 2rem 0;">
@@ -1402,7 +1403,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <div style="text-align:center;padding:2rem 2rem 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-    <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book a Session</a>
+    <button class="book-btn green" onclick="openBooking('Studio Session','')">Book Now →</button>
     <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
   </div>
 
@@ -1840,6 +1841,54 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
       <p style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.8rem;">Show this card to our staff at the start of every session to access your perks!</p>
     </div>
+  </div>
+</div>
+
+<!-- ══ BOOKING MODAL ══ -->
+<style>
+#booking-modal{display:none;width:100%;background:linear-gradient(180deg,#0e1a16 0%,#1a3020 100%);padding:2rem 1rem 3rem;}
+.bk-inner{max-width:500px;margin:0 auto;}
+.bk-close{display:block;margin:0 0 .8rem auto;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;text-align:center;line-height:36px;}
+.bk-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.4rem;margin-bottom:.8rem;}
+.bk-step-indicator{display:flex;gap:.5rem;justify-content:center;margin-bottom:1.2rem;}
+.bk-dot{width:10px;height:10px;border-radius:50%;background:rgba(255,255,255,.15);}
+.bk-dot.active{background:var(--gold);box-shadow:0 0 8px rgba(240,192,48,.4);}
+.bk-dot.done{background:var(--green);}
+.bk-title{font-family:'Playfair Display',serif;font-size:1.3rem;color:#fff;margin-bottom:.5rem;text-align:center;}
+.bk-sub{font-size:.82rem;color:rgba(255,255,255,.5);text-align:center;margin-bottom:1.2rem;line-height:1.6;}
+.bk-pkg-banner{background:linear-gradient(135deg,var(--green-dark),var(--green));border-radius:12px;padding:1rem 1.2rem;display:flex;align-items:center;justify-content:space-between;margin-bottom:1rem;}
+.bk-pkg-name{font-family:'Playfair Display',serif;font-size:1.1rem;color:#fff;}
+.bk-pkg-price{font-family:'DM Mono',monospace;font-size:1rem;font-weight:700;color:var(--gold);}
+.bk-label{font-size:.68rem;font-weight:600;color:rgba(255,255,255,.5);display:block;margin-bottom:.4rem;font-family:'DM Mono',monospace;letter-spacing:.08em;text-transform:uppercase;}
+.bk-input{width:100%;background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.15);border-radius:10px;padding:.7rem 1rem;font-family:'DM Sans',sans-serif;font-size:.88rem;color:#fff;outline:none;transition:border-color .2s;}
+.bk-input:focus{border-color:var(--gold);}
+.bk-input::placeholder{color:rgba(255,255,255,.25);}
+.bk-row{margin-bottom:.9rem;}
+.bk-row:last-child{margin-bottom:0;}
+.bk-time-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:.5rem;}
+.bk-time-btn{background:rgba(255,255,255,.06);border:1.5px solid rgba(255,255,255,.12);border-radius:10px;padding:.6rem;text-align:center;font-family:'DM Mono',monospace;font-size:.82rem;color:rgba(255,255,255,.7);cursor:pointer;transition:all .15s;}
+.bk-time-btn:hover{background:rgba(255,255,255,.12);border-color:rgba(255,255,255,.25);}
+.bk-time-btn.selected{background:rgba(240,192,48,.15);border-color:var(--gold);color:var(--gold);}
+.bk-time-btn.disabled{opacity:.3;pointer-events:none;}
+.bk-action{width:100%;background:linear-gradient(135deg,var(--gold),var(--gold-dk));color:#3d2000;font-family:'DM Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.06em;padding:.85rem;border-radius:10px;border:none;cursor:pointer;margin-top:.8rem;}
+.bk-action:disabled{opacity:.4;cursor:not-allowed;}
+.bk-back{background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'DM Mono',monospace;font-size:.75rem;padding:.55rem 1rem;border-radius:8px;cursor:pointer;margin-right:.5rem;}
+.bk-success{text-align:center;padding:1.5rem 0;}
+.bk-check{width:64px;height:64px;border-radius:50%;background:rgba(45,110,95,.2);display:flex;align-items:center;justify-content:center;margin:0 auto .8rem;font-size:2rem;border:2px solid var(--green);}
+.bk-summary-row{display:flex;justify-content:space-between;padding:.4rem 0;border-bottom:1px solid rgba(255,255,255,.06);font-size:.84rem;}
+.bk-summary-label{color:rgba(255,255,255,.5);}
+.bk-summary-val{color:#fff;font-weight:500;text-align:right;}
+</style>
+
+<div id="booking-modal">
+  <div class="bk-inner">
+    <button class="bk-close" onclick="closeBooking()">✕</button>
+    <div class="bk-step-indicator" id="bk-steps">
+      <div class="bk-dot active"></div>
+      <div class="bk-dot"></div>
+      <div class="bk-dot"></div>
+    </div>
+    <div id="bk-content"></div>
   </div>
 </div>
 
@@ -2762,6 +2811,239 @@ async function shareClickCard() {
         Long-press / right-click the image to save or share
       </p></body></html>`);
   }, 'image/png');
+}
+
+// ── BOOKING FLOW ──
+let bookingState = { pkg:'', price:'', date:'', time:'', name:'', phone:'', notes:'', step:1 };
+
+const BK_TIME_SLOTS = [
+  '10:00 AM','10:30 AM','11:00 AM','11:30 AM',
+  '12:00 PM','12:30 PM','1:00 PM','1:30 PM',
+  '2:00 PM','2:30 PM','3:00 PM','3:30 PM',
+  '4:00 PM','4:30 PM'
+];
+
+function openBooking(pkg, price) {
+  // Close any open modals first
+  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
+  bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
+  const modal = document.getElementById('booking-modal');
+  modal.style.display = 'block';
+  renderBookingStep();
+  setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
+}
+
+function closeBooking() {
+  document.getElementById('booking-modal').style.display = 'none';
+}
+
+function renderBookingStep() {
+  const box = document.getElementById('bk-content');
+  const dots = document.querySelectorAll('#bk-steps .bk-dot');
+  dots.forEach((d,i) => {
+    d.className = 'bk-dot';
+    if (i+1 < bookingState.step) d.classList.add('done');
+    if (i+1 === bookingState.step) d.classList.add('active');
+  });
+
+  if (bookingState.step === 1) {
+    // Step 1: Confirm package + pick date
+    const today = new Date();
+    const minDate = new Date(today.getTime() + 86400000); // tomorrow
+    const minStr = minDate.toISOString().split('T')[0];
+    const maxDate = new Date(today.getTime() + 90*86400000);
+    const maxStr = maxDate.toISOString().split('T')[0];
+
+    box.innerHTML = `
+      <div class="bk-title">Confirm Your Package</div>
+      <div class="bk-sub">You're booking this package. Pick your preferred date below.</div>
+      <div class="bk-pkg-banner">
+        <div>
+          <div style="font-size:.65rem;color:rgba(255,255,255,.45);font-family:'DM Mono',monospace;letter-spacing:.1em;text-transform:uppercase;margin-bottom:.15rem;">Package Selected</div>
+          <div class="bk-pkg-name">${bookingState.pkg}</div>
+        </div>
+        ${bookingState.price ? `<div class="bk-pkg-price">${bookingState.price}</div>` : ''}
+      </div>
+      <div class="bk-card">
+        <div class="bk-row">
+          <label class="bk-label">Preferred Date</label>
+          <input type="date" class="bk-input" id="bk-date" min="${minStr}" max="${maxStr}" value="${bookingState.date}">
+        </div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.4rem;line-height:1.5;">
+          📌 Studio is closed on <strong>Tuesdays</strong><br>
+          📌 ₱300 non-refundable reservation fee required<br>
+          📌 Bookings must be at least 1 day in advance
+        </div>
+      </div>
+      <button class="bk-action" id="bk-next1" onclick="goStep2()">Choose Time Slot →</button>`;
+
+    // Disable Tuesday selection
+    setTimeout(() => {
+      const dateInput = document.getElementById('bk-date');
+      if (dateInput) {
+        dateInput.addEventListener('input', function() {
+          const d = new Date(this.value + 'T00:00:00');
+          if (d.getDay() === 2) { // Tuesday
+            alert('Sorry, the studio is closed on Tuesdays. Please pick another day.');
+            this.value = '';
+          }
+        });
+      }
+    }, 50);
+
+  } else if (bookingState.step === 2) {
+    // Step 2: Pick time slot
+    const dateObj = new Date(bookingState.date + 'T00:00:00');
+    const dateStr = dateObj.toLocaleDateString('en-PH', { weekday:'long', month:'long', day:'numeric', year:'numeric' });
+
+    box.innerHTML = `
+      <div class="bk-title">Pick Your Time Slot</div>
+      <div class="bk-sub">${bookingState.pkg} — ${dateStr}</div>
+      <div class="bk-card">
+        <div class="bk-label">Available Slots</div>
+        <div class="bk-time-grid">
+          ${BK_TIME_SLOTS.map(t => `<button class="bk-time-btn ${bookingState.time===t?'selected':''}" onclick="selectTime('${t}',this)">${t}</button>`).join('')}
+        </div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.6rem;">
+          Each session is approximately 20–30 minutes. Walk-ins 11AM–5PM.
+        </div>
+      </div>
+      <div style="display:flex;gap:.5rem;margin-top:.8rem;">
+        <button class="bk-back" onclick="bookingState.step=1;renderBookingStep()">← Back</button>
+        <button class="bk-action" id="bk-next2" onclick="goStep3()" style="flex:1;" ${!bookingState.time?'disabled':''}>Enter Your Details →</button>
+      </div>`;
+
+  } else if (bookingState.step === 3) {
+    // Step 3: Client info
+    box.innerHTML = `
+      <div class="bk-title">Your Details</div>
+      <div class="bk-sub">Almost done! Tell us how to reach you.</div>
+      <div class="bk-card">
+        <div class="bk-row">
+          <label class="bk-label">Full Name *</label>
+          <input class="bk-input" id="bk-name" placeholder="Maria Santos" value="${bookingState.name}">
+        </div>
+        <div class="bk-row">
+          <label class="bk-label">Phone / Messenger *</label>
+          <input class="bk-input" id="bk-phone" placeholder="09XXXXXXXXX or FB name" value="${bookingState.phone}">
+        </div>
+        <div class="bk-row">
+          <label class="bk-label">Special Requests (optional)</label>
+          <input class="bk-input" id="bk-notes" placeholder="e.g. birthday setup, extra pax, HMU…" value="${bookingState.notes}">
+        </div>
+      </div>
+
+      <!-- Summary -->
+      <div class="bk-card" style="background:rgba(45,110,95,.1);border-color:rgba(45,110,95,.25);">
+        <div class="bk-label" style="color:var(--green);margin-bottom:.6rem;">Booking Summary</div>
+        <div class="bk-summary-row"><span class="bk-summary-label">Package</span><span class="bk-summary-val">${bookingState.pkg}</span></div>
+        ${bookingState.price ? `<div class="bk-summary-row"><span class="bk-summary-label">Price</span><span class="bk-summary-val">${bookingState.price}</span></div>` : ''}
+        <div class="bk-summary-row"><span class="bk-summary-label">Date</span><span class="bk-summary-val">${new Date(bookingState.date+'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span></div>
+        <div class="bk-summary-row"><span class="bk-summary-label">Time</span><span class="bk-summary-val" style="color:var(--gold);font-family:'DM Mono',monospace;">${bookingState.time}</span></div>
+        <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.5rem;line-height:1.5;">
+          📌 ₱300 non-refundable reservation fee will be requested via GCash/BPI after confirmation.
+        </div>
+      </div>
+
+      <div style="display:flex;gap:.5rem;">
+        <button class="bk-back" onclick="bookingState.step=2;renderBookingStep()">← Back</button>
+        <button class="bk-action" id="bk-submit" onclick="submitBooking()" style="flex:1;">✓ Submit Booking Request</button>
+      </div>`;
+  }
+}
+
+function selectTime(time, btn) {
+  bookingState.time = time;
+  document.querySelectorAll('.bk-time-btn').forEach(b => b.classList.remove('selected'));
+  btn.classList.add('selected');
+  document.getElementById('bk-next2').disabled = false;
+}
+
+function goStep2() {
+  const date = document.getElementById('bk-date').value;
+  if (!date) { alert('Please pick a date.'); return; }
+  const d = new Date(date + 'T00:00:00');
+  if (d.getDay() === 2) { alert('Studio is closed on Tuesdays.'); return; }
+  bookingState.date = date;
+  bookingState.step = 2;
+  renderBookingStep();
+  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+function goStep3() {
+  if (!bookingState.time) { alert('Please pick a time slot.'); return; }
+  bookingState.step = 3;
+  renderBookingStep();
+  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+}
+
+async function submitBooking() {
+  const name  = document.getElementById('bk-name').value.trim();
+  const phone = document.getElementById('bk-phone').value.trim();
+  const notes = document.getElementById('bk-notes').value.trim();
+  if (!name) { alert('Please enter your name.'); return; }
+  if (!phone) { alert('Please enter your phone number or Messenger name.'); return; }
+
+  bookingState.name  = name;
+  bookingState.phone = phone;
+  bookingState.notes = notes;
+
+  const btn = document.getElementById('bk-submit');
+  btn.disabled = true;
+  btn.textContent = 'Submitting…';
+
+  try {
+    const res = await callScript('createBooking', {
+      clientName: name,
+      phone: phone,
+      package: bookingState.pkg,
+      price: bookingState.price,
+      date: bookingState.date,
+      time: bookingState.time,
+      notes: notes,
+      source: 'website'
+    });
+
+    if (typeof fbq !== 'undefined') fbq('track', 'Lead');
+
+    // Success!
+    const box = document.getElementById('bk-content');
+    document.querySelectorAll('#bk-steps .bk-dot').forEach(d => d.className = 'bk-dot done');
+
+    box.innerHTML = `
+      <div class="bk-success">
+        <div class="bk-check">✓</div>
+        <div class="bk-title">Booking Request Sent! 🎉</div>
+        <div class="bk-sub">We'll confirm your booking shortly via Messenger or text. Please prepare the ₱300 reservation fee.</div>
+        <div class="bk-card" style="text-align:left;">
+          <div class="bk-summary-row"><span class="bk-summary-label">Package</span><span class="bk-summary-val">${bookingState.pkg}</span></div>
+          ${bookingState.price ? `<div class="bk-summary-row"><span class="bk-summary-label">Price</span><span class="bk-summary-val">${bookingState.price}</span></div>` : ''}
+          <div class="bk-summary-row"><span class="bk-summary-label">Date</span><span class="bk-summary-val">${new Date(bookingState.date+'T00:00:00').toLocaleDateString('en-PH',{weekday:'short',month:'short',day:'numeric',year:'numeric'})}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Time</span><span class="bk-summary-val" style="color:var(--gold);">${bookingState.time}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Name</span><span class="bk-summary-val">${name}</span></div>
+          <div class="bk-summary-row"><span class="bk-summary-label">Contact</span><span class="bk-summary-val">${phone}</span></div>
+          ${notes ? `<div class="bk-summary-row"><span class="bk-summary-label">Notes</span><span class="bk-summary-val">${notes}</span></div>` : ''}
+        </div>
+        <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-top:.8rem;line-height:1.6;">
+          Need to change something? Message us on
+          <a href="https://www.facebook.com/clicklounge.studio" target="_blank" style="color:var(--gold);text-decoration:underline;">Facebook</a>
+        </div>
+        <button class="bk-action" onclick="closeBooking()" style="margin-top:1rem;">Done ✓</button>
+      </div>`;
+
+  } catch(err) {
+    btn.disabled = false;
+    btn.textContent = '✓ Submit Booking Request';
+
+    const box = document.getElementById('bk-content');
+    box.innerHTML += `
+      <div style="background:rgba(192,57,43,.15);border:1px solid rgba(192,57,43,.3);border-radius:10px;padding:1rem;margin-top:.8rem;font-size:.84rem;color:#ff6b6b;text-align:center;">
+        ⚠ Couldn't submit right now. Please try again, or message us on
+        <a href="https://www.facebook.com/clicklounge.studio" target="_blank" style="color:#ff6b6b;text-decoration:underline;">Facebook</a>
+        with your booking details.
+      </div>`;
+  }
 }
 
 // ── T&C MODAL ──
