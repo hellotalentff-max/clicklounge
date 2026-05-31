@@ -635,7 +635,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="text-align:center;padding:2rem;">
-      <button class="book-btn" onclick="openBooking('Studio Session + Add-ons','')">Book Now →</button>
+      <button class="book-btn" onclick="openBooking('Studio Session','')">Book Now →</button>
     </div>
   </div>
 </div>
@@ -1300,7 +1300,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <span class="save-chip">Save ₱3,000</span>
     </div>
     <p style="color:var(--text-mid);font-size:.9rem;margin-bottom:1.5rem;">Exclusive bridal shoot for up to 7 pax</p>
-      <button class="book-btn" onclick="openBooking('Bridal Bliss','₱5,000')">Book Now →</button>
+      <button class="book-btn" onclick="openBooking('Events & Rentals','')">Book Now →</button>
   </div>
 
   <div style="max-width:800px;margin:0 auto;padding:2.5rem 2rem 0;">
@@ -1389,7 +1389,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="margin-top:2rem;">
-      <a class="book-btn" href="#" onclick="openBooking('Studio Booth','');return false;">Book Studio Booth</a>
+      <a class="book-btn" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Studio Booth</a>
     </div>
   </div>
 </div>
@@ -2826,57 +2826,12 @@ const BK_TIME_SLOTS = [
 function openBooking(pkg, price) {
   // Close any open modals first
   document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
-
-  // Build confirmation overlay
-  const BOOKING_URL = 'https://hellotalentff-max.github.io/clicklounge_booking/';
-  const params = new URLSearchParams({ package: pkg });
-  if (price) params.set('price', price);
-  const bookUrl = BOOKING_URL + '?' + params.toString();
-
   bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
   const modal = document.getElementById('booking-modal');
-  const box   = document.getElementById('bk-content');
-
-  // Hide step indicator for confirmation
-  document.getElementById('bk-steps').style.display = 'none';
-
-  box.innerHTML = `
-    <div style="text-align:center;padding:.5rem 0 0;">
-      <div style="font-size:2.5rem;margin-bottom:.6rem;">📸</div>
-      <div class="bk-title" style="margin-bottom:.3rem;">You're booking:</div>
-      <div class="bk-pkg-banner" style="margin:0 auto 1.2rem;max-width:380px;">
-        <div>
-          <div style="font-size:.6rem;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.12rem;">Package Selected</div>
-          <div class="bk-pkg-name">${pkg}</div>
-        </div>
-        ${price ? `<div class="bk-pkg-price">${price}</div>` : ''}
-      </div>
-      <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;text-align:left;max-width:380px;margin-left:auto;margin-right:auto;">
-        <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;">
-          📌 ₱300 non-refundable reservation fee<br>
-          📌 Studio is closed every <strong>Sunday</strong><br>
-          📌 Book at least 1 day in advance<br>
-          📌 Walk-ins accepted 11 AM – 5 PM
-        </div>
-      </div>
-      <a href="${bookUrl}" target="_blank"
-        onclick="if(typeof fbq!=='undefined')fbq('track','InitiateCheckout')"
-        style="display:inline-block;background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.85rem 2rem;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;margin-bottom:.8rem;">
-        Proceed to Booking →
-      </a>
-      <div style="margin-top:.3rem;">
-        <button onclick="closeBooking()" style="background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.5rem 1.2rem;border-radius:100px;cursor:pointer;">
-          ← Go Back
-        </button>
-      </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.25);margin-top:1rem;">
-        You'll be redirected to our booking page to choose your date and time.
-      </div>
-    </div>`;
-
   modal.style.display = 'block';
+  renderBookingStep();
   setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
-  if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: pkg });
+  if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout');
 }
 
 function closeBooking() {
@@ -2916,21 +2871,21 @@ function renderBookingStep() {
           <input type="date" class="bk-input" id="bk-date" min="${minStr}" max="${maxStr}" value="${bookingState.date}">
         </div>
         <div style="font-size:.72rem;color:rgba(255,255,255,.35);margin-top:.4rem;line-height:1.5;">
-          📌 Studio is closed on <strong>Sundays</strong><br>
+          📌 Studio is closed on <strong>Tuesdays</strong><br>
           📌 ₱300 non-refundable reservation fee required<br>
           📌 Bookings must be at least 1 day in advance
         </div>
       </div>
       <button class="bk-action" id="bk-next1" onclick="goStep2()">Choose Time Slot →</button>`;
 
-    // Disable Sunday selection
+    // Disable Tuesday selection
     setTimeout(() => {
       const dateInput = document.getElementById('bk-date');
       if (dateInput) {
         dateInput.addEventListener('input', function() {
           const d = new Date(this.value + 'T00:00:00');
-          if (d.getDay() === 0) { // Sunday
-            alert('Sorry, the studio is closed on Sundays. Please pick another day.');
+          if (d.getDay() === 2) { // Tuesday
+            alert('Sorry, the studio is closed on Tuesdays. Please pick another day.');
             this.value = '';
           }
         });
@@ -3009,7 +2964,7 @@ function goStep2() {
   const date = document.getElementById('bk-date').value;
   if (!date) { alert('Please pick a date.'); return; }
   const d = new Date(date + 'T00:00:00');
-  if (d.getDay() === 0) { alert('Studio is closed on Sundays.'); return; }
+  if (d.getDay() === 2) { alert('Studio is closed on Tuesdays.'); return; }
   bookingState.date = date;
   bookingState.step = 2;
   renderBookingStep();
