@@ -1430,10 +1430,10 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     var posts=d.data.filter(function(p){return p.active==="yes"||p.active===true;}).sort(function(a,b){return(b.date||"").localeCompare(a.date||"");}).slice(0,6);
     if(!posts.length)return;
     var el=document.getElementById("cls-whats-new");
-    var h='<div style="max-width:1100px;margin:60px auto;padding:0 20px;"><h2 style="font-family:Playfair Display,Georgia,serif;font-size:2rem;text-align:center;color:#2f4f4f;margin-bottom:.4rem;">What\'s New</h2><p style="text-align:center;font-size:.9rem;color:#6b8c8c;margin-bottom:1.5rem;">Latest updates, promos &amp; announcements</p><div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:16px;">';
+    var h='<div style="max-width:1100px;margin:60px auto;padding:0 20px;text-align:center;"><h2 style="font-family:Playfair Display,Georgia,serif;font-size:2rem;color:#2f4f4f;margin-bottom:.4rem;">What\'s New</h2><p style="font-size:.9rem;color:#6b8c8c;margin-bottom:1.5rem;">Latest updates, promos &amp; announcements</p><div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">';
     posts.forEach(function(p){
-      h+='<div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid #dce5e3;transition:all .2s;" onmouseover="this.style.boxShadow=\'0 4px 16px rgba(47,79,79,0.08)\'" onmouseout="this.style.boxShadow=\'none\'">';
-      if(p.imageUrl) h+='<img src="'+p.imageUrl+'" style="width:100%;height:200px;object-fit:cover;" onerror="this.style.display=\'none\'">';
+      h+='<div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid #dce5e3;transition:all .2s;width:340px;max-width:100%;text-align:left;" onmouseover="this.style.boxShadow=\'0 4px 16px rgba(47,79,79,0.08)\'" onmouseout="this.style.boxShadow=\'none\'">';
+      if(p.imageUrl) h+='<img src="'+p.imageUrl+'" style="width:100%;display:block;" onerror="this.style.display=\'none\'">';
       h+='<div style="padding:16px;"><div style="font-size:.7rem;color:#6b8c8c;">'+p.date+'</div><div style="font-size:1.05rem;font-weight:700;color:#2f4f4f;margin:4px 0 6px;">'+p.title+'</div><p style="font-size:.85rem;color:#6b8c8c;line-height:1.6;">'+p.description+'</p>';
       if(p.linkUrl) h+='<a href="'+p.linkUrl+'" target="_blank" style="display:inline-block;margin-top:10px;background:#d79068;color:#fff;padding:8px 20px;border-radius:8px;text-decoration:none;font-size:.8rem;font-weight:600;">'+(p.linkText||"Learn More")+'</a>';
       h+='</div></div>';
