@@ -2108,7 +2108,7 @@ async function checkMyPoints() {
     TX.forEach(tx => {
       const txName = String(tx['clientName'] || tx['Client Name'] || '').trim();
       if (!txName) return;
-      if (namesMatch(q, txName) || txName.toLowerCase().includes(qLower) || qLower.includes(txName.toLowerCase().split(' ')[0])) {
+      if (namesMatch(q, txName) || txName.toLowerCase().includes(qLower)) {
         const amt = parseAmt(tx['total'] || tx['Total']);
         if (amt > 0) { txSpend += amt; txSessions++; if (!txFoundName) txFoundName = txName; }
       }
@@ -2119,7 +2119,7 @@ async function checkMyPoints() {
     OG.forEach(row => {
       const rowName = String(row['Name'] || row['name'] || '').trim();
       if (!rowName) return;
-      if (namesMatch(q, rowName) || rowName.toLowerCase().includes(qLower) || qLower.includes(rowName.toLowerCase().split(' ')[0])) {
+      if (namesMatch(q, rowName) || rowName.toLowerCase().includes(qLower)) {
         const amt = parseAmt(row['Total'] || row['total'] || row['TOTAL']);
         if (amt > 0) { ogSpend += amt; ogSessions++; if (!ogFoundName) ogFoundName = rowName; }
       }
