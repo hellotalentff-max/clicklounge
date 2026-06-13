@@ -312,9 +312,56 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <a href="#" onclick="showPage('events',this);return false;">Events & Rentals</a>
   <a href="#" onclick="showPage('booking',this);return false;" style="display:none;">Booking Process</a>
   <a href="#" onclick="showPage('loyalty',this);return false;">🏅 ClickCard</a>
+  <a href="https://hellotalentff-max.github.io/clicklounge_pos/ClickLounge_Reschedule.html" target="_blank" style="font-size:.78rem;">📅 Reschedule</a>
 </nav>
 
 <!-- ══ HOME ══ -->
+<!-- WHAT'S NEW -->
+<div id="cls-whats-new"></div>
+<script>
+(function(){
+  var GAS="https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec";
+  function cb(d){
+    if(!d||!d.ok||!d.data||!d.data.length) return;
+    // Accept yes/Yes/YES/true/TRUE/1 as active
+    var posts=d.data.filter(function(p){
+      var a=String(p.active||'').toLowerCase().trim();
+      return a==='yes'||a==='true'||a==='1';
+    }).sort(function(a,b){
+      return (String(b.date||'')).localeCompare(String(a.date||''));
+    }).slice(0,6);
+    if(!posts.length) return;
+    var el=document.getElementById('cls-whats-new');
+    if(!el) return;
+    var cards='';
+    posts.forEach(function(p){
+      var img  = p.imageUrl  ? '<img src="'+p.imageUrl+'" style="width:100%;display:block;" onerror="this.style.display=\'none\'">' : '';
+      var link = p.linkUrl   ? '<a href="'+p.linkUrl+'" target="_blank" style="display:inline-block;background:#c49a1a;color:#fff;padding:8px 20px;border-radius:8px;text-decoration:none;font-size:.8rem;font-weight:600;">'+(p.linkText||'Learn More')+'</a>' : '';
+      cards += '<div style="background:#fff;border-radius:14px;overflow:hidden;border:1px solid #e8ede9;width:320px;max-width:100%;text-align:left;box-shadow:0 2px 8px rgba(45,110,95,.05);">'+
+        img+
+        '<div style="padding:16px;">'+
+          '<div style="font-size:.7rem;color:#8fa89e;margin-bottom:4px;">'+String(p.date||'')+'</div>'+
+          '<div style="font-size:1rem;font-weight:700;color:#1a2e28;margin-bottom:6px;">'+String(p.title||'')+'</div>'+
+          '<p style="font-size:.85rem;color:#4a6058;line-height:1.6;margin-bottom:10px;">'+String(p.description||'')+'</p>'+
+          link+
+        '</div>'+
+      '</div>';
+    });
+    el.innerHTML='<div style="max-width:1100px;margin:48px auto 0;padding:0 20px;text-align:center;">'+
+      '<h2 style="font-family:\'Playfair Display\',Georgia,serif;font-size:2rem;color:#2d6e5f;margin-bottom:.3rem;">What\'s New</h2>'+
+      '<p style="font-size:.9rem;color:#8fa89e;margin-bottom:1.5rem;">Latest updates, promos &amp; announcements</p>'+
+      '<div style="display:flex;flex-wrap:wrap;gap:16px;justify-content:center;">'+cards+'</div>'+
+    '</div>';
+  }
+  var n='_cls_'+Math.random().toString(36).slice(2);
+  window[n]=function(d){ cb(d); try{delete window[n];}catch(e){} };
+  var s=document.createElement('script');
+  s.src=GAS+'?d='+encodeURIComponent(btoa(unescape(encodeURIComponent(JSON.stringify({action:'getAnnouncements',payload:{}})))))+'&callback='+n;
+  s.onerror=function(){ console.warn('CLS: Could not load announcements'); };
+  document.body.appendChild(s);
+})();
+</script>
+
 <div id="home" class="section active">
   <div class="page-header" style="min-height:440px;display:flex;flex-direction:column;align-items:center;justify-content:center;">
     <img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="width:260px;height:auto;margin-bottom:1rem;position:relative;">
@@ -421,7 +468,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Snapshot Selfie','₱500')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Snapshot Selfie','₱500')">Book Now →</button>
         </div>
       </div>
 
@@ -444,7 +491,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Tribe Time','₱800')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Tribe Time','₱800')">Book Now →</button>
         </div>
       </div>
 
@@ -466,7 +513,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Crowd Cam','₱1,000')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Crowd Cam','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -488,7 +535,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: 1 pet</li>
             <li>FREE: 0–2yo child</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Crew Captures','₱1,200')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Crew Captures','₱1,200')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -518,7 +565,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Frenzy Snaps Birthday','₱700')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Frenzy Snaps Birthday','₱700')">Book Now →</button>
         </div>
       </div>
 
@@ -539,7 +586,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>50% discount on double glass frame (P800)</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Party Clicks Birthday','₱1,000')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Party Clicks Birthday','₱1,000')">Book Now →</button>
         </div>
       </div>
 
@@ -559,7 +606,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
             <li>FREE: Framed 8R in Double Glass Frame</li>
             <li>FREE: 1 pet</li>
           </ul>
-          <button class="pkg-cta" onclick="bookDirect('Click Capture Birthday','₱1,500')">Book Now →</button>
+          <button class="pkg-cta" onclick="openBooking('Click Capture Birthday','₱1,500')">Book Now →</button>
         </div>
       </div>
     </div>
@@ -635,7 +682,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="text-align:center;padding:2rem;">
-      <button class="book-btn" onclick="bookDirect('Self Shoot + Photographer Upgrade','₱700')">Book Now →</button>
+      <button class="book-btn" onclick="openBooking('Self Shoot + Photographer Upgrade','₱700')">Book Now →</button>
     </div>
   </div>
 </div>
@@ -858,7 +905,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <img src="11.png" alt="Promo 3" style="width:100%;border-radius:12px;display:block;">
       <img src="12.png" alt="Promo 4" style="width:100%;border-radius:12px;display:block;">
     </div>
-    <button class="modal-book" onclick="bookDirect('Promo Session','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Promo Session →</button>
+    <button class="modal-book" onclick="openBooking('Promo Session','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Promo Session →</button>
   </div>
 </div>
 
@@ -888,8 +935,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <button onclick="openImagePopup('img_solo_promo.png')" style="width:100%;margin-top:.5rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">
       ⭐ All-in-Promo
     </button>
-        <a href="https://canva.link/a07887giu7th50o" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button onclick="bookDirect('Promo Styleshots','')" style="width:100%;margin-top:.6rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;opacity:.9;">
+    <button onclick="closeModal();openBooking('Promo Styleshots','')" style="width:100%;margin-top:.6rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;opacity:.9;">
       📅 Book All-in-Promo Now →
     </button>
     <div class="modal-addon-row"><span>Pax</span><span class="modal-addon-price">₱200</span></div>
@@ -904,7 +950,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <button class="modal-book" onclick="bookDirect('Styleshots','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Styleshots →</button>
+    <button class="modal-book" onclick="openBooking('Styleshots','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Styleshots →</button>
   </div>
 </div>
 
@@ -935,8 +981,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <button onclick="openImagePopup('img_couple_promo.png')" style="width:100%;margin-top:.5rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">
       ⭐ All-in-Promo
     </button>
-        <a href="https://canva.link/a07887giu7th50o" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button onclick="bookDirect('Couple Styleshots Promo','')" style="width:100%;margin-top:.6rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;opacity:.9;">
+    <button onclick="closeModal();openBooking('Couple Styleshots Promo','')" style="width:100%;margin-top:.6rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;opacity:.9;">
       📅 Book All-in-Promo Now →
     </button>
     <div class="modal-addon-row"><span>Pax</span><span class="modal-addon-price">₱200</span></div>
@@ -951,7 +996,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>All Digital Copies</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱300</span></div>
     <div class="modal-note">*Editing photos lead time may take 10 days or more depending on our workload. Rush editing can be done with a fee. Let us know your peg for your shoot. HMU is done 1.5hrs before your time slot. Late fee applies. Booking is a must.</div>
-    <button class="modal-book" onclick="bookDirect('Couple Styleshots','₱2,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Couple Styleshots →</button>
+    <button class="modal-book" onclick="openBooking('Couple Styleshots','₱2,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Couple Styleshots →</button>
   </div>
 </div>
 
@@ -960,8 +1005,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div class="modal-close"><button onclick="closeModal()">✕</button></div>
   <div class="modal-inner" style="padding:.5rem 1rem 1.5rem;">
     <img src="img_popreveal_content.png" alt="Pop Reveal Package" style="width:100%;border-radius:12px;display:block;margin-bottom:1.2rem;">
-        <a href="https://canva.link/ldqammuc532cauv" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('Pop Reveal','₱3,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Pop Reveal →</button>
+    <button class="modal-book" onclick="openBooking('Pop Reveal','₱3,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Pop Reveal →</button>
   </div>
 </div>
 
@@ -1013,12 +1057,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Hair &amp; Makeup</span><span class="modal-addon-price">₱2,000</span></div>
     <div class="modal-addon-row"><span>Additional Time</span><span class="modal-addon-price">₱500/10 min</span></div>
     <div class="modal-addon-row"><span>Discount on Frames</span><span class="modal-addon-price">Available</span></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.2rem;">
-          <a href="https://canva.link/42i5ccci3g08gud" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('Radiant Mama - Mama Love','₱2,000')" style="cursor:pointer;border:none;margin-top:0;">Book Mama Love →</button>
-      <button class="modal-book" onclick="bookDirect('Radiant Mama - Glowing Mom','₱4,500')" style="cursor:pointer;border:none;margin-top:0;background:var(--rust);">💄 Book Glowing Mom →</button>
-    </div>
-    <div style="font-size:.73rem;color:var(--text-light);text-align:center;margin-top:.5rem;">💄 Glowing Mom includes HMU — please arrive 1.5 hrs before your slot.</div>
+    <button class="modal-book" onclick="openBooking('Radiant Mama - Mama Love','₱2,000')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Radiant Mama →</button>
   </div>
 </div>
 
@@ -1103,13 +1142,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Digital Backdrop Edit</span><span class="modal-addon-price">₱300/pic</span></div>
     <div class="modal-addon-row"><span>Rush Edit Fee</span><span class="modal-addon-price">₱100/pic</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg. Booking is a must.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.2rem;">
-          <a href="https://canva.link/8lh12oisqwnzflt" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('Candid Kids ONEderful','₱1,500')" style="cursor:pointer;border:none;margin-top:0;font-size:.78rem;">ONEderful ₱1,500 →</button>
-      <button class="modal-book" onclick="bookDirect('Candid Kids TWOgether','₱2,000')" style="cursor:pointer;border:none;margin-top:0;font-size:.78rem;">TWOgether ₱2,000 →</button>
-      <button class="modal-book" onclick="bookDirect('Candid Kids Sweet Kid','₱1,500')" style="cursor:pointer;border:none;margin-top:0;font-size:.78rem;">Sweet Kid ₱1,500 →</button>
-      <button class="modal-book" onclick="bookDirect('Candid Kids All Star','₱2,500')" style="cursor:pointer;border:none;margin-top:0;font-size:.78rem;">All Star ₱2,500 →</button>
-    </div>
+    <button class="modal-book" onclick="openBooking('Candid Kids ONEderful','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Candid Kids →</button>
   </div>
 </div>
 
@@ -1166,11 +1199,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Frame — 10×12in 8R (Discount: ₱800)</span><span class="modal-addon-price">₱1,500</span></div>
     <div class="modal-addon-row"><span>Frame — 7×9in 5R (Discount: ₱500)</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-addon-row"><span>Basic HMU</span><span class="modal-addon-price">₱2,000</span></div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.2rem;">
-          <a href="https://canva.link/ocp3gi3z282reoc" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('Family Portraits Fam Bam','₱1,700')" style="cursor:pointer;border:none;margin-top:0;">Fam Bam ₱1,700 →</button>
-      <button class="modal-book" onclick="bookDirect('Family Portraits Fam Vibes','₱2,200')" style="cursor:pointer;border:none;margin-top:0;">Fam Vibes ₱2,200 →</button>
-    </div>
+    <button class="modal-book" onclick="openBooking('Family Portraits Fam Bam','₱1,700')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Family Portraits →</button>
   </div>
 </div>
 
@@ -1253,13 +1282,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>5R Frame Matted</span><span class="modal-addon-price">₱600</span></div>
     <div class="modal-addon-row"><span>5R Double Glass Frame</span><span class="modal-addon-price">₱800</span></div>
     <div class="modal-note">Let us know what hood color you need. School emblems can be edited to your chosen file. Stole shall be provided by the graduate. Please wear a black or nude tube top for Filipiana shots (women) and white shirt with no collar for Barong shots (men). Our barong fits Large to XL size only. We provide pearl earrings and necklace for women. Hair and Make Up Services is subject to booking. Please advise upon booking if you will avail the VIP Grad Glam package.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr 1fr;gap:.6rem;margin-top:1.2rem;">
-          <a href="https://canva.link/1gh3qswy7f3xvnn" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('Graduation Cap and Gown','₱700')" style="cursor:pointer;border:none;margin-top:0;font-size:.76rem;">Cap &amp; Gown ₱700 →</button>
-      <button class="modal-book" onclick="bookDirect('Graduation Grad-U-Click','₱1,500')" style="cursor:pointer;border:none;margin-top:0;font-size:.76rem;">Grad-U-Click ₱1,500 →</button>
-      <button class="modal-book" onclick="bookDirect('VIP Grad Glam','₱3,000')" style="cursor:pointer;border:none;margin-top:0;font-size:.76rem;background:var(--rust);">💄 VIP Grad Glam ₱3,000 →</button>
-    </div>
-    <div style="font-size:.73rem;color:var(--text-light);text-align:center;margin-top:.5rem;">💄 VIP Grad Glam includes HMU — please arrive 1.5 hrs before your slot.</div>
+    <button class="modal-book" onclick="openBooking('Graduation Cap & Gown','₱700')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Graduation →</button>
   </div>
 </div>
 
@@ -1308,11 +1331,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="modal-addon-row"><span>Per pet (max of 3)</span><span class="modal-addon-price">₱200</span></div>
     <div class="modal-addon-row"><span>Per person</span><span class="modal-addon-price">₱100</span></div>
     <div class="modal-note">Editing photos lead time may take 10 days or more depending on workload. Rush editing can be done with a fee. Let us know your peg for your shoot. Booking is a must for Pawsome Package. Pet Guidelines must be followed.</div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.2rem;">
-          <a href="https://canva.link/2h5wd1hjwx2cx6f" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
-<button class="modal-book" onclick="bookDirect('PAWtraits Purrfect','₱1,500')" style="cursor:pointer;border:none;margin-top:0;">Purrfect ₱1,500 →</button>
-      <button class="modal-book" onclick="bookDirect('PAWtraits Pawsome','₱2,000')" style="cursor:pointer;border:none;margin-top:0;">Pawsome ₱2,000 →</button>
-    </div>
+    <button class="modal-book" onclick="openBooking('PAWtraits Purrfect','₱1,500')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book PAWtraits →</button>
   </div>
 </div>
 
@@ -1330,7 +1349,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <span class="save-chip">Save ₱3,000</span>
     </div>
     <p style="color:var(--text-mid);font-size:.9rem;margin-bottom:1.5rem;">Exclusive bridal shoot for up to 7 pax</p>
-      <button class="book-btn" onclick="bookDirect('Bridal Bliss','₱5,000')">Book Now →</button>
+      <button class="book-btn" onclick="openBooking('Bridal Bliss','₱5,000')">Book Now →</button>
   </div>
 
   <div style="max-width:800px;margin:0 auto;padding:2.5rem 2rem 0;">
@@ -1419,7 +1438,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
     </div>
     <div style="margin-top:2rem;">
-      <a class="book-btn" href="#" onclick="bookDirect('Studio Booth','');return false;">Book Studio Booth</a>
+      <a class="book-btn" href="#" onclick="openBooking('Studio Booth','');return false;">Book Studio Booth</a>
     </div>
   </div>
 </div>
@@ -1434,6 +1453,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
   <div style="text-align:center;padding:2rem 2rem 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
     <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Now →</a>
+    <a href="https://hellotalentff-max.github.io/clicklounge_pos/ClickLounge_Reschedule.html" target="_blank" style="display:inline-block;margin-top:.6rem;font-size:.82rem;color:var(--text-mid);">📅 Need to reschedule? Click here</a>
     <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
   </div>
 
@@ -1841,6 +1861,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
     onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
     class="cc-book-btn">Book a Session &amp; Earn Points →</a>
+  <a href="https://hellotalentff-max.github.io/clicklounge_pos/ClickLounge_Reschedule.html" target="_blank" style="display:block;margin-top:.8rem;font-size:.82rem;color:rgba(255,255,255,.5);">📅 Need to reschedule your booking?</a>
   <div style="margin-top:1.2rem;">
     <button onclick="document.getElementById('check-pts-section').scrollIntoView({behavior:'smooth'})"
       style="background:transparent;border:1.5px solid rgba(255,255,255,.3);color:rgba(255,255,255,.65);font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.6rem 1.4rem;border-radius:100px;cursor:pointer;">
@@ -2116,7 +2137,7 @@ async function checkMyPoints() {
     TX.forEach(tx => {
       const txName = String(tx['clientName'] || tx['Client Name'] || '').trim();
       if (!txName) return;
-      if (namesMatch(q, txName) || txName.toLowerCase().includes(qLower)) {
+      if (namesMatch(q, txName) || txName.toLowerCase().includes(qLower) || qLower.includes(txName.toLowerCase().split(' ')[0])) {
         const amt = parseAmt(tx['total'] || tx['Total']);
         if (amt > 0) { txSpend += amt; txSessions++; if (!txFoundName) txFoundName = txName; }
       }
@@ -2127,7 +2148,7 @@ async function checkMyPoints() {
     OG.forEach(row => {
       const rowName = String(row['Name'] || row['name'] || '').trim();
       if (!rowName) return;
-      if (namesMatch(q, rowName) || rowName.toLowerCase().includes(qLower)) {
+      if (namesMatch(q, rowName) || rowName.toLowerCase().includes(qLower) || qLower.includes(rowName.toLowerCase().split(' ')[0])) {
         const amt = parseAmt(row['Total'] || row['total'] || row['TOTAL']);
         if (amt > 0) { ogSpend += amt; ogSessions++; if (!ogFoundName) ogFoundName = rowName; }
       }
@@ -2913,15 +2934,6 @@ function openBooking(pkg, price) {
 
 function closeBooking() {
   document.getElementById('booking-modal').style.display = 'none';
-}
-
-// Direct booking — skips popup, goes straight to booking app with package pre-selected
-function bookDirect(pkg, price) {
-  var url = 'https://hellotalentff-max.github.io/clicklounge_booking/?pkg=' + encodeURIComponent(pkg);
-  var p = String(price||'').replace(/[₱,\s]/g, '');
-  if (p) url += '&price=' + encodeURIComponent(p);
-  if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg });
-  window.open(url, '_blank');
 }
 
 function renderBookingStep() {
