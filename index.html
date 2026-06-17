@@ -1897,7 +1897,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
 <!-- ══ BOOKING MODAL ══ -->
 <style>
-#booking-modal{display:none;width:100%;background:linear-gradient(180deg,#0e1a16 0%,#1a3020 100%);padding:2rem 1rem 3rem;}
+#booking-modal{display:none;position:fixed;inset:0;z-index:9999;background:linear-gradient(180deg,#0e1a16 0%,#1a3020 100%);padding:2rem 1rem 3rem;overflow-y:auto;}
 .bk-inner{max-width:500px;margin:0 auto;}
 .bk-close{display:block;margin:0 0 .8rem auto;background:rgba(255,255,255,.12);border:1px solid rgba(255,255,255,.2);color:#fff;width:36px;height:36px;border-radius:50%;font-size:1rem;cursor:pointer;text-align:center;line-height:36px;}
 .bk-card{background:rgba(255,255,255,.06);border:1px solid rgba(255,255,255,.1);border-radius:16px;padding:1.4rem;margin-bottom:.8rem;}
@@ -1930,6 +1930,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .bk-summary-label{color:rgba(255,255,255,.5);}
 .bk-summary-val{color:#fff;font-weight:500;text-align:right;}
 </style>
+
 
 <div id="booking-modal">
   <div class="bk-inner">
@@ -2928,12 +2929,13 @@ function openBooking(pkg, price) {
     </div>`;
 
   modal.style.display = 'block';
-  setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
+  document.body.style.overflow='hidden';
   if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: pkg });
 }
 
 function closeBooking() {
   document.getElementById('booking-modal').style.display = 'none';
+  document.body.style.overflow='';
 }
 
 function renderBookingStep() {
@@ -3066,14 +3068,14 @@ function goStep2() {
   bookingState.date = date;
   bookingState.step = 2;
   renderBookingStep();
-  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+  
 }
 
 function goStep3() {
   if (!bookingState.time) { alert('Please pick a time slot.'); return; }
   bookingState.step = 3;
   renderBookingStep();
-  document.getElementById('booking-modal').scrollIntoView({ behavior:'smooth', block:'start' });
+  
 }
 
 async function submitBooking() {
@@ -3214,3 +3216,4 @@ document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal()
 </script>
 </body>
 </html>
+
