@@ -294,6 +294,12 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .footer-social a:hover{background:var(--amber);}
 .footer-bottom{font-size:.72rem;color:rgba(255,255,255,.35);border-top:1px solid rgba(255,255,255,.1);padding-top:1.2rem;margin-top:.5rem;}
 
+.nav-book-now:hover{transform:translateY(-1px);box-shadow:0 4px 14px rgba(196,154,26,.4);}
+.nav-book-now{flex-shrink:0;}
+@media(max-width:768px){
+  .nav-book-now{font-size:.65rem !important; padding:.4rem .8rem !important;}
+}
+
 /* ═══════════════════════════════════════════════════
    📅 RESCHEDULE FORM STYLES (scoped with .rsch- prefix)
    ═══════════════════════════════════════════════════ */
@@ -474,6 +480,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 <nav>
   <a href="#" onclick="showPage('home',this);return false;" style="padding:0 .8rem;border:none;"><img src="STUDIO_LOGO_GIF.gif" alt="Click Lounge Studio" style="height:36px;width:auto;display:block;"></a>
   <div style="width:1px;height:24px;background:rgba(45,110,95,.15);margin:0 .2rem;"></div>
+  <a href="book.html" class="nav-book-now" style="background:var(--amber);color:#fff;padding:.45rem 1rem;border-radius:100px;font-family:'Space Mono',monospace;font-size:.72rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;border:none;transition:transform .15s,box-shadow .2s;text-decoration:none;display:inline-flex;align-items:center;gap:.3rem;">📅 Book Now</a>
   <a href="#" class="active" onclick="showPage('home',this);return false;">Home</a>
   <a href="#" onclick="showPage('self-shoot',this);return false;">Self Shoot</a>
   <a href="#" onclick="showPage('photographer',this);return false;">Photographer</a>
@@ -3197,7 +3204,7 @@ function closeBooking() {
 
 // Direct booking — skips popup, goes straight to booking app with package pre-selected
 function bookDirect(pkg, price) {
-  var url = 'https://hellotalentff-max.github.io/clicklounge_booking/?pkg=' + encodeURIComponent(pkg);
+  var url = 'book.html?pkg=' + encodeURIComponent(pkg);
   var p = String(price||'').replace(/[₱,\s]/g, '');
   if (p) url += '&price=' + encodeURIComponent(p);
   if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg });
