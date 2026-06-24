@@ -3756,8 +3756,8 @@ function rsch_pickDate(y, m, d){
 
 async function rsch_loadSlots(date){
   try{
-    var r = await rsch_gasCall('getAvailability', {date: date});
-    var taken = (r && r.ok && r.taken) ? r.taken : [];
+    var r = await rsch_gasCall('getBookedSlots', {date: date});
+    var taken = (r && r.ok && r.takenSlots) ? r.takenSlots : [];
     document.getElementById('rsch-slot-loading').style.display = 'none';
     var grid = document.getElementById('rsch-slot-grid');
     grid.innerHTML = '';
