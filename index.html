@@ -3431,7 +3431,9 @@ function closeTnC() {
 
 function showPage(id, navEl) {
   document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
-  document.getElementById(id).classList.add('active');
+  const target = document.getElementById(id);
+  if (!target) return;
+  target.classList.add('active');
   document.querySelectorAll('nav a').forEach(a => a.classList.remove('active'));
   if (navEl && navEl.textContent.trim()) navEl.classList.add('active');
   // if logo clicked, activate "Home" link
@@ -3439,8 +3441,26 @@ function showPage(id, navEl) {
     const homeLink = document.querySelector('nav a[onclick*="home"]');
     if (homeLink) homeLink.classList.add('active');
   }
+  // Sync URL hash so links like /#loyalty are bookmarkable / shareable
+  try { history.replaceState(null, '', '#'+id); } catch(e) {}
   window.scrollTo({ top:0, behavior:'smooth' });
 }
+
+// ── HASH-BASED PAGE ROUTING ──────────────────────────────────────
+// Lets external links like .../#loyalty open directly to that page
+// Used by ClickCard email "View My Points" buttons
+function routeFromHash() {
+  const hash = (location.hash || '').replace(/^#/, '').trim();
+  if (!hash) return;
+  const target = document.getElementById(hash);
+  if (target && target.classList.contains('section')) {
+    // Find the matching nav link for active styling
+    const navLink = document.querySelector('nav a[onclick*="\'' + hash + '\'"]');
+    showPage(hash, navLink || null);
+  }
+}
+document.addEventListener('DOMContentLoaded', routeFromHash);
+window.addEventListener('hashchange', routeFromHash);
 function showSubTab(id, btn) {
   const panel = document.getElementById(id);
   if (!panel) return;
