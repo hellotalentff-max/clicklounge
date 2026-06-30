@@ -520,6 +520,79 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
   </div>
 
+  <!-- ══ WHAT'S NEW — Dynamic, loaded from the What's New Editor ══ -->
+  <div id="cls-whats-new"></div>
+  <script>
+  (function(){
+    // Uses the same POS GAS URL that the rest of the site uses.
+    // Posts are managed via the What's New Editor:
+    // https://hellotalentff-max.github.io/clicklounge_pos/ClickLounge_WhatsNew.html
+    var GAS = localStorage.getItem('pos_gas_url') || '';
+    // Fallback: try to read from the booking/POS config
+    if(!GAS){
+      try{ GAS = JSON.parse(localStorage.getItem('cl_gas_url')||'""'); }catch(e){}
+    }
+    // Hardcoded fallback (your POS GAS deployment URL)
+    if(!GAS) GAS = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
+    if(!GAS) return;
+
+    function renderPosts(d){
+      if(!d.ok || !d.data) return;
+      var posts = d.data.filter(function(p){ return p.active === 'yes' || p.active === true; })
+        .sort(function(a,b){ return (b.date||'').localeCompare(a.date||''); })
+        .slice(0, 6);
+      if(!posts.length) return;
+
+      var el = document.getElementById('cls-whats-new');
+      var html = '<div style="max-width:1000px;margin:0 auto;padding:2rem 1.5rem 1rem;">' +
+        '<div style="margin-bottom:1.2rem;">' +
+          '<span style="font-size:.7rem;text-transform:uppercase;letter-spacing:2px;color:var(--green);font-weight:700;">What\'s New</span>' +
+          '<h2 style="font-size:1.5rem;font-weight:800;color:var(--text-dark);margin-top:.2rem;">Latest from the Studio</h2>' +
+        '</div>' +
+        '<div style="display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1rem;">';
+
+      posts.forEach(function(p){
+        var badgeColor = (p.badge||'').toLowerCase() === 'promo' ? 'var(--amber)'
+                       : (p.badge||'').toLowerCase() === 'update' ? 'var(--rust)'
+                       : 'var(--green)';
+        var badgeText = p.badge || 'New';
+
+        html += '<div style="border-radius:14px;overflow:hidden;background:#fff;border:1px solid rgba(45,110,95,.1);box-shadow:0 4px 20px rgba(0,0,0,.06);transition:transform .2s,box-shadow .2s;" onmouseover="this.style.transform=\'translateY(-3px)\';this.style.boxShadow=\'0 8px 28px rgba(0,0,0,.1)\'" onmouseout="this.style.transform=\'\';this.style.boxShadow=\'0 4px 20px rgba(0,0,0,.06)\'">';
+
+        if(p.imageUrl){
+          html += '<div style="position:relative;height:200px;overflow:hidden;background:var(--cream);">' +
+            '<img src="' + p.imageUrl + '" alt="" style="width:100%;height:100%;object-fit:cover;" onerror="this.parentElement.style.display=\'none\'">' +
+            '<div style="position:absolute;top:12px;left:12px;background:'+badgeColor+';color:#fff;font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">'+badgeText+'</div>' +
+          '</div>';
+        } else {
+          html += '<div style="padding:12px 16px 0;"><span style="display:inline-block;background:'+badgeColor+';color:#fff;font-size:.65rem;font-weight:700;padding:4px 10px;border-radius:20px;text-transform:uppercase;letter-spacing:1px;">'+badgeText+'</span></div>';
+        }
+
+        html += '<div style="padding:1rem 1.2rem 1.2rem;">' +
+          '<div style="font-size:.75rem;color:var(--text-light);">' + (p.date||'') + '</div>' +
+          '<div style="font-size:.95rem;font-weight:700;color:var(--text-dark);line-height:1.3;margin-top:.2rem;">' + (p.title||'') + '</div>' +
+          '<p style="font-size:.8rem;color:var(--text-mid);margin-top:.4rem;line-height:1.5;">' + (p.description||'') + '</p>';
+
+        if(p.linkUrl){
+          html += '<a href="' + p.linkUrl + '" target="_blank" style="display:inline-block;margin-top:.6rem;background:var(--green);color:#fff;padding:8px 18px;border-radius:8px;text-decoration:none;font-size:.8rem;font-weight:600;transition:opacity .2s;" onmouseover="this.style.opacity=\'.85\'" onmouseout="this.style.opacity=\'1\'">' + (p.linkText||'Learn More →') + '</a>';
+        }
+        html += '</div></div>';
+      });
+
+      html += '</div></div>';
+      el.innerHTML = html;
+    }
+
+    // JSONP fetch
+    var cbName = '_cls_news_' + Math.random().toString(36).slice(2);
+    window[cbName] = function(d){ renderPosts(d); delete window[cbName]; };
+    var payload = btoa(unescape(encodeURIComponent(JSON.stringify({action:'getAnnouncements',payload:{}}))));
+    var s = document.createElement('script');
+    s.src = GAS + '?d=' + encodeURIComponent(payload) + '&callback=' + cbName;
+    document.body.appendChild(s);
+  })();
+  </script>
+
   <div class="cards-grid" style="max-width:1000px;">
     <div class="pkg-card" style="position:relative;cursor:pointer;" onclick="showPage('self-shoot',document.querySelectorAll('nav a')[1])">
       <div style="position:relative;height:180px;overflow:hidden;">
@@ -568,6 +641,19 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <h1 class="page-title">[basic self-shoot packages]</h1>
     <p class="page-desc">All include 20-min shoot, up to 2 backdrops with outfit pause time, and freebies. Add-ons available to customize your session.</p>
   </div>
+
+  <!-- CURRENT PROMOS -->
+  <a href="https://canva.link/03cwdqj2moxc2gd" target="_blank" rel="noopener"
+    style="display:block;max-width:900px;margin:0 auto 1.5rem;padding:16px 24px;background:linear-gradient(135deg,#c49a1a 0%,#d4b030 50%,#c49a1a 100%);border-radius:14px;text-decoration:none;text-align:center;position:relative;overflow:hidden;box-shadow:0 4px 20px rgba(196,154,26,.25);transition:transform .2s,box-shadow .2s;"
+    onmouseover="this.style.transform='translateY(-2px)';this.style.boxShadow='0 8px 28px rgba(196,154,26,.35)'"
+    onmouseout="this.style.transform='';this.style.boxShadow='0 4px 20px rgba(196,154,26,.25)'">
+    <div style="position:absolute;inset:0;background:url(&quot;data:image/svg+xml,%3Csvg width='40' height='40' viewBox='0 0 40 40' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='%23ffffff' fill-opacity='0.08'%3E%3Cpath d='M20 20l-4-4 4-4 4 4-4 4zm0 20l-4-4 4-4 4 4-4 4zM0 20l-4-4 4-4 4 4-4 4z'/%3E%3C/g%3E%3C/svg%3E&quot;);"></div>
+    <div style="position:relative;">
+      <div style="font-size:.65rem;text-transform:uppercase;letter-spacing:2.5px;color:rgba(255,255,255,.85);font-weight:700;">🔥 Limited Time Offer</div>
+      <div style="font-size:1.3rem;font-weight:800;color:#fff;margin-top:4px;text-shadow:0 1px 4px rgba(0,0,0,.15);">Check Our Current Promos!</div>
+      <div style="font-size:.85rem;color:rgba(255,255,255,.9);margin-top:4px;">Exclusive self-shoot deals & bundles — tap to view all offers →</div>
+    </div>
+  </a>
 
   <div class="sub-tabs">
     <button class="sub-tab active" onclick="showSubTab('ss-basic',this)">Basic Packages</button>
