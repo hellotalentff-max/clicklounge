@@ -81,12 +81,10 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 .cal-month-lbl{font-size:14px;font-weight:600;color:var(--slate);}
 .cal-grid{display:grid;grid-template-columns:repeat(7,1fr);padding:8px 8px 4px;}
 .cal-dow{text-align:center;font-size:9px;font-weight:600;text-transform:uppercase;letter-spacing:.3px;color:var(--muted);padding:4px 0 6px;}
-.cal-dow.sun-lbl{color:var(--danger);}
-.cal-day{text-align:center;padding:5px 2px;border-radius:7px;cursor:pointer;font-size:12px;min-height:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .12s;font-weight:500;line-height:1;}
+.cal-dow.sun-lbl{color:var(--muted);}.cal-day{text-align:center;padding:5px 2px;border-radius:7px;cursor:pointer;font-size:12px;min-height:34px;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:2px;transition:all .12s;font-weight:500;line-height:1;}
 .cal-day.blank{visibility:hidden;pointer-events:none;}
-.cal-day.past,.cal-day.sun,.cal-day.blocked{pointer-events:none;}
+.cal-day.past,.cal-day.blocked{pointer-events:none;}
 .cal-day.past{color:rgba(107,140,140,.3);}
-.cal-day.sun{color:rgba(192,84,74,.3);font-size:11px;}
 .cal-day.blocked{background:var(--light);color:rgba(107,140,140,.25);}
 .cal-day.avail{background:rgba(81,137,125,.1);color:var(--teal-dk);}
 .cal-day.avail:hover{background:rgba(81,137,125,.22);transform:scale(1.05);}
@@ -203,11 +201,11 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
         <div class="pkg-card" onclick="selectPkg('Tribe Time','1-4 pax · 20 min','800',30)">
           <div class="pkg-name">Tribe Time</div><div class="pkg-desc">1-4 pax · 20 min · ₱800</div><div class="pkg-book">Book Now →</div>
         </div>
-        <div class="pkg-card" onclick="selectPkg('Crew Captures','1-6 pax · 20 min','1000',30)">
-          <div class="pkg-name">Crew Captures</div><div class="pkg-desc">1-6 pax · 20 min · ₱1,000</div><div class="pkg-book">Book Now →</div>
+        <div class="pkg-card" onclick="selectPkg('Crowd Cam','1-6 pax · 20 min','1000',30)">
+          <div class="pkg-name">Crowd Cam</div><div class="pkg-desc">1-6 pax · 20 min · ₱1,000</div><div class="pkg-book">Book Now →</div>
         </div>
-        <div class="pkg-card" onclick="selectPkg('Crowd Cam','1-10 pax · 20 min','1200',30)">
-          <div class="pkg-name">Crowd Cam</div><div class="pkg-desc">1-10 pax · 20 min · ₱1,200</div><div class="pkg-book">Book Now →</div>
+        <div class="pkg-card" onclick="selectPkg('Crew Captures','1-10 pax · 20 min','1200',30)">
+          <div class="pkg-name">Crew Captures</div><div class="pkg-desc">1-10 pax · 20 min · ₱1,200</div><div class="pkg-book">Book Now →</div>
         </div>
       </div>
 
@@ -291,7 +289,7 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
     <div id="pkg-confirm-banner"></div>
     <div class="card">
       <div class="card-title">Pick a Date &amp; Time</div>
-      <p style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Studio open <strong>Monday – Saturday, 10 AM – 5:30 PM</strong>. Closed every Sunday.</p>
+      <p style="font-size:11px;color:var(--muted);margin-bottom:14px;line-height:1.6;">Studio open <strong>Monday – Sunday, 10 AM – 5:30 PM</strong>.</p>
 
       <!-- CALENDAR -->
       <div class="cal-wrap">
@@ -656,8 +654,7 @@ function renderCal() {
     var isSel   = ds === selDate;
 
     var cls = 'cal-day';
-    if      (sun)              cls += ' sun';
-    else if (past)             cls += ' past';
+    if      (past)             cls += ' past';
     else if (avail==='blocked')cls += ' blocked';
     else if (avail==='full')   cls += ' full';
     else if (avail==='few')    cls += ' few';
@@ -665,8 +662,8 @@ function renderCal() {
     if (isToday) cls += ' today';
     if (isSel)   cls += ' sel';
 
-    var bookable = !sun && !past && avail!=='full' && avail!=='blocked' && ds >= tomorrow;
-    var dot  = (!sun && !past && avail!=='blocked') ? '<div class="cal-dot"></div>' : '';
+    var bookable = !past && avail!=='full' && avail!=='blocked' && ds >= tomorrow;
+    var dot  = (!past && avail!=='blocked') ? '<div class="cal-dot"></div>' : '';
     var attr = bookable ? ' onclick="pickDate(\'' + ds + '\')"' : '';
     html += '<div class="' + cls + '"' + attr + '>' + d + dot + '</div>';
   }
