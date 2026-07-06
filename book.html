@@ -352,6 +352,11 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <!-- Package-specific conditional fields -->
       <div id="pkg-extra-fields"></div>
 
+      <div class="field" style="margin-top:16px;">
+        <label for="bk-referral">Were you referred by a friend? <span style="font-weight:400;color:var(--muted);font-size:11px;">(they earn +15 ClickCard points! 🏅)</span></label>
+        <input type="text" id="bk-referral" placeholder="Friend's name (optional)" autocomplete="off">
+      </div>
+
       <div class="field" style="margin-top:16px;margin-bottom:0;">
         <label for="bk-notes">Additional Notes</label>
         <textarea id="bk-notes" placeholder="Special requests, theme ideas, anything we should know…"></textarea>
@@ -1026,6 +1031,7 @@ function submitBooking() {
     date:        selDate,
     timeSlot:    selSlot,
     notes:       notes,
+    referredBy:  (document.getElementById('bk-referral') ? document.getElementById('bk-referral').value.trim() : ''),
     downpayment: 300,
     source:      'Online Booking',
     submittedAt: new Date().toISOString()
