@@ -3229,18 +3229,16 @@ const BK_TIME_SLOTS = [
 // ═══════════════════════════════════════════════════════════════
 // UNIFIED BOOKING ENTRY POINT
 // All "Book Now" buttons across the site funnel through here.
-// Everything opens book.html with the package pre-selected — single
-// source of truth for the booking flow, no duplicated forms.
+// Uses direct navigation (not window.open) so mobile popup blockers
+// can never block a booking click. Same-origin so no new tab needed.
 // ═══════════════════════════════════════════════════════════════
 function openBooking(pkg, price) {
   const params = new URLSearchParams({ pkg: pkg || '' });
   const priceNum = String(price || '').replace(/[₱,\s]/g, '');
   if (priceNum) params.set('price', priceNum);
   if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg || '' });
-  window.open('book.html?' + params.toString(), '_blank');
+  window.location.href = 'book.html?' + params.toString();
 }
-// Legacy alias — kept so any old inline onclick still works
-if (typeof bookDirect === 'undefined') { var bookDirect = openBooking; }
 
   bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
   const modal = document.getElementById('booking-modal');
@@ -3297,7 +3295,7 @@ function bookDirect(pkg, price) {
   var p = String(price||'').replace(/[₱,\s]/g, '');
   if (p) url += '&price=' + encodeURIComponent(p);
   if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg });
-  window.open(url, '_blank');
+  window.location.href = url;
 }
 
 function renderBookingStep() {
