@@ -3240,50 +3240,6 @@ function openBooking(pkg, price) {
   window.location.href = 'book.html?' + params.toString();
 }
 
-  bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
-  const modal = document.getElementById('booking-modal');
-  const box   = document.getElementById('bk-content');
-
-  // Hide step indicator for confirmation
-  document.getElementById('bk-steps').style.display = 'none';
-
-  box.innerHTML = `
-    <div style="text-align:center;padding:.5rem 0 0;">
-      <div style="font-size:2.5rem;margin-bottom:.6rem;">📸</div>
-      <div class="bk-title" style="margin-bottom:.3rem;">You're booking:</div>
-      <div class="bk-pkg-banner" style="margin:0 auto 1.2rem;max-width:380px;">
-        <div>
-          <div style="font-size:.6rem;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.12rem;">Package Selected</div>
-          <div class="bk-pkg-name">${pkg}</div>
-        </div>
-        ${price ? `<div class="bk-pkg-price">${price}</div>` : ''}
-      </div>
-      <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;text-align:left;max-width:380px;margin-left:auto;margin-right:auto;">
-        <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;">
-          📌 ₱300 non-refundable reservation fee<br>
-          📌 Book at least 1 day in advance<br>
-          📌 Walk-ins accepted 11 AM – 5 PM
-        </div>
-      </div>
-      <a href="${bookUrl}" target="_blank"
-        onclick="if(typeof fbq!=='undefined')fbq('track','InitiateCheckout')"
-        style="display:inline-block;background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.85rem 2rem;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;margin-bottom:.8rem;">
-        Confirm & Choose Date →
-      </a>
-      <div style="margin-top:.3rem;">
-        <button onclick="closeBooking()" style="background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.5rem 1.2rem;border-radius:100px;cursor:pointer;">
-          ← Choose a different package
-        </button>
-      </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.25);margin-top:1rem;">
-        You'll be redirected to our booking page to choose your date and time.
-      </div>
-    </div>`;
-
-  modal.style.display = 'block';
-  setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
-  if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: pkg });
-}
 
 function closeBooking() {
   document.getElementById('booking-modal').style.display = 'none';
