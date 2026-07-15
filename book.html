@@ -260,16 +260,6 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:600;margin-bottom:10px;">🎬 Photographer Sessions</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
-        <div class="pkg-card" onclick="selectPkg('Easy Mode (Fur Coat)','Self shoot package with the free use of the timeless and elegant fur coat','1200',30)">
-      <div class="pkg-name">Easy Mode (Fur Coat)</div>
-      <div class="pkg-desc">Self shoot package with the free use of the timeless and elegant fur coat</div>
-      <div class="pkg-book">Book Now →</div>
-      </div>
-        <div class="pkg-card teal" onclick="selectPkg('Luxe Mode (Fur Coat w Photographer)','Styleshots package with the free use of the timeless and elegant fur coat','3500',60)">
-  <div class="pkg-name">Luxe Mode (Fur Coat w Photographer) <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
-  <div class="pkg-desc">Styleshots package with the free use of the timeless and elegant fur coat</div>
-  <div class="pkg-book">Book Now →</div>
-  </div>
         <div class="pkg-card gold" onclick="selectPkg('Styleshots','Solo portrait · ~1 hr','1500',60)">
           <div class="pkg-name">Styleshots</div><div class="pkg-desc">Solo portrait · from ₱1,500</div><div class="pkg-book">Book Now →</div>
         </div>
@@ -566,7 +556,7 @@ function gasCall(action, payload) {
 // SLOTS — same 45-min schedule as original
 // ════════════════════════════════════════════════
 var ALL_SLOTS = ['10:00 AM','10:45 AM','11:30 AM','12:15 PM','1:00 PM','1:45 PM','2:30 PM','3:15 PM','4:00 PM','4:45 PM','5:30 PM'];
-var SLOT_CAP  = 2; // max concurrent bookings per slot
+var SLOT_CAP  = 1; // max concurrent bookings per slot — 1 session at a time
 
 // ════════════════════════════════════════════════
 // STATE
@@ -951,6 +941,14 @@ function renderSlots() {
 
   ALL_SLOTS.forEach(function(slot, i) {
     var taken   = takenSlots.indexOf(slot) !== -1;
+    // Multi-slot packages: starting here must not collide with ANY taken slot
+    // within the span (e.g. 90-min package at 1:45 PM needs 1:45 AND 2:30 free)
+    var conflict = false;
+    if (!taken && need > 1) {
+      for (var k = i + 1; k < Math.min(i + need, ALL_SLOTS.length); k++) {
+        if (takenSlots.indexOf(ALL_SLOTS[k]) !== -1) { conflict = true; break; }
+      }
+    }
     var beyond  = i > cutoff;
     var isSel   = slot === selSlot;
 
@@ -958,6 +956,10 @@ function renderSlots() {
       html += '<button class="slot-btn taken" disabled>' +
               '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
               '<br><span style="font-size:9px;color:var(--danger);">Taken</span></button>';
+    } else if (conflict) {
+      html += '<button class="slot-btn taken" disabled>' +
+              '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
+              '<br><span style="font-size:9px;color:var(--danger);">Not enough time</span></button>';
     } else if (beyond) {
       html += '<button class="slot-btn cutoff" disabled>' +
               '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
