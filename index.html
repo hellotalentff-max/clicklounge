@@ -1697,7 +1697,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <div style="text-align:center;padding:2rem 2rem 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-    <a class="book-btn green" href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Now →</a>
+    <a class="book-btn green" href="book.html" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Now →</a>
     <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
   </div>
 
@@ -1827,7 +1827,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         style="background:#f0c040;color:#5a3800;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;border:none;cursor:pointer;">
         🔍 Check My Points →
       </button>
-      <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
+      <a href="book.html" target="_blank"
         onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
         style="background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;text-decoration:none;">
         📸 Book &amp; Earn More →
@@ -2102,7 +2102,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div style="font-size:2.5rem;margin-bottom:.5rem;">📸✨</div>
   <h2 class="cc-cta-title">Ready to Start Earning?</h2>
   <p class="cc-cta-sub">Book your next session today — every peso counts toward amazing FREE rewards!</p>
-  <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
+  <a href="book.html" target="_blank"
     onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
     class="cc-book-btn">Book a Session &amp; Earn Points →</a>
   <div style="margin-top:1.2rem;">
@@ -2252,7 +2252,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div class="rsch-step" id="rsch-step3">
       <div class="rsch-card">
         <div style="font-size:16px;font-weight:700;margin-bottom:4px;color:var(--green-dark);">Choose New Date</div>
-        <div style="font-size:12px;color:var(--text-mid);margin-bottom:16px;">Select an available date (Mon–Sat)</div>
+        <div style="font-size:12px;color:var(--text-mid);margin-bottom:16px;">Select an available date (Mon–Sun)</div>
 
         <div class="rsch-cal-nav">
           <button onclick="rsch_calNav(-1)">‹</button>
@@ -2545,7 +2545,7 @@ async function checkMyPoints() {
               style="background:#1877f2;color:#fff;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.7rem 1.2rem;border-radius:100px;text-decoration:none;">
               📩 Message us on Facebook
             </a>
-            <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
+            <a href="book.html" target="_blank"
               onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
               style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.7rem 1.2rem;border-radius:100px;text-decoration:none;">
               📸 Book &amp; Enroll Now
@@ -2653,7 +2653,7 @@ async function checkMyPoints() {
         <div style="padding:1rem 1.4rem;background:rgba(255,255,255,.04);border-top:1px solid rgba(255,255,255,.06);text-align:center;">
           <div style="font-size:.78rem;color:rgba(255,255,255,.45);margin-bottom:.7rem;">Every session earns more points 🚀</div>
           <div style="display:flex;gap:.6rem;flex-wrap:wrap;justify-content:center;">
-            <a href="https://hellotalentff-max.github.io/clicklounge_booking/" target="_blank"
+            <a href="book.html" target="_blank"
               style="display:inline-block;background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.65rem 1.5rem;border-radius:100px;text-decoration:none;">
               📸 Book a Session →
             </a>
@@ -3226,62 +3226,20 @@ const BK_TIME_SLOTS = [
   '4:00 PM','4:30 PM'
 ];
 
+// ═══════════════════════════════════════════════════════════════
+// UNIFIED BOOKING ENTRY POINT
+// All "Book Now" buttons across the site funnel through here.
+// Uses direct navigation (not window.open) so mobile popup blockers
+// can never block a booking click. Same-origin so no new tab needed.
+// ═══════════════════════════════════════════════════════════════
 function openBooking(pkg, price) {
-  // Close any open modals first
-  document.querySelectorAll('.modal').forEach(m => m.classList.remove('open'));
-
-  // Build URL to the booking app
-  const BOOKING_URL = 'https://hellotalentff-max.github.io/clicklounge_booking/';
-  const params = new URLSearchParams({ pkg });
-  // Price as number only (strip ₱ and commas)
-  const priceNum = String(price||'').replace(/[₱,\s]/g,'');
+  const params = new URLSearchParams({ pkg: pkg || '' });
+  const priceNum = String(price || '').replace(/[₱,\s]/g, '');
   if (priceNum) params.set('price', priceNum);
-  const bookUrl = BOOKING_URL + '?' + params.toString();
-
-  bookingState = { pkg, price, date:'', time:'', name:'', phone:'', notes:'', step:1 };
-  const modal = document.getElementById('booking-modal');
-  const box   = document.getElementById('bk-content');
-
-  // Hide step indicator for confirmation
-  document.getElementById('bk-steps').style.display = 'none';
-
-  box.innerHTML = `
-    <div style="text-align:center;padding:.5rem 0 0;">
-      <div style="font-size:2.5rem;margin-bottom:.6rem;">📸</div>
-      <div class="bk-title" style="margin-bottom:.3rem;">You're booking:</div>
-      <div class="bk-pkg-banner" style="margin:0 auto 1.2rem;max-width:380px;">
-        <div>
-          <div style="font-size:.6rem;color:rgba(255,255,255,.4);font-family:'DM Mono',monospace;letter-spacing:.12em;text-transform:uppercase;margin-bottom:.12rem;">Package Selected</div>
-          <div class="bk-pkg-name">${pkg}</div>
-        </div>
-        ${price ? `<div class="bk-pkg-price">${price}</div>` : ''}
-      </div>
-      <div style="background:rgba(255,255,255,.06);border-radius:12px;padding:1rem 1.2rem;margin-bottom:1.2rem;text-align:left;max-width:380px;margin-left:auto;margin-right:auto;">
-        <div style="font-size:.82rem;color:rgba(255,255,255,.55);line-height:1.8;">
-          📌 ₱300 non-refundable reservation fee<br>
-          📌 Book at least 1 day in advance<br>
-          📌 Walk-ins accepted 11 AM – 5 PM
-        </div>
-      </div>
-      <a href="${bookUrl}" target="_blank"
-        onclick="if(typeof fbq!=='undefined')fbq('track','InitiateCheckout')"
-        style="display:inline-block;background:linear-gradient(135deg,#f0c030,#e0a820);color:#3d2000;font-family:'Space Mono',monospace;font-size:.85rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.85rem 2rem;border-radius:100px;text-decoration:none;box-shadow:0 4px 16px rgba(240,192,48,.4);animation:goldBtn 2s ease-in-out infinite;margin-bottom:.8rem;">
-        Confirm & Choose Date →
-      </a>
-      <div style="margin-top:.3rem;">
-        <button onclick="closeBooking()" style="background:transparent;border:1px solid rgba(255,255,255,.2);color:rgba(255,255,255,.5);font-family:'Space Mono',monospace;font-size:.72rem;padding:.5rem 1.2rem;border-radius:100px;cursor:pointer;">
-          ← Choose a different package
-        </button>
-      </div>
-      <div style="font-size:.72rem;color:rgba(255,255,255,.25);margin-top:1rem;">
-        You'll be redirected to our booking page to choose your date and time.
-      </div>
-    </div>`;
-
-  modal.style.display = 'block';
-  setTimeout(() => modal.scrollIntoView({ behavior:'smooth', block:'start' }), 60);
-  if (typeof fbq !== 'undefined') fbq('track', 'ViewContent', { content_name: pkg });
+  if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg || '' });
+  window.location.href = 'book.html?' + params.toString();
 }
+
 
 function closeBooking() {
   document.getElementById('booking-modal').style.display = 'none';
@@ -3293,7 +3251,7 @@ function bookDirect(pkg, price) {
   var p = String(price||'').replace(/[₱,\s]/g, '');
   if (p) url += '&price=' + encodeURIComponent(p);
   if (typeof fbq !== 'undefined') fbq('track', 'InitiateCheckout', { content_name: pkg });
-  window.open(url, '_blank');
+  window.location.href = url;
 }
 
 function renderBookingStep() {
