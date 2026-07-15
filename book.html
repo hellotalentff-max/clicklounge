@@ -829,13 +829,31 @@ function pickDate(ds) {
         takenSlots = Array.isArray(res.takenSlots) ? res.takenSlots : [];
       }
 
-      // Secondary: also add any [BLOCKED] calendar events for this date
+      // Secondary: [BLOCKED] calendar events for this date
+      // Full Day blocks take ALL slots; slot-specific blocks take only their slot
       txCache.forEach(function(ev) {
         var evDate = String(ev.start || '').slice(0,10);
         if (evDate !== ds) return;
         if (!/\[BLOCKED\]/i.test(ev.title||'')) return;
-        // Full-day block: take all slots
-        ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
+        if (/Full Day/i.test(ev.title||'')) {
+          // Full-day block: take all slots
+          ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
+        } else {
+          // Slot-specific block: extract the slot from the event start time
+          var bTime = '';
+          try {
+            var bd = new Date(ev.start);
+            bTime = bd.toLocaleTimeString('en-PH', {
+              hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Manila'
+            });
+          } catch(e) {}
+          // Fallback: parse the time from the title "[BLOCKED] 3:15 PM — reason"
+          if (!bTime || ALL_SLOTS.indexOf(bTime) === -1) {
+            var tMatch = (ev.title||'').match(/(\d{1,2}:\d{2}\s*(?:AM|PM))/i);
+            if (tMatch) bTime = tMatch[1].toUpperCase().replace(/\s+/g,' ');
+          }
+          if (bTime && takenSlots.indexOf(bTime) === -1) takenSlots.push(bTime);
+        }
       });
 
       // Tertiary: extract time from calendar event start timestamps for pending/confirmed events
@@ -877,7 +895,22 @@ function pickDate(ds) {
         var evDate = String(ev.start || '').slice(0,10);
         if (evDate !== ds) return;
         if (/\[BLOCKED\]/i.test(ev.title||'')) {
-          ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
+          if (/Full Day/i.test(ev.title||'')) {
+            ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
+          } else {
+            var bT = '';
+            try {
+              var bD = new Date(ev.start);
+              bT = bD.toLocaleTimeString('en-PH', {
+                hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Manila'
+              });
+            } catch(e) {}
+            if (!bT || ALL_SLOTS.indexOf(bT) === -1) {
+              var tM = (ev.title||'').match(/(\d{1,2}:\d{2}\s*(?:AM|PM))/i);
+              if (tM) bT = tM[1].toUpperCase().replace(/\s+/g,' ');
+            }
+            if (bT && takenSlots.indexOf(bT) === -1) takenSlots.push(bT);
+          }
           return;
         }
         var status = (ev.status||'').toLowerCase();
