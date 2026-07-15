@@ -201,6 +201,7 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
           <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;">✨ New & Featured</div>
           <span style="background:linear-gradient(135deg,#d79068,#c07050);color:white;font-size:8px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:1px;">JUST LAUNCHED</span>
         </div>
+    
 
         <!-- Poster / campaign artwork — set src to your uploaded image URL -->
         <a id="new-pkg-poster-link" href="#new-pkg-cards" style="display:block;margin-bottom:12px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(215,144,104,.25);">
@@ -214,7 +215,16 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 
         <!-- Package cards for new items go inside this div — pasted from Package Builder -->
         <div id="new-pkg-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <!-- ✂ PASTE NEW PACKAGE CARDS HERE ✂ -->
+          <div class="pkg-card teal" onclick="selectPkg('Luxe Mode (Fur Coat w Photographer)','Styleshots package with the free use of the timeless and elegant fur coat','3500',60)">
+  <div class="pkg-name">Luxe Mode (Fur Coat w Photographer) <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
+  <div class="pkg-desc">Styleshots package with the free use of the timeless and elegant fur coat</div>
+  <div class="pkg-book">Book Now →</div>
+</div>
+          <div class="pkg-card" onclick="selectPkg('Easy Mode (Fur Coat)','Self shoot package with the free use of the timeless and elegant fur coat','1200',30)">
+  <div class="pkg-name">Easy Mode (Fur Coat)</div>
+  <div class="pkg-desc">Self shoot package with the free use of the timeless and elegant fur coat</div>
+  <div class="pkg-book">Book Now →</div>
+</div>
         </div>
       </div>
 
