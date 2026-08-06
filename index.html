@@ -1123,11 +1123,8 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div class="modal-inner" style="padding:.5rem 1rem 1.5rem;">
     <div style="display:inline-block;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.68rem;font-weight:700;letter-spacing:.12em;text-transform:uppercase;padding:.45rem 1.1rem;border-radius:4px;margin-bottom:.8rem;">⭐ Limited Time Offers</div>
     <div class="modal-title">Current Promos</div>
-    <div style="margin-top:1rem;display:flex;flex-direction:column;gap:1rem;">
-      <img src="19.png" alt="Promo 1" style="width:100%;border-radius:12px;display:block;">
-      <img src="10.png" alt="Promo 2" style="width:100%;border-radius:12px;display:block;">
-      <img src="11.png" alt="Promo 3" style="width:100%;border-radius:12px;display:block;">
-      <img src="12.png" alt="Promo 4" style="width:100%;border-radius:12px;display:block;">
+    <div id="promo-images" style="margin-top:1rem;display:flex;flex-direction:column;gap:1rem;">
+      <div style="text-align:center;color:#999;font-size:.85rem;padding:1rem;">Loading promos…</div>
     </div>
     <button class="modal-book" onclick="bookDirect('Promo Session','')" style="margin-top:1.2rem;cursor:pointer;border:none;">Book Promo Session →</button>
   </div>
@@ -3873,6 +3870,28 @@ async function rsch_confirmReschedule(){
     btn.textContent = 'Confirm Reschedule →';
   }
 }
+</script>
+// Load promo images from promos.json — update that file to change promos, no code editing needed
+(function loadPromos(){
+  fetch('promos.json?t=' + Date.now())   // ?t= busts the cache so updates show immediately
+    .then(function(r){ return r.json(); })
+    .then(function(list){
+      var box = document.getElementById('promo-images');
+      if(!box) return;
+      if(!Array.isArray(list) || !list.length){
+        box.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">No current promos.</div>';
+        return;
+      }
+      box.innerHTML = list.map(function(file, i){
+        return '<img src="' + file + '" alt="Promo ' + (i+1) + '" style="width:100%;border-radius:12px;display:block;" '+
+               'onerror="this.style.display=\'none\'">';
+      }).join('');
+    })
+    .catch(function(){
+      var box = document.getElementById('promo-images');
+      if(box) box.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">Couldn\'t load promos.</div>';
+    });
+})();
 </script>
 </body>
 </html>
