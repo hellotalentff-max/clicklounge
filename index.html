@@ -3871,5 +3871,36 @@ async function rsch_confirmReschedule(){
   }
 }
 </script>
+
+    <script>
+  (function loadPromos(){
+    fetch('promos.json?t=' + Date.now())
+      .then(function(r){ return r.json(); })
+      .then(function(list){
+        var box = document.getElementById('promo-images');
+        if(!box) return;
+        if(!Array.isArray(list) || !list.length){
+          box.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">No current promos.</div>';
+          return;
+        }
+        box.innerHTML = '';
+        list.forEach(function(file, i){
+          var img = document.createElement('img');
+          img.src = file;
+          img.alt = 'Promo ' + (i + 1);
+          img.style.width = '100%';
+          img.style.borderRadius = '12px';
+          img.style.display = 'block';
+          img.onerror = function(){ this.style.display = 'none'; };
+          box.appendChild(img);
+        });
+      })
+      .catch(function(){
+        var box = document.getElementById('promo-images');
+        if(box) box.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">Couldn\'t load promos.</div>';
+      });
+  })();
+  </script>
+  
 </body>
 </html>
