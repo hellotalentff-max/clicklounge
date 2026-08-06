@@ -3870,10 +3870,9 @@ async function rsch_confirmReschedule(){
     btn.textContent = 'Confirm Reschedule →';
   }
 }
-</script>
-// Load promo images from promos.json — update that file to change promos, no code editing needed
+<script>
 (function loadPromos(){
-  fetch('promos.json?t=' + Date.now())   // ?t= busts the cache so updates show immediately
+  fetch('promos.json?t=' + Date.now())
     .then(function(r){ return r.json(); })
     .then(function(list){
       var box = document.getElementById('promo-images');
@@ -3882,10 +3881,17 @@ async function rsch_confirmReschedule(){
         box.innerHTML = '<div style="text-align:center;color:#999;padding:1rem;">No current promos.</div>';
         return;
       }
-      box.innerHTML = list.map(function(file, i){
-        return '<img src="' + file + '" alt="Promo ' + (i+1) + '" style="width:100%;border-radius:12px;display:block;" '+
-               'onerror="this.style.display=\'none\'">';
-      }).join('');
+      box.innerHTML = '';
+      list.forEach(function(file, i){
+        var img = document.createElement('img');
+        img.src = file;
+        img.alt = 'Promo ' + (i + 1);
+        img.style.width = '100%';
+        img.style.borderRadius = '12px';
+        img.style.display = 'block';
+        img.onerror = function(){ this.style.display = 'none'; };
+        box.appendChild(img);
+      });
     })
     .catch(function(){
       var box = document.getElementById('promo-images');
