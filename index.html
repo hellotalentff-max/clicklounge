@@ -1261,10 +1261,12 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       </div>
       <div class="modal-pkg highlight">
         <div class="modal-pkg-name">Glowing Mom</div>
-        <div class="modal-pkg-old">₱9,500</div>
-        <div class="modal-pkg-price">₱4,500</div>
+        <div class="modal-pkg-old">₱10,500</div>
+        <div class="modal-pkg-price">₱5,500</div>
         <ul class="modal-feat">
           <li>45 mins session</li>
+          <li>Mom session</li>
+          <li>Mom and Dad session</li>
           <li>2 outfit changes</li>
           <li>2 Light Styles</li>
           <li>4 Shot Layouts</li>
@@ -1288,7 +1290,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <div style="display:grid;grid-template-columns:1fr 1fr;gap:.6rem;margin-top:1.2rem;">
           <a href="https://canva.link/42i5ccci3g08gud" target="_blank" style="display:block;text-align:center;background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.82rem;font-weight:600;letter-spacing:.08em;text-transform:uppercase;padding:.9rem;border-radius:10px;text-decoration:none;margin-bottom:.7rem;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:.5rem;">📷 View Sample Photos →</a>
 <button class="modal-book" onclick="bookDirect('Radiant Mama - Mama Love','₱2,000')" style="cursor:pointer;border:none;margin-top:0;">Book Mama Love →</button>
-      <button class="modal-book" onclick="bookDirect('Radiant Mama - Glowing Mom','₱4,500')" style="cursor:pointer;border:none;margin-top:0;background:var(--rust);">💄 Book Glowing Mom →</button>
+      <button class="modal-book" onclick="bookDirect('Radiant Mama - Glowing Mom','₱5,500')" style="cursor:pointer;border:none;margin-top:0;background:var(--rust);">💄 Book Glowing Mom →</button>
     </div>
     <div style="font-size:.73rem;color:var(--text-light);text-align:center;margin-top:.5rem;">💄 Glowing Mom includes HMU — please arrive 1.5 hrs before your slot.</div>
   </div>
@@ -1404,7 +1406,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
           <li>FREE: All digital copies</li>
           <li>FREE: 1 Solo, 4 minis, 2 besties print</li>
           <li>FREE use of available props</li>
-          <li>Discount for frames</li>
+          <li>Discount on frames (5R-P500, 8R-P800)</li>
           <li>1 pet allowed</li>
         </ul>
       </div>
@@ -1419,7 +1421,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
           <li>FREE: All digital copies</li>
           <li>FREE: 4 minis, 2 besties print, 2 strips</li>
           <li>FREE 5R Framed Picture</li>
-          <li>Free 3 Clickcards</li>
+          <li>Discount on frames (5R-P500, 8R-P800)</li>
           <li>FREE use of available props</li>
           <li>1 pet allowed</li>
         </ul>
@@ -1437,7 +1439,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
           <li>FREE: 2 Solo, 8 minis, 4 besties print</li>
           <li>FREE Premium Acrylic Frame 8x24in </li>
           <li>FREE use of available props</li>
-          <li>Discount for frames</li>
+          <li>Discount on frames (5R-P500, 8R-P800)</li>
           <li>1 pet allowed</li>
         </ul>
       </div>
@@ -2358,7 +2360,7 @@ const PACKAGES = [
   { label:'Pop Reveal — Gender Reveal', sub:'₱3,000 · up to 2 pax · 20 mins', tags:['gender reveal','pop reveal','baby','pregnant','reveal','balloon','paint','₱3000','3000'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-popreveal'),300);} },
   // Photographer - Radiant Mama
   { label:'Mama Love — Maternity', sub:'₱2,000 · 20 mins · 1 outfit', tags:['maternity','mama','pregnant','pregnancy','bump','radiant','₱2000','2000'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-mama'),300);} },
-  { label:'Glowing Mom — Maternity', sub:'₱4,500 · 45 mins · FREE HMU', tags:['maternity','mama','pregnant','pregnancy','bump','glowing','radiant','₱4500','4500'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-mama'),300);} },
+  { label:'Glowing Mom — Maternity', sub:'₱5,500 · 45 mins · FREE HMU', tags:['maternity','mama','pregnant','pregnancy','bump','glowing','radiant','₱4500','4500'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-mama'),300);} },
   // Photographer - Kids
   { label:'ONEderful — Candid Kids (Ages 1-3)', sub:'₱1,500 · toddler + up to 3 pax', tags:['kids','toddler','baby','1st birthday','first birthday','one','candid','₱1500'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-kids'),300);} },
   { label:'TWOgether — Candid Kids (Ages 1-3)', sub:'₱2,000 · toddler + up to 3 pax', tags:['kids','toddler','baby','2nd birthday','candid','two','together','₱2000'], action:()=>{showPage('photographer',document.querySelectorAll('nav a')[2]);setTimeout(()=>openModal('modal-kids'),300);} },
