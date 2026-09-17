@@ -193,15 +193,14 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div class="card-title">Choose Your Package</div>
       <p style="font-size:12px;color:var(--muted);margin-bottom:16px;line-height:1.6;">Tap a package card to continue.</p>
 
-      <!-- ════ ✨ NEW & FEATURED PACKAGES ════ -->
+      <!-- ════ ✨ NEW & JUST LAUNCHED ════ -->
       <!-- Add packages built in Package Builder here. To attach a poster,
            update the src of #new-pkg-poster below. Section auto-hides when empty. -->
-      <div id="new-pkg-section" style="display:none;margin-bottom:22px;">
+      <div id="new-pkg-section" style="margin-bottom:22px;">
         <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
-          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;">✨ New & Featured</div>
+          <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;">✨ New &amp; Just Launched</div>
           <span style="background:linear-gradient(135deg,#d79068,#c07050);color:white;font-size:8px;font-weight:800;padding:2px 8px;border-radius:10px;letter-spacing:1px;">JUST LAUNCHED</span>
         </div>
-    
 
         <!-- Poster / campaign artwork — set src to your uploaded image URL -->
         <a id="new-pkg-poster-link" href="#new-pkg-cards" style="display:block;margin-bottom:12px;border-radius:12px;overflow:hidden;box-shadow:0 4px 16px rgba(215,144,104,.25);">
@@ -215,16 +214,17 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 
         <!-- Package cards for new items go inside this div — pasted from Package Builder -->
         <div id="new-pkg-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
-          <div class="pkg-card teal" onclick="selectPkg('Luxe Mode (Fur Coat w Photographer)','Styleshots package with the free use of the timeless and elegant fur coat','3500',60)">
-  <div class="pkg-name">Luxe Mode (Fur Coat w Photographer) <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
-  <div class="pkg-desc">Styleshots package with the free use of the timeless and elegant fur coat</div>
-  <div class="pkg-book">Book Now →</div>
-</div>
-          <div class="pkg-card" onclick="selectPkg('Easy Mode (Fur Coat)','Self shoot package with the free use of the timeless and elegant fur coat','1200',30)">
-  <div class="pkg-name">Easy Mode (Fur Coat)</div>
-  <div class="pkg-desc">Self shoot package with the free use of the timeless and elegant fur coat</div>
-  <div class="pkg-book">Book Now →</div>
-</div>
+          <!-- ✂ PASTE NEW PACKAGE CARDS HERE ✂ -->
+          <!--
+            TODO: this href is a placeholder. Replace it with the real
+            GitHub Pages URL for "The ClickLounge Birthday Experience"
+            mood-board builder once that repo is published.
+          -->
+          <div class="pkg-card gold" style="grid-column:1 / -1;" onclick="window.location.href='https://hellotalentff-max.github.io/clicklounge_birthday/'">
+            <div class="pkg-name">The ClickLounge Birthday Experience</div>
+            <div class="pkg-desc">Styleshots? Fur Coat? VS Angel? Build your own birthday portrait package — pick your session, mood, and keepsake.</div>
+            <div class="pkg-book">Build My Package →</div>
+          </div>
         </div>
       </div>
 
@@ -270,6 +270,21 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:600;margin-bottom:10px;">🎬 Photographer Sessions</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+        <div class="pkg-card teal" onclick="selectPkg('Luxe Mode (Fur Coat w Photographer)','Styleshots package with the free use of the timeless and elegant fur coat','3500',60)">
+          <div class="pkg-name">Luxe Mode (Fur Coat w Photographer) <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
+          <div class="pkg-desc">Styleshots package with the free use of the timeless and elegant fur coat</div>
+          <div class="pkg-book">Book Now →</div>
+        </div>
+        <div class="pkg-card teal" onclick="selectPkg('Prestige Mode','All in Fur Coat shoot: outfit, HMU, guided shoot, 8x24" print','5000',60)">
+          <div class="pkg-name">Prestige Mode <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
+          <div class="pkg-desc">All in Fur Coat shoot: outfit, HMU, guided shoot, 8x24" print</div>
+          <div class="pkg-book">Book Now →</div>
+        </div>
+        <div class="pkg-card teal" onclick="selectPkg('Angelic Muse','Create your VS Angel Model dream.','3500',60)">
+          <div class="pkg-name">Angelic Muse <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
+          <div class="pkg-desc">Create your VS Angel Model dream.</div>
+          <div class="pkg-book">Book Now →</div>
+        </div>
         <div class="pkg-card gold" onclick="selectPkg('Styleshots','Solo portrait · ~1 hr','1500',60)">
           <div class="pkg-name">Styleshots</div><div class="pkg-desc">Solo portrait · from ₱1,500</div><div class="pkg-book">Book Now →</div>
         </div>
@@ -290,9 +305,9 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
         <div class="pkg-card gold" onclick="selectPkg('Radiant Mama - Mama Love','Maternity · ~1 hr','2000',60)">
           <div class="pkg-name">Radiant Mama — Mama Love</div><div class="pkg-desc">Maternity · ₱2,000</div><div class="pkg-book">Book Now →</div>
         </div>
-        <div class="pkg-card gold" onclick="selectPkg('Radiant Mama - Glowing Mom','Maternity + HMU · ~1 hr shoot','5500',90)">
+        <div class="pkg-card gold" onclick="selectPkg('Radiant Mama - Glowing Mom','Maternity + HMU · ~1 hr shoot','4500',90)">
           <div class="pkg-name">Radiant Mama — Glowing Mom <span style="font-size:9px;background:rgba(215,144,104,0.2);color:var(--gold);padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">HMU</span></div>
-          <div class="pkg-desc">Maternity + Hair &amp; Makeup · ₱5,500 · arrive 1.5 hrs early</div><div class="pkg-book">Book Now →</div>
+          <div class="pkg-desc">Maternity + Hair &amp; Makeup · ₱4,500 · arrive 1.5 hrs early</div><div class="pkg-book">Book Now →</div>
         </div>
         <div class="pkg-card gold" onclick="selectPkg('Candid Kids','Kids 1-10yo · from ₱1,500','1500',60)">
           <div class="pkg-name">Candid Kids</div><div class="pkg-desc">Kids 1-10yo · from ₱1,500</div><div class="pkg-book">Book Now →</div>
@@ -566,7 +581,7 @@ function gasCall(action, payload) {
 // SLOTS — same 45-min schedule as original
 // ════════════════════════════════════════════════
 var ALL_SLOTS = ['10:00 AM','10:45 AM','11:30 AM','12:15 PM','1:00 PM','1:45 PM','2:30 PM','3:15 PM','4:00 PM','4:45 PM','5:30 PM'];
-var SLOT_CAP  = 1; // max concurrent bookings per slot — 1 session at a time
+var SLOT_CAP  = 2; // max concurrent bookings per slot
 
 // ════════════════════════════════════════════════
 // STATE
@@ -666,13 +681,19 @@ function hasHMU(pkg) {
   var p = new URLSearchParams(window.location.search);
   var pkg   = p.get('pkg') || p.get('package') || '';
   var price = p.get('price') || '';
+  var desc  = p.get('desc') || '';
   if (!pkg) return;
   var pl  = pkg.toLowerCase();
   var dur = 60;
   if (/(promo styleshots|couple styleshots promo|glowing mom|vip grad glam)/.test(pl)) dur = 90;  // HMU
   else if (/(bridal|pawsome|fam vibes|all star|studio booth)/.test(pl))                  dur = 120;
   else if (/(snapshot|tribe|crew|crowd|frenzy|party|click capture|cap and gown)/.test(pl)) dur = 30;
-  setTimeout(function(){ selectPkg(decodeURIComponent(pkg), '', price, dur); }, 100);
+  // Explicit ?dur= (minutes) overrides the name-based guess above — used by
+  // the ClickLounge Birthday Experience mood-board builder, which knows its
+  // own session length exactly.
+  var durParam = parseInt(p.get('dur'), 10);
+  if (!isNaN(durParam) && durParam > 0) dur = durParam;
+  setTimeout(function(){ selectPkg(decodeURIComponent(pkg), decodeURIComponent(desc), price, dur); }, 100);
 })();
 
 // ════════════════════════════════════════════════
@@ -839,31 +860,13 @@ function pickDate(ds) {
         takenSlots = Array.isArray(res.takenSlots) ? res.takenSlots : [];
       }
 
-      // Secondary: [BLOCKED] calendar events for this date
-      // Full Day blocks take ALL slots; slot-specific blocks take only their slot
+      // Secondary: also add any [BLOCKED] calendar events for this date
       txCache.forEach(function(ev) {
         var evDate = String(ev.start || '').slice(0,10);
         if (evDate !== ds) return;
         if (!/\[BLOCKED\]/i.test(ev.title||'')) return;
-        if (/Full Day/i.test(ev.title||'')) {
-          // Full-day block: take all slots
-          ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
-        } else {
-          // Slot-specific block: extract the slot from the event start time
-          var bTime = '';
-          try {
-            var bd = new Date(ev.start);
-            bTime = bd.toLocaleTimeString('en-PH', {
-              hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Manila'
-            });
-          } catch(e) {}
-          // Fallback: parse the time from the title "[BLOCKED] 3:15 PM — reason"
-          if (!bTime || ALL_SLOTS.indexOf(bTime) === -1) {
-            var tMatch = (ev.title||'').match(/(\d{1,2}:\d{2}\s*(?:AM|PM))/i);
-            if (tMatch) bTime = tMatch[1].toUpperCase().replace(/\s+/g,' ');
-          }
-          if (bTime && takenSlots.indexOf(bTime) === -1) takenSlots.push(bTime);
-        }
+        // Full-day block: take all slots
+        ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
       });
 
       // Tertiary: extract time from calendar event start timestamps for pending/confirmed events
@@ -905,22 +908,7 @@ function pickDate(ds) {
         var evDate = String(ev.start || '').slice(0,10);
         if (evDate !== ds) return;
         if (/\[BLOCKED\]/i.test(ev.title||'')) {
-          if (/Full Day/i.test(ev.title||'')) {
-            ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
-          } else {
-            var bT = '';
-            try {
-              var bD = new Date(ev.start);
-              bT = bD.toLocaleTimeString('en-PH', {
-                hour: 'numeric', minute: '2-digit', hour12: true, timeZone: 'Asia/Manila'
-              });
-            } catch(e) {}
-            if (!bT || ALL_SLOTS.indexOf(bT) === -1) {
-              var tM = (ev.title||'').match(/(\d{1,2}:\d{2}\s*(?:AM|PM))/i);
-              if (tM) bT = tM[1].toUpperCase().replace(/\s+/g,' ');
-            }
-            if (bT && takenSlots.indexOf(bT) === -1) takenSlots.push(bT);
-          }
+          ALL_SLOTS.forEach(function(s){ if(takenSlots.indexOf(s)===-1) takenSlots.push(s); });
           return;
         }
         var status = (ev.status||'').toLowerCase();
@@ -951,14 +939,6 @@ function renderSlots() {
 
   ALL_SLOTS.forEach(function(slot, i) {
     var taken   = takenSlots.indexOf(slot) !== -1;
-    // Multi-slot packages: starting here must not collide with ANY taken slot
-    // within the span (e.g. 90-min package at 1:45 PM needs 1:45 AND 2:30 free)
-    var conflict = false;
-    if (!taken && need > 1) {
-      for (var k = i + 1; k < Math.min(i + need, ALL_SLOTS.length); k++) {
-        if (takenSlots.indexOf(ALL_SLOTS[k]) !== -1) { conflict = true; break; }
-      }
-    }
     var beyond  = i > cutoff;
     var isSel   = slot === selSlot;
 
@@ -966,10 +946,6 @@ function renderSlots() {
       html += '<button class="slot-btn taken" disabled>' +
               '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
               '<br><span style="font-size:9px;color:var(--danger);">Taken</span></button>';
-    } else if (conflict) {
-      html += '<button class="slot-btn taken" disabled>' +
-              '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
-              '<br><span style="font-size:9px;color:var(--danger);">Not enough time</span></button>';
     } else if (beyond) {
       html += '<button class="slot-btn cutoff" disabled>' +
               '<span style="font-size:13px;font-weight:600;">' + slot + '</span>' +
