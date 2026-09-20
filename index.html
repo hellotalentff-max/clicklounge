@@ -486,7 +486,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <a href="#" onclick="showPage('events',this);return false;">Events & Rentals</a>
   <a href="#" onclick="showPage('booking',this);return false;" style="display:none;">Booking Process</a>
   <a href="#" onclick="showPage('loyalty',this);return false;">🏅 ClickCard</a>
-  <a href="#" onclick="showPage('reschedule',this);return false;">📅 Reschedule</a>
+  <a href="https://hellotalentff-max.github.io/hordr-dresses/" target="_blank" rel="noopener">👗 Dresses</a>
 </nav>
 
 <!-- ══ HOME ══ -->
@@ -922,6 +922,22 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <h1 class="page-title">Professional Shoots</h1>
     <p class="page-desc">Tap any package to see full details and pricing. All sessions include a professional photographer, beautiful studio backdrops, and edited photos.</p>
   </div>
+    <!-- ══ HOUSE OF ROAN DRESSES ══ -->
+  <a href="https://hellotalentff-max.github.io/hordr-dresses/" target="_blank" rel="noopener"
+     style="display:block;text-decoration:none;background:#fdf0ee;padding:1.3rem 1.5rem;border-bottom:2px solid rgba(197,164,54,.35);">
+    <div style="max-width:780px;margin:0 auto;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:center;text-align:center;">
+      <img src="https://hellotalentff-max.github.io/hordr-dresses/hor-logo.png" alt="House of Roan"
+           style="height:62px;width:auto;mix-blend-mode:multiply;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8a701c;">Wardrobe · House of Roan</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-dark);line-height:1.15;">Browse the dresses</div>
+        <div style="font-size:.85rem;color:var(--text-mid);margin-top:.15rem;line-height:1.5;">
+          See which gowns are free on your date — <b>free with Prestige</b>, ₱700 with any photographer package.
+        </div>
+      </div>
+      <span style="background:var(--green);color:#fff;font-weight:600;font-size:.84rem;padding:.7rem 1.3rem;border-radius:100px;white-space:nowrap;">View dresses →</span>
+    </div>
+  </a>
 
   <!-- PROMO Banner -->
   <div onclick="openModal('modal-promo')" style="cursor:pointer;background:var(--cream-dark);padding:1.2rem 2rem;text-align:center;position:relative;overflow:hidden;border-bottom:2px solid rgba(196,154,26,.3);">
@@ -1611,6 +1627,22 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 
 <!-- ══ EVENTS & RENTALS ══ -->
 <div id="events" class="section">
+    <!-- ══ HOUSE OF ROAN WARDROBE ══ -->
+  <a href="https://hellotalentff-max.github.io/hordr-dresses/" target="_blank" rel="noopener"
+     style="display:block;text-decoration:none;background:#fdf0ee;padding:1.3rem 1.5rem;border-bottom:2px solid rgba(197,164,54,.35);">
+    <div style="max-width:780px;margin:0 auto;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:center;text-align:center;">
+      <img src="https://hellotalentff-max.github.io/hordr-dresses/hor-logo.png" alt="House of Roan"
+           style="height:62px;width:auto;mix-blend-mode:multiply;">
+      <div>
+        <div style="font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:#8a701c;">Wardrobe · House of Roan</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-dark);line-height:1.15;">Browse the dresses</div>
+        <div style="font-size:.85rem;color:var(--text-mid);margin-top:.15rem;line-height:1.5;">
+          See which gowns are free on your date — <b>free with Prestige</b>, ₱700 with any photographer package.
+        </div>
+      </div>
+      <span style="background:var(--green);color:#fff;font-weight:600;font-size:.84rem;padding:.7rem 1.3rem;border-radius:100px;white-space:nowrap;">View dresses →</span>
+    </div>
+  </a>
 
   <!-- Bridal Bliss -->
   <div class="bridal-hero">
@@ -2212,115 +2244,6 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <div class="bk-dot"></div>
     </div>
     <div id="bk-content"></div>
-  </div>
-</div>
-
-<!-- ══ RESCHEDULE ══ -->
-<div id="reschedule" class="section">
-  <div class="page-header">
-    <span class="eyebrow">Self-service</span>
-    <h2 class="page-title">[reschedule booking]</h2>
-    <p class="page-desc">Need to change your session date? Find your booking and pick a new slot in under 2 minutes.</p>
-  </div>
-
-  <div style="max-width:560px;margin:1rem auto 3rem;padding:0 1rem;">
-
-    <!-- STEP 1: Lookup -->
-    <div class="rsch-step active" id="rsch-step1">
-      <div class="rsch-card">
-        <div style="font-size:16px;font-weight:700;margin-bottom:4px;color:var(--green-dark);">Find Your Booking</div>
-        <div style="font-size:13px;color:var(--text-mid);margin-bottom:16px;">Enter the email address you used when booking (or your acknowledgement number).</div>
-        <div class="rsch-field">
-          <label>Email / Acknowledgement #</label>
-          <input type="text" id="rsch-lookup-input" class="rsch-sinput" placeholder="e.g. juan@email.com or AR010624SS" autocomplete="off">
-        </div>
-        <div id="rsch-lookup-err" class="rsch-alert rsch-alert-danger" style="display:none;"></div>
-        <button class="rsch-btn rsch-btn-teal" onclick="rsch_lookup()">Find My Booking →</button>
-      </div>
-      <div style="text-align:center;font-size:12px;color:var(--text-light);margin-top:12px;">Need help? Message us on <a href="https://facebook.com/clicklounge.studio" target="_blank" style="color:var(--green);">Facebook</a></div>
-    </div>
-
-    <!-- STEP 2: Booking found + rules -->
-    <div class="rsch-step" id="rsch-step2">
-      <div class="rsch-card">
-        <div style="font-size:16px;font-weight:700;margin-bottom:12px;color:var(--green-dark);">Your Booking</div>
-        <div class="rsch-row"><span class="rsch-lbl">Name</span><span class="rsch-val" id="rsch-s2-name"></span></div>
-        <div class="rsch-row"><span class="rsch-lbl">Package</span><span class="rsch-val" id="rsch-s2-pkg"></span></div>
-        <div class="rsch-row"><span class="rsch-lbl">Current Date</span><span class="rsch-val" id="rsch-s2-date"></span></div>
-        <div class="rsch-row"><span class="rsch-lbl">Days Until Session</span><span class="rsch-val" id="rsch-s2-days"></span></div>
-      </div>
-
-      <div id="rsch-s2-alert"></div>
-
-      <div id="rsch-s2-fee-section" style="display:none;" class="rsch-card">
-        <div class="rsch-alert rsch-alert-warning" style="margin-bottom:12px;">
-          <strong>⚠ ₱200 Rescheduling Fee Required</strong><br>
-          Your session is less than 4 days away. A rescheduling fee of ₱200 applies before you can move your booking.
-        </div>
-        <div style="font-size:13px;font-weight:600;margin-bottom:10px;">Pay via:</div>
-        <div style="font-size:13px;margin-bottom:4px;">💚 GCash: <strong>0919 662 8224</strong> (Ma*****e M.)</div>
-        <div style="font-size:13px;margin-bottom:12px;">🏦 BPI: <strong>2829140848</strong></div>
-        <div class="rsch-field">
-          <label>Reference Number / Proof</label>
-          <input type="text" id="rsch-fee-ref" class="rsch-sinput" placeholder="GCash ref # or screenshot description">
-        </div>
-        <label style="display:flex;align-items:center;gap:8px;font-size:13px;cursor:pointer;margin-bottom:12px;">
-          <input type="checkbox" id="rsch-fee-confirm" style="accent-color:var(--green);width:16px;height:16px;"> I have paid the ₱200 rescheduling fee
-        </label>
-        <button class="rsch-btn rsch-btn-gold" onclick="rsch_proceedWithFee()">Proceed to Choose New Date →</button>
-      </div>
-
-      <div id="rsch-s2-free-btn" style="display:none;">
-        <button class="rsch-btn rsch-btn-teal" onclick="rsch_goToDatePicker()">Choose New Date & Time →</button>
-      </div>
-
-      <button class="rsch-btn rsch-btn-outline" onclick="rsch_reset()" style="margin-top:8px;">← Back</button>
-    </div>
-
-    <!-- STEP 3: Date & Time Picker -->
-    <div class="rsch-step" id="rsch-step3">
-      <div class="rsch-card">
-        <div style="font-size:16px;font-weight:700;margin-bottom:4px;color:var(--green-dark);">Choose New Date</div>
-        <div style="font-size:12px;color:var(--text-mid);margin-bottom:16px;">Select an available date (Mon–Sun)</div>
-
-        <div class="rsch-cal-nav">
-          <button onclick="rsch_calNav(-1)">‹</button>
-          <strong id="rsch-cal-month-label" style="font-size:14px;"></strong>
-          <button onclick="rsch_calNav(1)">›</button>
-        </div>
-        <div class="rsch-cal-grid">
-          <div class="rsch-cal-hdr">Mon</div><div class="rsch-cal-hdr">Tue</div><div class="rsch-cal-hdr">Wed</div>
-          <div class="rsch-cal-hdr">Thu</div><div class="rsch-cal-hdr">Fri</div><div class="rsch-cal-hdr">Sat</div><div class="rsch-cal-hdr">Sun</div>
-        </div>
-        <div class="rsch-cal-grid" id="rsch-cal-grid"></div>
-      </div>
-
-      <div class="rsch-card" id="rsch-slot-card" style="display:none;">
-        <div style="font-size:14px;font-weight:600;margin-bottom:4px;color:var(--green-dark);">Available Times on <span id="rsch-slot-date-label"></span></div>
-        <div style="font-size:12px;color:var(--text-mid);margin-bottom:10px;">Select your preferred time slot</div>
-        <div id="rsch-slot-loading" style="text-align:center;color:var(--text-mid);padding:16px;font-size:13px;">Loading available slots…</div>
-        <div class="rsch-slot-grid" id="rsch-slot-grid"></div>
-      </div>
-
-      <div style="display:flex;gap:8px;">
-        <button class="rsch-btn rsch-btn-outline" onclick="rsch_goStep(2)" style="flex:1;">← Back</button>
-        <button class="rsch-btn rsch-btn-teal" id="rsch-confirm-btn" style="flex:2;display:none;" onclick="rsch_confirmReschedule()">Confirm Reschedule →</button>
-      </div>
-    </div>
-
-    <!-- STEP 4: Done -->
-    <div class="rsch-step" id="rsch-step4">
-      <div class="rsch-card" style="text-align:center;padding:32px 20px;">
-        <div style="font-size:48px;margin-bottom:12px;">✅</div>
-        <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;margin-bottom:8px;color:var(--green-dark);">Booking Rescheduled!</div>
-        <div style="font-size:13px;color:var(--text-mid);line-height:1.6;margin-bottom:16px;">Your session has been moved to <strong id="rsch-done-date"></strong> at <strong id="rsch-done-time"></strong>. A confirmation email has been sent to you.</div>
-        <div class="rsch-alert rsch-alert-info" style="text-align:left;font-size:12px;">
-          Please arrive 10–15 minutes early and bring your inspiration photos and outfits prepared. See you at ClickLounge Studio! 📷
-        </div>
-      </div>
-      <button class="rsch-btn rsch-btn-outline" onclick="rsch_reset()" style="margin-top:8px;">Reschedule Another Booking</button>
-    </div>
-
   </div>
 </div>
 
