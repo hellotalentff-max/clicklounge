@@ -116,6 +116,28 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 /* ── SUMMARY ── */
 .sum-row{display:flex;justify-content:space-between;align-items:flex-start;padding:8px 0;border-bottom:1px solid var(--light2);font-size:13px;gap:12px;}
 .sum-row:last-child{border-bottom:none;}
+/* ── 👗 DRESS PICKER (House of Roan) ── */
+.dress-card{border-color:rgba(215,144,104,.35);background:linear-gradient(180deg,#fdf5f1 0,#fff 70px);}
+.dress-head{display:flex;align-items:flex-start;justify-content:space-between;gap:10px;margin-bottom:12px;}
+.dress-sub{font-size:12px;color:var(--muted);line-height:1.55;}
+.dress-sub b{color:var(--slate);}
+.dress-none{display:flex;align-items:center;gap:8px;font-size:12px;font-weight:500;color:var(--slate);background:var(--light);border:1.5px solid var(--light2);border-radius:10px;padding:10px 12px;cursor:pointer;margin-bottom:10px;width:100%;text-align:left;font-family:inherit;}
+.dress-none.on{border-color:var(--teal);background:rgba(81,137,125,.07);}
+.dress-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;}
+@media(max-width:360px){.dress-grid{grid-template-columns:repeat(2,minmax(0,1fr));}}
+.dress-tile{background:#fff;border:1.5px solid var(--light2);border-radius:10px;overflow:hidden;cursor:pointer;padding:0;text-align:left;font-family:inherit;position:relative;transition:border-color .15s,transform .15s;}
+.dress-tile:hover{border-color:var(--gold);transform:translateY(-1px);}
+.dress-tile.on{border-color:var(--teal);box-shadow:0 0 0 2px rgba(81,137,125,.25);}
+.dress-tile.on::after{content:'✓';position:absolute;top:6px;right:6px;width:22px;height:22px;border-radius:50%;background:var(--teal);color:#fff;font-size:12px;font-weight:700;display:flex;align-items:center;justify-content:center;}
+.dress-ph{aspect-ratio:4/5;background:linear-gradient(160deg,#fdf0ee,#f5dcd8);display:flex;align-items:center;justify-content:center;font-family:Georgia,serif;font-style:italic;font-size:26px;color:#c5a436;}
+.dress-ph img{width:100%;height:100%;object-fit:cover;display:block;}
+.dress-meta{padding:7px 8px 8px;}
+.dress-name{font-size:12px;font-weight:600;color:var(--slate);line-height:1.25;}
+.dress-price{font-size:11px;font-weight:600;color:var(--gold);margin-top:1px;}
+.dress-price.free{color:var(--success);}
+.dress-more{display:block;text-align:center;font-size:11px;color:var(--teal);font-weight:600;margin-top:10px;text-decoration:none;}
+.dress-note{font-size:11px;color:var(--muted);margin-top:10px;line-height:1.5;}
+.dress-warn{background:#fff8f0;border:1.5px solid #f5d5b0;border-radius:10px;padding:10px 12px;font-size:12px;color:#8a5a2a;line-height:1.55;margin-top:12px;text-align:left;}
 .sum-row .sl{color:var(--muted);font-size:11px;min-width:70px;}
 .sum-row .sv{font-weight:500;text-align:right;}
 
@@ -382,6 +404,20 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
   <!-- ════ SCREEN 3: INFO ════ -->
   <div class="screen" id="sc3">
     <div id="pkg-banner-3"></div>
+
+    <!-- 👗 DRESS — only shown for packages that can have a gown, and only gowns free on the chosen date -->
+    <div class="card dress-card" id="dress-card" style="display:none;">
+      <div class="dress-head">
+        <div>
+          <div class="card-title" style="margin-bottom:4px;color:var(--gold);">Add a gown? · House of Roan</div>
+          <div class="dress-sub" id="dress-sub">Gowns free on your date.</div>
+        </div>
+      </div>
+      <button type="button" class="dress-none on" id="dress-none" onclick="pickDress('')">&#9675; No gown, thanks</button>
+      <div class="dress-grid" id="dress-grid"></div>
+      <div class="dress-note" id="dress-note"></div>
+      <a class="dress-more" id="dress-more" href="#" target="_blank" rel="noopener">See every gown &amp; its calendar &#8599;</a>
+    </div>
     <div class="card">
       <div class="card-title">Your Information</div>
 
@@ -431,6 +467,7 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div class="sum-row"><span class="sl">Package</span><span class="sv" id="sm-pkg">—</span></div>
       <div class="sum-row"><span class="sl">Date</span><span class="sv" id="sm-date">—</span></div>
       <div class="sum-row"><span class="sl">Time</span><span class="sv" id="sm-time">—</span></div>
+      <div class="sum-row" id="sm-dress-row" style="display:none;"><span class="sl">Gown</span><span class="sv" id="sm-dress">—</span></div>
       <div class="sum-row"><span class="sl">Name</span><span class="sv" id="sm-name">—</span></div>
       <div class="sum-row"><span class="sl">Mobile</span><span class="sv" id="sm-phone">—</span></div>
       <div class="sum-row"><span class="sl">Email</span><span class="sv" id="sm-email">—</span></div>
@@ -493,6 +530,7 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
         <div class="ref-lbl">Booking Reference</div>
         <div class="ref-code" id="done-ref">—</div>
       </div>
+      <div id="done-dress"></div>
     </div>
     <div class="instruction-box">
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:700;margin-bottom:12px;">Next Steps — Complete Within 4 Hours</div>
@@ -534,6 +572,14 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 // CONFIG
 // ════════════════════════════════════════════════
 var GAS_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
+// ── 👗 DRESS RENTALS (House of Roan) ─────────────────────────────────────
+// Paste the dress rental web app URL here (ends in /exec). Blank = the gown step stays hidden.
+var DRESS_API  = 'https://script.google.com/macros/s/AKfycbzPh7QccleUs6m3ipAJvIe1t8FHWPFAPnllb49ErB6y0lcLsZFK6CtsGwAv4TE4hS2jYg/exec';
+var DRESS_SITE = 'https://hellotalentff-max.github.io/hordr-dresses/';
+// Packages that never get a gown offered. Everything else does.
+var NO_DRESS_PKGS = ['Snapshot Selfie','Tribe Time','Crowd Cam','Crew Captures','Frenzy Snaps Birthday',
+                     'Party Clicks Birthday','Click Capture Birthday','Candid Kids','PAWtraits'];
+
 // ── APPS SCRIPT ACTIONS USED ──────────────────────────────────────────────
 // createBooking  → creates [PENDING] Google Calendar event (POS reads this)
 // getCalendarEvents { year, month } → returns all events (bookings + blocks)
@@ -583,6 +629,7 @@ var SLOT_CAP  = 2; // max concurrent bookings per slot
 // ════════════════════════════════════════════════
 var selDate = '', selSlot = '', takenSlots = [];
 var _pkg = '', _pkgPrice = '', _pkgDesc = '', _pkgDur = 60;
+var _dress = '', _dressCo = '', _dressRate = null, _dressKey = '', _dressList = [];   // 👗 DRESS
 
 // Short client-facing label for the Review screen only: "CBE - ₱9,500 -
 // Juana Dela Cruz". Uses a fixed "CBE" tag, independent of _pkg — the POS
@@ -1000,13 +1047,75 @@ function goSc(n) {
     if (i<5) document.getElementById('sl'+i).className = 'sline' + (i<n?' done':'');
   }
   window.scrollTo(0,0);
-  if (n===3) { buildBanner3(); buildExtraFields(); }
+  if (n===3) { buildBanner3(); buildExtraFields(); loadDresses(); }   // 👗 DRESS
   if (n===4) buildConfirm();
 }
 
 // ════════════════════════════════════════════════
 // STEP 3 — PACKAGE-SPECIFIC FIELDS
 // ════════════════════════════════════════════════
+// ════════════════════════════════════════════════
+// 👗 DRESS — pick a House of Roan gown for the chosen date
+// ════════════════════════════════════════════════
+function dressEligible() { return !!DRESS_API && !!_pkg && NO_DRESS_PKGS.indexOf(_pkg) === -1; }
+function dressCo() { return /prestige/i.test(_pkg) ? 'CLS Prestige' : 'CLS Photographer'; }
+function dressEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+function dressSlug(n) { return String(n||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
+function dressPhoto(d) {
+  var m = /drive\.google\.com\/(?:file\/d\/|open\?id=|uc\?(?:export=\w+&)?id=)([\w-]+)/.exec(d.photo || '');
+  return m ? 'https://drive.google.com/thumbnail?id=' + m[1] + '&sz=w400' : (d.photo || DRESS_SITE + 'dresses/' + dressSlug(d.name) + '.jpg');
+}
+function dressPriceLabel(r) { return r === 0 ? 'FREE · included' : (r == null ? '' : '₱' + Number(r).toLocaleString()); }
+
+function loadDresses() {
+  var card = document.getElementById('dress-card');
+  if (!dressEligible() || !selDate) { card.style.display = 'none'; _dress = ''; return; }
+  var key = selDate + '|' + dressCo();
+  if (key === _dressKey) { card.style.display = _dressList.length ? '' : 'none'; return; }   // same date & package: keep the pick
+  _dressKey = key; _dress = ''; _dressRate = null; _dressList = [];
+  card.style.display = '';
+  document.getElementById('dress-grid').innerHTML = '<div class="slot-loading" style="grid-column:1/-1;"><span class="spinner-sm"></span>Checking which gowns are free…</div>';
+  document.getElementById('dress-more').href = DRESS_SITE + '?date=' + selDate + '&co=' + encodeURIComponent(dressCo());
+  fetch(DRESS_API + '?action=availability&date=' + encodeURIComponent(selDate) + '&co=' + encodeURIComponent(dressCo()))
+    .then(function(r){ return r.json(); })
+    .then(function(j){
+      if (key !== _dressKey) return;                        // client changed date meanwhile
+      if (!j.ok) throw new Error(j.error);
+      var a = j.data;
+      _dressList = a.dresses.filter(function(d){ return d.status === 'Available'; });
+      if (!_dressList.length) { card.style.display = 'none'; return; }   // nothing free → don't show an empty step
+      var when = a.pickup === a.returnBy ? 'pick up &amp; return <b>' + fmtDressDate(a.pickup) + '</b>'
+               : 'pick up <b>' + fmtDressDate(a.pickup) + '</b> · return by <b>' + fmtDressDate(a.returnBy) + '</b>';
+      document.getElementById('dress-sub').innerHTML = _dressList.length + ' gown' + (_dressList.length === 1 ? '' : 's') + ' free on your date — ' + when + '.';
+      document.getElementById('dress-note').textContent = dressCo() === 'CLS Prestige'
+        ? 'Your gown is included in the Prestige package.'
+        : 'The gown rental is added to your balance and paid on your session day.';
+      renderDresses();
+    })
+    .catch(function(){ if (key === _dressKey) { card.style.display = 'none'; _dressKey = ''; } });   // dress system down → booking still works
+}
+function fmtDressDate(iso) {
+  var p = iso.split('-'); return new Date(Date.UTC(+p[0], +p[1]-1, +p[2])).toLocaleDateString('en-PH', { timeZone:'UTC', weekday:'short', month:'short', day:'numeric' });
+}
+function renderDresses() {
+  document.getElementById('dress-grid').innerHTML = _dressList.map(function(d){
+    var init = dressEsc((d.name || '?').charAt(0));
+    return '<button type="button" class="dress-tile' + (d.name === _dress ? ' on' : '') + '" onclick="pickDress(this.dataset.n)" data-n="' + dressEsc(d.name) + '">' +
+      '<div class="dress-ph"><img src="' + dressEsc(dressPhoto(d)) + '" alt="' + dressEsc(d.name) + '" loading="lazy" onerror="this.parentNode.textContent=\'' + init + '\'"></div>' +
+      '<div class="dress-meta"><div class="dress-name">' + dressEsc(d.name) + '</div>' +
+      '<div class="dress-price' + (d.rate === 0 ? ' free' : '') + '">' + dressPriceLabel(d.rate) + '</div></div></button>';
+  }).join('');
+  var none = document.getElementById('dress-none');
+  none.className = 'dress-none' + (_dress ? '' : ' on');
+  none.innerHTML = (_dress ? '&#9675;' : '&#9679;') + ' No gown, thanks';
+}
+function pickDress(name) {
+  _dress = name || '';
+  var d = _dressList.filter(function(x){ return x.name === _dress; })[0];
+  _dressRate = d ? d.rate : null; _dressCo = _dress ? dressCo() : '';
+  renderDresses();
+}
+
 function buildBanner3() {
   var b = document.getElementById('pkg-banner-3');
   if (!b) return;
@@ -1081,6 +1190,9 @@ function buildConfirm() {
   document.getElementById('sm-name').textContent  = document.getElementById('bk-fb').value.trim();
   document.getElementById('sm-phone').textContent = document.getElementById('bk-phone').value.trim();
   document.getElementById('sm-email').textContent = document.getElementById('bk-email').value.trim();
+  // 👗 DRESS
+  document.getElementById('sm-dress-row').style.display = _dress ? 'flex' : 'none';
+  document.getElementById('sm-dress').textContent = _dress ? (_dress + ' · ' + dressPriceLabel(_dressRate)) : '';
   var notes = [_pkgDesc, getExtraNotes(), document.getElementById('bk-notes').value.trim()].filter(Boolean).join(' | ');
   if (notes) { document.getElementById('sm-notes').textContent=notes; document.getElementById('sm-notes-row').style.display='flex'; }
   else        { document.getElementById('sm-notes-row').style.display='none'; }
@@ -1120,10 +1232,17 @@ function submitBooking() {
     referredBy:  (document.getElementById('bk-referral') ? document.getElementById('bk-referral').value.trim() : ''),
     downpayment: 300,
     source:      'Online Booking',
-    submittedAt: new Date().toISOString()
+    submittedAt: new Date().toISOString(),
+    dress:       _dress,               // 👗 DRESS — reserved server-side with the booking
+    dressCo:     _dress ? _dressCo : ''
   };
 
-  function showDone(ref) {
+  function showDone(ref, dressRes) {
+    // 👗 DRESS — tell the client whether the gown was held
+    var dd = document.getElementById('done-dress');
+    if (!payload.dress) dd.innerHTML = '';
+    else if (dressRes && dressRes.ok) dd.innerHTML = '<div class="dress-warn" style="background:rgba(81,137,125,.07);border-color:rgba(81,137,125,.3);color:var(--slate);">&#128087; <strong>' + dressEsc(payload.dress) + '</strong> is held for you and will be confirmed together with your booking.</div>';
+    else dd.innerHTML = '<div class="dress-warn">&#128087; Sorry — <strong>' + dressEsc(payload.dress) + '</strong> was booked by someone else a moment ago. Your session is still reserved; message us and we\'ll help you choose another gown.</div>';
     document.getElementById('done-name').textContent = payload.fbName;
     document.getElementById('done-pkg').textContent  = payload.package;
     document.getElementById('done-date').textContent = phDate(selDate).toLocaleDateString('en-PH',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'Asia/Manila'});
@@ -1162,10 +1281,17 @@ function submitBooking() {
   // lightweight backup to a sheet so the POS can cross-check if the calendar fails.
   gasCall('createBooking', payload)
     .then(function(res) {
+      // The server can answer ok:false (e.g. the slot was just taken) — show that instead of a false "Booking Received".
+      if (res && res.ok === false) {
+        btn.disabled = false; btn.textContent = 'Confirm Booking';
+        errEl.textContent = '⚠ ' + (res.error || 'Could not submit your booking. Please try again.');
+        errEl.style.display = 'block';
+        return;
+      }
       var ref = res.bookingId || res.ref || ('CLS-'+Date.now().toString(36).toUpperCase());
       // Fire backup log — fire-and-forget, don't wait for it
       gasCall('logBooking', Object.assign({}, payload, { ref: ref, calendarOk: true })).catch(function(){});
-      showDone(ref);
+      showDone(ref, res.dress);
     })
     .catch(function(err) {
       // createBooking failed — show an error instead of silently confirming.
@@ -1189,6 +1315,7 @@ function resetForm() {
   }
   selDate=''; selSlot=''; takenSlots=[]; availMap={}; txCache=[]; blockedDates=[]; calCache={};
   _pkg=''; _pkgPrice=''; _pkgDesc=''; _pkgDur=60;
+  _dress=''; _dressCo=''; _dressRate=null; _dressKey=''; _dressList=[];   // 👗 DRESS
   ['bk-pkg','bk-fb','bk-phone','bk-email','bk-notes'].forEach(function(id){
     var el=document.getElementById(id); if(el) el.value='';
   });
