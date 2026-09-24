@@ -237,15 +237,10 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
         <!-- Package cards for new items go inside this div — pasted from Package Builder -->
         <div id="new-pkg-cards" style="display:grid;grid-template-columns:1fr 1fr;gap:8px;">
           <!-- ✂ PASTE NEW PACKAGE CARDS HERE ✂ -->
-          <!--
-            TODO: this href is a placeholder. Replace it with the real
-            GitHub Pages URL for "The ClickLounge Birthday Experience"
-            mood-board builder once that repo is published.
-          -->
-          <div class="pkg-card gold" style="grid-column:1 / -1;" onclick="window.location.href='https://hellotalentff-max.github.io/clicklounge_birthday/'">
-            <div class="pkg-name">The ClickLounge Birthday Experience</div>
-            <div class="pkg-desc">Styleshots? Fur Coat? VS Angel? Build your own birthday portrait package — pick your session, mood, and keepsake.</div>
-            <div class="pkg-book">Build My Package →</div>
+          <div class="pkg-card gold" style="grid-column:1 / -1;" onclick="window.location.href='https://hellotalentff-max.github.io/clicklounge_looklab/'">
+            <div class="pkg-name">The Look Lab</div>
+            <div class="pkg-desc">Styleshots? Fur Coat? VS Angel? Build your own session — pick your session, mood, gown and keepsake.</div>
+            <div class="pkg-book">Build My Look →</div>
           </div>
         </div>
       </div>
@@ -751,8 +746,7 @@ function hasHMU(pkg) {
   else if (/(bridal|pawsome|fam vibes|all star|studio booth)/.test(pl))                  dur = 120;
   else if (/(snapshot|tribe|crew|crowd|frenzy|party|click capture|cap and gown)/.test(pl)) dur = 30;
   // Explicit ?dur= (minutes) overrides the name-based guess above — used by
-  // the ClickLounge Birthday Experience mood-board builder, which knows its
-  // own session length exactly.
+  // The Look Lab builder, which knows its own session length exactly.
   var durParam = parseInt(p.get('dur'), 10);
   if (!isNaN(durParam) && durParam > 0) dur = durParam;
   setTimeout(function(){ selectPkg(decodeURIComponent(pkg), decodeURIComponent(desc), price, dur); }, 100);
@@ -1062,7 +1056,8 @@ function goSc(n) {
 // ════════════════════════════════════════════════
 // 👗 DRESS — pick a House of Roan gown for the chosen date
 // ════════════════════════════════════════════════
-function dressEligible() { return !!DRESS_API && !!_pkg && NO_DRESS_PKGS.indexOf(_pkg) === -1; }
+function dressEligible() { return !!DRESS_API && !!_pkg && NO_DRESS_PKGS.indexOf(_pkg) === -1
+  && !/(Look Lab|Birthday Experience)/i.test(_pkg); }   // the Look Lab picks its own gown
 function dressCo() { return /prestige/i.test(_pkg) ? 'CLS Prestige' : 'CLS Photographer'; }
 function dressEsc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, function(c){ return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
 function dressSlug(n) { return String(n||'').toLowerCase().normalize('NFD').replace(/[̀-ͯ]/g,'').replace(/[^a-z0-9]+/g,'-').replace(/^-|-$/g,''); }
