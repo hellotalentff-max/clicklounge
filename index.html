@@ -922,19 +922,19 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     <h1 class="page-title">Professional Shoots</h1>
     <p class="page-desc">Tap any package to see full details and pricing. All sessions include a professional photographer, beautiful studio backdrops, and edited photos.</p>
   </div>
-  <!-- ══ THE LOOK LAB ══ -->
-  <a href="https://hellotalentff-max.github.io/clicklounge_looklab/" target="_blank" rel="noopener"
-     style="display:block;text-decoration:none;background:linear-gradient(135deg,#f3f7f5 0%,#fdf7f1 100%);padding:1.3rem 1.5rem;border-bottom:2px solid rgba(45,110,95,.25);">
+  <!-- ══ BIRTHDAY SURPRISE ══ -->
+  <a href="#ss-birthday" onclick="goBirthdaySurprise();return false;"
+     style="display:block;text-decoration:none;background:linear-gradient(135deg,#fff8e8 0%,#fff0d0 100%);padding:1.3rem 1.5rem;border-bottom:2px solid rgba(196,154,26,.35);">
     <div style="max-width:780px;margin:0 auto;display:flex;align-items:center;gap:1.1rem;flex-wrap:wrap;justify-content:center;text-align:center;">
-      <div style="font-size:2.2rem;line-height:1;">&#10024;</div>
+      <div style="font-size:2.2rem;line-height:1;">&#127873;</div>
       <div>
-        <div style="font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--green);">New &middot; Build your own</div>
-        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-dark);line-height:1.15;">The Look Lab</div>
+        <div style="font-family:'Space Mono',monospace;font-size:.62rem;font-weight:700;letter-spacing:.18em;text-transform:uppercase;color:var(--amber);">Celebrating a birthday?</div>
+        <div style="font-family:'Playfair Display',serif;font-size:1.5rem;color:var(--green-dark);line-height:1.15;">Birthday Surprise!</div>
         <div style="font-size:.85rem;color:var(--text-mid);margin-top:.15rem;line-height:1.5;">
-          Mix your session, mood, gown and keepsake &mdash; birthdays, headshots, set cards or just because.
+          Click for a free gift to add to your birthday self-shoot session!
         </div>
       </div>
-      <span style="background:var(--green);color:#fff;font-weight:600;font-size:.84rem;padding:.7rem 1.3rem;border-radius:100px;white-space:nowrap;">Build my look &rarr;</span>
+      <span style="background:var(--amber);color:#fff;font-weight:600;font-size:.84rem;padding:.7rem 1.3rem;border-radius:100px;white-space:nowrap;">&#127881; Claim my gift &rarr;</span>
     </div>
   </a>
 
@@ -3442,6 +3442,18 @@ function routeFromHash() {
 }
 document.addEventListener('DOMContentLoaded', routeFromHash);
 window.addEventListener('hashchange', routeFromHash);
+// Takes visitors from any page to the Birthday Surprise gift box in
+// Self Shoot → Birthday Packages, where the one-per-device spinner lives.
+function goBirthdaySurprise() {
+  showPage('self-shoot', document.querySelectorAll('nav a')[1]);
+  const tab = Array.from(document.querySelectorAll('#self-shoot .sub-tab'))
+    .find(b => /birthday/i.test(b.textContent));
+  if (tab) showSubTab('ss-birthday', tab);
+  setTimeout(() => {
+    const box = document.getElementById('gift-btn') || document.getElementById('ss-birthday');
+    if (box) box.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 350);
+}
 function showSubTab(id, btn) {
   const panel = document.getElementById(id);
   if (!panel) return;
