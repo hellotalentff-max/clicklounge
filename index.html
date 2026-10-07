@@ -121,6 +121,8 @@ nav a.active { color:var(--green); border-bottom-color:var(--green); }
   transition:transform .2s,box-shadow .2s;
 }
 .pkg-card:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(45,110,95,.13);}
+@keyframes pkgFlash{0%,100%{box-shadow:0 0 0 0 rgba(196,154,26,0)}25%,70%{box-shadow:0 0 0 6px rgba(196,154,26,.55)}}
+.pkg-flash{animation:pkgFlash 2.2s ease;border-radius:18px}
 .pkg-card-header {
   padding:1.6rem 1.6rem .8rem; text-align:center;
   border-bottom:1px solid rgba(45,110,95,.07);
@@ -671,7 +673,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <!-- BASIC PACKAGES -->
   <div id="ss-basic" class="sub-panel active">
     <div class="cards-grid">
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-snapshot-selfie" style="position:relative;">
         <div class="pkg-badge">1–2 pax</div>
         <div class="pkg-card-header">
           <div class="pkg-sub">Snapshot</div>
@@ -694,7 +696,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
 
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-tribe-time" style="position:relative;">
         <div class="pkg-badge">1–4 pax</div>
         <div class="pkg-card-header">
           <div class="pkg-sub">Tribe</div>
@@ -717,7 +719,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
 
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-crowd-cam" style="position:relative;">
         <div class="pkg-badge">1–6 pax</div>
         <div class="pkg-card-header">
           <div class="pkg-sub">Crowd</div>
@@ -739,7 +741,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
 
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-crew-captures" style="position:relative;">
         <div class="pkg-badge">1–10 pax</div>
         <div class="pkg-card-header">
           <div class="pkg-sub">Crew</div>
@@ -801,7 +803,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
 
     <div class="cards-grid">
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-frenzy-snaps" style="position:relative;">
         <div class="pkg-card-header" style="background:linear-gradient(135deg,#f5e8e0,#ead8cc);">
           <div class="pkg-name">Frenzy Snaps</div>
           <div class="price-badge"><span class="price-num">700</span><span class="price-dec">.00</span></div>
@@ -821,7 +823,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
 
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-party-clicks" style="position:relative;">
         <div class="pkg-badge" style="background:var(--green);">Popular</div>
         <div class="pkg-card-header" style="background:linear-gradient(135deg,#e8f0e4,#d0e0c8);">
           <div class="pkg-name">Party Clicks</div>
@@ -843,7 +845,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         </div>
       </div>
 
-      <div class="pkg-card" style="position:relative;">
+      <div class="pkg-card" id="pkg-click-capture" style="position:relative;">
         <div class="pkg-card-header" style="background:linear-gradient(135deg,#e8e0f0,#d0c8e0);">
           <div class="pkg-name">Click Capture</div>
           <div class="price-badge"><span class="price-num">1,500</span><span class="price-dec">.00</span></div>
@@ -955,7 +957,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <div class="cards-grid" style="max-width:1100px;">
 
     <!-- 0: The Look Lab (build your own) -->
-    <div class="pkg-card pkg-clickable" onclick="window.open('https://hellotalentff-max.github.io/clicklounge_looklab/','_blank')" style="cursor:pointer;position:relative;">
+    <div class="pkg-card pkg-clickable" id="pkg-look-lab" onclick="window.open('https://hellotalentff-max.github.io/clicklounge_looklab/','_blank')" style="cursor:pointer;position:relative;">
       <div style="position:relative;height:160px;overflow:hidden;">
         <img src="img_looklab.jpg" alt="The Look Lab" style="width:100%;height:100%;object-fit:cover;object-position:center top;">
         <div style="position:absolute;top:.6rem;right:.6rem;background:linear-gradient(135deg,#c8a020,#8a6010);color:#fff;font-family:'Space Mono',monospace;font-size:.58rem;font-weight:700;letter-spacing:.08em;text-transform:uppercase;padding:.22rem .6rem;border-radius:100px;">New</div>
@@ -1646,7 +1648,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </a>
 
   <!-- Bridal Bliss -->
-  <div class="bridal-hero">
+  <div class="bridal-hero" id="pkg-bridal-bliss">
     <div class="offer-banner">⭐ LIMITED TIME OFFER</div>
     <div class="bridal-label">Style Shots</div>
     <div class="bridal-title">Bridal Bliss</div>
@@ -1697,7 +1699,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <!-- Studio Booth -->
-  <div class="booth-section" style="margin-top:3rem;">
+  <div class="booth-section" id="pkg-studio-booth" style="margin-top:3rem;">
     <span class="eyebrow" style="color:var(--amber-light);position:relative;">Events</span>
     <div class="booth-title">STUDIO BOOTH</div>
     <p class="booth-sub">Bringing our very own <em>Styleshoot</em> to your special events. Get stunning high quality portrait photos with our studio setup on site — high resolution soft copies, long lasting prints, or elegantly framed photos.</p>
@@ -3427,12 +3429,68 @@ function showPage(id, navEl) {
   window.scrollTo({ top:0, behavior:'smooth' });
 }
 
-// ── HASH-BASED PAGE ROUTING ──────────────────────────────────────
-// Lets external links like .../#loyalty open directly to that page
-// Used by ClickCard email "View My Points" buttons
+// ── HASH-BASED ROUTING ───────────────────────────────────────────
+// Every page and every package has its own link, e.g.
+//   .../clicklounge/#photographer      → a whole page
+//   .../clicklounge/#styleshots        → opens the Styleshots details
+//   .../clicklounge/#tribe-time        → jumps to that package on its page
+// Also used by ClickCard email "View My Points" buttons (#loyalty).
+const PACKAGE_LINKS = {
+  // Self-shoot tabs
+  'self-shoot-basic':  { page: 'self-shoot', tab: 'ss-basic' },
+  'birthday-packages': { page: 'self-shoot', tab: 'ss-birthday' },
+  'add-ons':           { page: 'self-shoot', tab: 'ss-addons' },
+  // Self-shoot packages
+  'snapshot-selfie':   { page: 'self-shoot', tab: 'ss-basic',    el: 'pkg-snapshot-selfie' },
+  'tribe-time':        { page: 'self-shoot', tab: 'ss-basic',    el: 'pkg-tribe-time' },
+  'crowd-cam':         { page: 'self-shoot', tab: 'ss-basic',    el: 'pkg-crowd-cam' },
+  'crew-captures':     { page: 'self-shoot', tab: 'ss-basic',    el: 'pkg-crew-captures' },
+  'frenzy-snaps':      { page: 'self-shoot', tab: 'ss-birthday', el: 'pkg-frenzy-snaps' },
+  'party-clicks':      { page: 'self-shoot', tab: 'ss-birthday', el: 'pkg-party-clicks' },
+  'click-capture':     { page: 'self-shoot', tab: 'ss-birthday', el: 'pkg-click-capture' },
+  // Photographer sessions (each opens its details)
+  'look-lab':          { page: 'photographer', el: 'pkg-look-lab' },
+  'styleshots':        { page: 'photographer', modal: 'modal-styleshots' },
+  'couple-styleshots': { page: 'photographer', modal: 'modal-couple' },
+  'pop-reveal':        { page: 'photographer', modal: 'modal-popreveal' },
+  'radiant-mama':      { page: 'photographer', modal: 'modal-mama' },
+  'candid-kids':       { page: 'photographer', modal: 'modal-kids' },
+  'family-portraits':  { page: 'photographer', modal: 'modal-family' },
+  'graduation':        { page: 'photographer', modal: 'modal-grad' },
+  'pawtraits':         { page: 'photographer', modal: 'modal-paw' },
+  'promos':            { page: 'photographer', modal: 'modal-promo' },
+  // Events & rentals
+  'bridal-bliss':      { page: 'events', el: 'pkg-bridal-bliss' },
+  'studio-booth':      { page: 'events', el: 'pkg-studio-booth' }
+};
+const MODAL_SLUG = {}, TAB_SLUG = {};
+Object.keys(PACKAGE_LINKS).forEach(k => {
+  const l = PACKAGE_LINKS[k];
+  if (l.modal) MODAL_SLUG[l.modal] = k;
+  if (l.tab && !l.el) TAB_SLUG[l.tab] = k;
+});
+function setHash(h) { try { history.replaceState(null, '', '#' + h); } catch (e) {} }
+function currentHash() { return decodeURIComponent((location.hash || '').replace(/^#/, '')).trim().toLowerCase(); }
+
 function routeFromHash() {
-  const hash = (location.hash || '').replace(/^#/, '').trim();
+  const hash = currentHash();
   if (!hash) return;
+  const link = PACKAGE_LINKS[hash];
+  if (link) {
+    showPage(link.page, document.querySelector('nav a[onclick*="\'' + link.page + '\'"]') || null);
+    if (link.tab) {
+      const btn = Array.from(document.querySelectorAll('.sub-tab')).find(b => (b.getAttribute('onclick') || '').indexOf("'" + link.tab + "'") > -1);
+      if (btn) showSubTab(link.tab, btn);
+    }
+    setHash(hash);                                    // showPage/showSubTab rewrite the address bar
+    if (link.modal) setTimeout(() => openModal(link.modal), 200);
+    if (link.el) setTimeout(() => {
+      const el = document.getElementById(link.el); if (!el) return;
+      el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+      el.classList.add('pkg-flash'); setTimeout(() => el.classList.remove('pkg-flash'), 2200);
+    }, 450);
+    return;
+  }
   const target = document.getElementById(hash);
   if (target && target.classList.contains('section')) {
     // Find the matching nav link for active styling
@@ -3457,6 +3515,7 @@ function goBirthdaySurprise() {
 function showSubTab(id, btn) {
   const panel = document.getElementById(id);
   if (!panel) return;
+  if (TAB_SLUG[id]) setHash(TAB_SLUG[id]);
   panel.parentElement.querySelectorAll('.sub-panel').forEach(p => p.classList.remove('active'));
   panel.classList.add('active');
   btn.closest('.sub-tabs').querySelectorAll('.sub-tab').forEach(b => b.classList.remove('active'));
@@ -3486,6 +3545,7 @@ function openModal(id) {
   document.body.style.overflow = 'hidden';
   requestAnimationFrame(() => { modal.classList.add('open'); });
   _activeModal = modal;
+  if (MODAL_SLUG[id]) setHash(MODAL_SLUG[id]);
   if (typeof fbq !== 'undefined') {
     fbq('track', 'ViewContent', { content_name: id.replace('modal-','') });
   }
@@ -3496,6 +3556,7 @@ function closeModal() {
   document.getElementById('modal-overlay').style.display = 'none';
   document.body.style.overflow = '';
   const m = _activeModal; _activeModal = null;
+  if (MODAL_SLUG[m.id] && currentHash() === MODAL_SLUG[m.id]) setHash(PACKAGE_LINKS[MODAL_SLUG[m.id]].page);
   setTimeout(() => { m.style.display = 'none'; }, 260);
 }
 document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
