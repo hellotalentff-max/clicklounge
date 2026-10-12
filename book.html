@@ -153,6 +153,8 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 .brow .btn-main{flex:1;}
 
 /* ── PAYMENT ── */
+.pp-m{flex:1;padding:11px 8px;border:1.5px solid var(--light2);background:var(--light);color:var(--muted);border-radius:10px;font-size:13px;font-weight:600;font-family:'Poppins',sans-serif;cursor:pointer;}
+.pp-m.on{border-color:var(--teal);background:rgba(81,137,125,.1);color:var(--teal);}
 .pay-box{background:var(--white);border:1.5px solid rgba(215,144,104,.3);border-radius:12px;padding:18px;margin-bottom:14px;}
 .pay-title{font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--gold);font-weight:700;margin-bottom:12px;}
 .pay-amount{font-size:22px;font-weight:700;color:var(--slate);margin-bottom:14px;text-align:center;padding:10px;background:var(--light);border-radius:8px;}
@@ -536,8 +538,8 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:700;margin-bottom:12px;">Next Steps — Complete Within 4 Hours</div>
       <div class="step-item"><div class="step-num">1</div><div><strong>Screenshot this page</strong> as your booking reference.</div></div>
       <div class="step-item"><div class="step-num">2</div><div>Send <strong>&#8369;300 downpayment</strong> via GCash, BPI, or Cash.</div></div>
-      <div class="step-item"><div class="step-num">3</div><div><strong>Screenshot your payment receipt.</strong></div></div>
-      <div class="step-item"><div class="step-num">4</div><div>Message us on <strong>Facebook</strong> and send both screenshots — this booking page and your payment proof.</div></div>
+      <div class="step-item"><div class="step-num">3</div><div>Enter your <strong>payment reference number</strong> in the box below &mdash; it's on your receipt.</div></div>
+      <div class="step-item"><div class="step-num">4</div><div>No reference number? Message us on <strong>Facebook</strong> with a screenshot of your receipt and this page.</div></div>
       <div class="step-item"><div class="step-num">5</div><div>We will send your <strong>Acknowledgement Receipt</strong> via Messenger once confirmed.</div></div>
     </div>
     <div class="pay-box">
@@ -546,7 +548,44 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div class="pay-method"><div class="pay-icon">&#127974;</div><div><div class="pay-name">BPI</div><div class="pay-detail">2829140848</div></div></div>
       <div class="pay-method"><div class="pay-icon">&#128181;</div><div><div class="pay-name">Cash</div><div class="pay-detail">Pay in person at the studio</div><div class="pay-sub">Tell us via Messenger if paying cash</div></div></div>
     </div>
-    <div class="alert-box">&#9888; <strong>Reminder:</strong> Non-payment within <strong>4 hours</strong> will release this slot. Your booking is only confirmed once we receive your payment proof via Facebook Messenger.</div>
+    <!-- ════ PAYMENT DETAILS (matches the payment to this booking) ════ -->
+    <div class="card" id="pp-card" style="border-color:rgba(81,137,125,.35);">
+      <div class="card-title">Already Paid? Tell Us Here</div>
+      <div id="pp-form">
+        <p style="font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 14px;">GCash doesn't show us who paid, so enter your payment details below. We'll match them to this booking and confirm it faster.</p>
+        <div class="field">
+          <label>You paid through</label>
+          <div style="display:flex;gap:8px;">
+            <button type="button" class="pp-m on" data-m="GCash" onclick="ppMethod('GCash')">&#128154; GCash</button>
+            <button type="button" class="pp-m" data-m="BPI" onclick="ppMethod('BPI')">&#127974; BPI</button>
+          </div>
+          <div class="field-hint">Paying in cash at the studio? Just message us &mdash; no need to fill this in.</div>
+        </div>
+        <div class="field">
+          <label for="pp-ref" id="pp-ref-lbl">GCash Reference No. *</label>
+          <input type="text" id="pp-ref" placeholder="e.g. 1234 567 890 123" autocomplete="off" inputmode="text">
+          <div class="field-hint" id="pp-ref-hint">Find it on your GCash receipt: &ldquo;Ref No.&rdquo; (13 digits).</div>
+        </div>
+        <div class="field-2">
+          <div class="field" style="margin:0;">
+            <label for="pp-amt">Amount Sent (&#8369;) *</label>
+            <input type="number" id="pp-amt" value="300" min="1" inputmode="decimal">
+          </div>
+          <div class="field" style="margin:0;">
+            <label for="pp-from">Paid From (name or last 4 digits)</label>
+            <input type="text" id="pp-from" placeholder="e.g. Juan D. / 1234" autocomplete="off">
+          </div>
+        </div>
+        <div class="err-msg" id="pp-err" style="margin:10px 0;"></div>
+        <button class="btn-main" id="pp-btn" onclick="submitPaymentProof()">Send Payment Details</button>
+      </div>
+      <div id="pp-done" style="display:none;text-align:center;padding:6px 0;">
+        <div style="font-size:30px;margin-bottom:6px;">&#9989;</div>
+        <div style="font-size:14px;font-weight:700;color:var(--slate);margin-bottom:6px;">Payment details received</div>
+        <div style="font-size:12px;color:var(--muted);line-height:1.7;">We'll check it against our records and send your <strong>Acknowledgement Receipt</strong> once confirmed. You don't need to send a screenshot.</div>
+      </div>
+    </div>
+    <div class="alert-box">&#9888; <strong>Reminder:</strong> Non-payment within <strong>4 hours</strong> will release this slot. Your booking is only confirmed once we receive and verify your payment details (above, or via Facebook Messenger).</div>
 
     <!-- Feedback + Spin Wheel callout -->
     <div style="background:#fff;border:1.5px solid rgba(215,144,104,.3);border-radius:12px;padding:18px 20px;margin-bottom:14px;text-align:center;">
@@ -1243,6 +1282,9 @@ function submitBooking() {
     if (!payload.dress) dd.innerHTML = '';
     else if (dressRes && dressRes.ok) dd.innerHTML = '<div class="dress-warn" style="background:rgba(81,137,125,.07);border-color:rgba(81,137,125,.3);color:var(--slate);">&#128087; <strong>' + dressEsc(payload.dress) + '</strong> is held for you and will be confirmed together with your booking.</div>';
     else dd.innerHTML = '<div class="dress-warn">&#128087; Sorry — <strong>' + dressEsc(payload.dress) + '</strong> was booked by someone else a moment ago. Your session is still reserved; message us and we\'ll help you choose another gown.</div>';
+    _pp.booking = { ref: ref, fbName: payload.fbName, date: selDate, slot: selSlot, pkg: payload.package };
+    document.getElementById('pp-form').style.display = ''; document.getElementById('pp-done').style.display = 'none';
+    document.getElementById('pp-btn').disabled = false; document.getElementById('pp-btn').textContent = 'Send Payment Details';
     document.getElementById('done-name').textContent = payload.fbName;
     document.getElementById('done-pkg').textContent  = payload.package;
     document.getElementById('done-date').textContent = phDate(selDate).toLocaleDateString('en-PH',{weekday:'long',month:'long',day:'numeric',year:'numeric',timeZone:'Asia/Manila'});
@@ -1303,6 +1345,54 @@ function submitBooking() {
       errEl.textContent = '⚠ Could not submit your booking. Please try again, or message us directly on Facebook to book manually.';
       errEl.style.display = 'block';
     });
+}
+
+
+// ════════════════════════════════════════════════
+// PAYMENT DETAILS — lets us match a GCash/BPI payment to this booking
+// ════════════════════════════════════════════════
+var _pp = { method: 'GCash', booking: null };
+function ppMethod(m) {
+  _pp.method = m;
+  Array.prototype.forEach.call(document.querySelectorAll('.pp-m'), function(b){ b.classList.toggle('on', b.getAttribute('data-m') === m); });
+  document.getElementById('pp-ref-lbl').textContent = m + ' Reference No. *';
+  document.getElementById('pp-ref').placeholder = m === 'GCash' ? 'e.g. 1234 567 890 123' : 'Reference no. on your BPI transfer';
+  document.getElementById('pp-ref-hint').innerHTML = m === 'GCash'
+    ? 'Find it on your GCash receipt: &ldquo;Ref No.&rdquo; (13 digits).'
+    : 'Find it on your BPI transfer confirmation (InstaPay / PESONet reference number).';
+}
+function submitPaymentProof() {
+  var b = _pp.booking, err = document.getElementById('pp-err'), btn = document.getElementById('pp-btn');
+  err.style.display = 'none';
+  if (!b) { err.textContent = 'Please book first.'; err.style.display = 'block'; return; }
+  var ref = document.getElementById('pp-ref').value.replace(/[\s\-]/g, '');
+  var amt = parseFloat(document.getElementById('pp-amt').value);
+  if (_pp.method === 'GCash' && !/^\d{10,16}$/.test(ref)) {
+    err.textContent = 'GCash reference numbers are 13 digits (numbers only). Please check your receipt.'; err.style.display = 'block'; return;
+  }
+  if (_pp.method === 'BPI' && ref.length < 6) {
+    err.textContent = 'Please enter the reference number from your BPI transfer.'; err.style.display = 'block'; return;
+  }
+  if (!(amt > 0)) { err.textContent = 'Please enter the amount you sent.'; err.style.display = 'block'; return; }
+  btn.disabled = true; btn.textContent = 'Sending…';
+  gasCall('submitPaymentProof', {
+    bookingId: b.ref, fbName: b.fbName, date: b.date, timeSlot: b.slot, package: b.pkg,
+    method: _pp.method, payRef: ref, amount: amt,
+    from: document.getElementById('pp-from').value.trim()
+  }).then(function(res) {
+    if (res && res.ok) {
+      document.getElementById('pp-form').style.display = 'none';
+      document.getElementById('pp-done').style.display = '';
+    } else {
+      btn.disabled = false; btn.textContent = 'Send Payment Details';
+      err.textContent = (res && res.error) || 'We could not save that. Please message us your receipt on Facebook instead.';
+      err.style.display = 'block';
+    }
+  }).catch(function() {
+    btn.disabled = false; btn.textContent = 'Send Payment Details';
+    err.textContent = 'Connection problem. Please try again, or message us your receipt on Facebook.';
+    err.style.display = 'block';
+  });
 }
 
 // ════════════════════════════════════════════════
