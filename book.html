@@ -532,7 +532,7 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div class="pay-title">Send &#8369;300 Downpayment To</div>
       <div class="pay-method"><div class="pay-icon">&#128154;</div><div><div class="pay-name">GCash</div><div class="pay-detail">0919 662 8224</div><div class="pay-sub">Ma*****e M.</div></div></div>
       <div class="pay-method"><div class="pay-icon">&#127974;</div><div><div class="pay-name">BPI</div><div class="pay-detail">2829140848</div></div></div>
-      <div class="pay-method"><div class="pay-icon">&#128181;</div><div><div class="pay-name">Cash</div><div class="pay-detail">Pay in person at the studio</div><div class="pay-sub">Tell us via Messenger if paying cash</div></div></div>
+      <div class="pay-method"><div class="pay-icon">&#128181;</div><div><div class="pay-name">Cash</div><div class="pay-detail">Pay in person at the studio within 24 hrs.</div><div class="pay-sub">Reservation must be paid at least 2 days before your shoot. Tell us via Messenger if paying cash.</div></div></div>
     </div>
     <!-- ════ PAYMENT DETAILS (matches the payment to this booking) ════ -->
     <div class="card" id="pp-card" style="border-color:rgba(81,137,125,.35);">
@@ -540,17 +540,17 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
       <div id="pp-form">
         <p style="font-size:12px;color:var(--muted);line-height:1.7;margin:0 0 14px;">GCash doesn't show us who paid, so enter your payment details below. We'll match them to this booking and confirm it faster.</p>
         <div class="field">
-          <label>You paid through</label>
+          <label>You paid through *</label>
           <div style="display:flex;gap:8px;">
-            <button type="button" class="pp-m on" data-m="GCash" onclick="ppMethod('GCash')">&#128154; GCash</button>
+            <button type="button" class="pp-m" data-m="GCash" onclick="ppMethod('GCash')">&#128154; GCash</button>
             <button type="button" class="pp-m" data-m="BPI" onclick="ppMethod('BPI')">&#127974; BPI</button>
           </div>
           <div class="field-hint">Paying in cash at the studio? Just message us &mdash; no need to fill this in.</div>
         </div>
         <div class="field">
-          <label for="pp-ref" id="pp-ref-lbl">GCash Reference No. *</label>
-          <input type="text" id="pp-ref" placeholder="e.g. 1234 567 890 123" autocomplete="off" inputmode="text">
-          <div class="field-hint" id="pp-ref-hint">Find it on your GCash receipt: &ldquo;Ref No.&rdquo; (13 digits).</div>
+          <label for="pp-ref" id="pp-ref-lbl">Reference No. *</label>
+          <input type="text" id="pp-ref" placeholder="Choose GCash or BPI above first" autocomplete="off" inputmode="text">
+          <div class="field-hint" id="pp-ref-hint">Tap how you paid, then enter the reference number from your receipt.</div>
         </div>
         <div class="field-2">
           <div class="field" style="margin:0;">
@@ -1258,6 +1258,7 @@ function submitBooking() {
     else dd.innerHTML = '<div class="dress-warn">&#128087; Sorry — <strong>' + dressEsc(payload.dress) + '</strong> was booked by someone else a moment ago. Your session is still reserved; message us and we\'ll help you choose another gown.</div>';
     _pp.booking = { ref: ref, fbName: payload.fbName, date: selDate, slot: selSlot, pkg: payload.package };
     document.getElementById('pp-form').style.display = ''; document.getElementById('pp-done').style.display = 'none';
+    ppReset();
     document.getElementById('pp-btn').disabled = false; document.getElementById('pp-btn').textContent = 'Send Payment Details';
     document.getElementById('done-name').textContent = payload.fbName;
     document.getElementById('done-pkg').textContent  = payload.package;
@@ -1325,7 +1326,17 @@ function submitBooking() {
 // ════════════════════════════════════════════════
 // PAYMENT DETAILS — lets us match a GCash/BPI payment to this booking
 // ════════════════════════════════════════════════
-var _pp = { method: 'GCash', booking: null };
+var _pp = { method: '', booking: null };
+function ppReset() {
+  _pp.method = '';
+  Array.prototype.forEach.call(document.querySelectorAll('.pp-m'), function(b){ b.classList.remove('on'); });
+  document.getElementById('pp-ref-lbl').textContent = 'Reference No. *';
+  document.getElementById('pp-ref').placeholder = 'Choose GCash or BPI above first';
+  document.getElementById('pp-ref-hint').textContent = 'Tap how you paid, then enter the reference number from your receipt.';
+  ['pp-ref','pp-from'].forEach(function(id){ document.getElementById(id).value = ''; });
+  document.getElementById('pp-amt').value = 300;
+  document.getElementById('pp-err').style.display = 'none';
+}
 function ppMethod(m) {
   _pp.method = m;
   Array.prototype.forEach.call(document.querySelectorAll('.pp-m'), function(b){ b.classList.toggle('on', b.getAttribute('data-m') === m); });
@@ -1341,6 +1352,13 @@ function submitPaymentProof() {
   if (!b) { err.textContent = 'Please book first.'; err.style.display = 'block'; return; }
   var ref = document.getElementById('pp-ref').value.replace(/[\s\-]/g, '');
   var amt = parseFloat(document.getElementById('pp-amt').value);
+  if (!_pp.method) {
+    err.textContent = 'Please tap GCash or BPI \u2014 whichever you paid with.'; err.style.display = 'block'; return;
+  }
+  // A 13-digit number is how a GCash reference looks. If BPI is selected, double-check.
+  if (_pp.method === 'BPI' && /^\d{13}$/.test(ref)) {
+    if (confirm('That reference number looks like a GCash one (13 digits).\n\nPress OK if you paid with GCash.\nPress Cancel if you really paid through BPI.')) ppMethod('GCash');
+  }
   if (_pp.method === 'GCash' && !/^\d{10,16}$/.test(ref)) {
     err.textContent = 'GCash reference numbers are 13 digits (numbers only). Please check your receipt.'; err.style.display = 'block'; return;
   }
@@ -1385,6 +1403,7 @@ function resetForm() {
   });
   document.getElementById('slots-wrap').style.display='none';
   document.getElementById('tc-agree').checked=false;
+  try { ppReset(); } catch(e) {}
   goSc(1);
 }
 
