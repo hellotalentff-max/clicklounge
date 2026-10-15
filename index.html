@@ -529,6 +529,8 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
   </div>
 
+  <div class="sp-testi sp-slot" style="display:none;" role="region" aria-label="Client testimonials"></div>
+
   <!-- ══ WHAT'S NEW — Dynamic, loaded from the What's New Editor ══ -->
   <div id="cls-whats-new"></div>
   <script>
@@ -670,18 +672,6 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 .sp-toast-x:hover{color:var(--text-dark);}
 @media (prefers-reduced-motion:reduce){.sp-toast{transition:none;transform:none;} .sp-track{scroll-behavior:auto;}}
 </style>
-<div id="sp-testi" class="sp-testi" style="display:none;" role="region" aria-label="Client testimonials">
-  <span class="eyebrow">Kind Words</span>
-  <h2 class="sp-h2">What our clients say</h2>
-  <div class="sp-rate" id="sp-rate"></div>
-  <div class="sp-stage">
-    <button type="button" class="sp-nav prev" id="sp-prev" aria-label="Previous testimonial">&#8249;</button>
-    <div class="sp-track" id="sp-track" tabindex="0"></div>
-    <button type="button" class="sp-nav next" id="sp-next" aria-label="Next testimonial">&#8250;</button>
-  </div>
-  <div class="sp-dots" id="sp-dots"></div>
-</div>
-
   <div style="background:var(--cream-dark);padding:1.5rem 2rem;text-align:center;">
     <p style="font-size:.84rem;color:var(--text-mid);">📍 U302 Decoro Bldg. Circumferential Rd. San Roque, Antipolo City &nbsp;·&nbsp; 📞 +63976 022 1462 &nbsp;·&nbsp; ✉️ clickloungestudio@gmail.com</p>
   </div>
@@ -958,6 +948,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
       <button class="book-btn" onclick="bookDirect('Self Shoot + Photographer Upgrade','₱700')">Book Now →</button>
     </div>
   </div>
+  <div class="sp-testi sp-slot" style="display:none;" role="region" aria-label="Client testimonials"></div>
 </div>
 
 <!-- ══ PHOTOGRAPHER ══ -->
@@ -1121,6 +1112,8 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
 
   </div>
+
+  <div class="sp-testi sp-slot" style="display:none;" role="region" aria-label="Client testimonials"></div>
 
   <div style="text-align:center;padding:1rem 2rem 3rem;">
     <p style="font-size:.83rem;color:var(--text-light);">Click any package to see full inclusions, pricing &amp; add-ons.</p>
@@ -4011,13 +4004,20 @@ async function rsch_confirmReschedule(){
 
   function stars(n) { n = Math.max(0, Math.min(5, Math.round(n))); return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); }
 
-  // ── Testimonials: swipe / arrows / dots / auto-advance ──
+  // ── Testimonials: swipe / arrows / dots / auto-advance (one carousel per slot on the page) ──
+  var TEMPLATE = '<span class="eyebrow">Kind Words</span><h2 class="sp-h2">What our clients say</h2><div class="sp-rate"></div>' +
+    '<div class="sp-stage"><button type="button" class="sp-nav prev" aria-label="Previous testimonial">&#8249;</button>' +
+    '<div class="sp-track" tabindex="0"></div>' +
+    '<button type="button" class="sp-nav next" aria-label="Next testimonial">&#8250;</button></div><div class="sp-dots"></div>';
+
   function buildTestimonials(d) {
     var list = d.testimonials || [];
-    var box = el('sp-testi');
-    if (!box || !list.length) return;
-    var track = el('sp-track'), dots = el('sp-dots');
-    track.innerHTML = ''; dots.innerHTML = '';
+    if (!list.length) return;
+    Array.prototype.forEach.call(document.querySelectorAll('.sp-slot'), function (box) { buildOne(box, d, list); });
+  }
+  function buildOne(box, d, list) {
+    box.innerHTML = TEMPLATE;
+    var track = box.querySelector('.sp-track'), dots = box.querySelector('.sp-dots');
     list.forEach(function (t, i) {
       var card = mk('div', 'sp-card');
       card.setAttribute('role', 'group'); card.setAttribute('aria-label', (i + 1) + ' of ' + list.length);
@@ -4031,17 +4031,15 @@ async function rsch_confirmReschedule(){
       dots.appendChild(dot);
     });
     var r = d.rating || {};
-    var rateEl = el('sp-rate');
-    rateEl.innerHTML = '';
+    var rateEl = box.querySelector('.sp-rate');
     if (r.count >= 10 && r.avg) {
-      var b = mk('b', null, r.avg.toFixed(1) + ' / 5');
       rateEl.appendChild(mk('span', 'sp-stars', stars(r.avg) + ' '));
-      rateEl.appendChild(b);
+      rateEl.appendChild(mk('b', null, r.avg.toFixed(1) + ' / 5'));
       rateEl.appendChild(document.createTextNode(' from ' + r.count + ' client reviews'));
     }
     box.style.display = '';
 
-    var cur = 0, timer = null, paused = false;
+    var cur = 0, paused = false;
     var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
     function go(i) {
       cur = (i + list.length) % list.length;
@@ -4051,8 +4049,8 @@ async function rsch_confirmReschedule(){
     function mark() { Array.prototype.forEach.call(dots.children, function (x, k) { x.classList.toggle('on', k === cur); }); }
     function pause() { paused = true; }
     mark();
-    el('sp-prev').onclick = function () { go(cur - 1); pause(); };
-    el('sp-next').onclick = function () { go(cur + 1); pause(); };
+    box.querySelector('.sp-nav.prev').onclick = function () { go(cur - 1); pause(); };
+    box.querySelector('.sp-nav.next').onclick = function () { go(cur + 1); pause(); };
     track.addEventListener('scroll', function () {
       var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
       if (i !== cur && i >= 0 && i < list.length) { cur = i; mark(); }
@@ -4063,7 +4061,7 @@ async function rsch_confirmReschedule(){
     });
     ['touchstart', 'mouseenter', 'focusin'].forEach(function (ev) { box.addEventListener(ev, pause, { passive: true }); });
     if (list.length > 1 && !reduce) {
-      timer = setInterval(function () {
+      setInterval(function () {
         if (paused || document.hidden || box.offsetParent === null) return;   // only while on screen
         go(cur + 1);
       }, 7000);
