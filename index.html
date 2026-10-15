@@ -638,6 +638,50 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
     </div>
   </div>
 
+
+<!-- ══ SOCIAL PROOF: testimonials (home) ══ -->
+<style>
+.sp-testi{background:var(--cream);padding:3rem 1rem 3.2rem;text-align:center;}
+.sp-h2{font-family:'Playfair Display',serif;font-size:clamp(1.6rem,3.4vw,2.3rem);color:var(--green-dark);line-height:1.15;}
+.sp-rate{margin:.7rem auto 1.4rem;font-size:.9rem;color:var(--text-mid);}
+.sp-rate b{color:var(--green-dark);font-family:'Space Mono',monospace;}
+.sp-stars{color:var(--amber);letter-spacing:.12em;font-size:1.05rem;}
+.sp-stage{position:relative;max-width:680px;margin:0 auto;}
+.sp-track{display:flex;overflow-x:auto;scroll-snap-type:x mandatory;scroll-behavior:smooth;-webkit-overflow-scrolling:touch;scrollbar-width:none;border-radius:20px;outline:none;}
+.sp-track::-webkit-scrollbar{display:none;}
+.sp-card{flex:0 0 100%;scroll-snap-align:center;background:#fff;border-radius:20px;padding:2rem 2.4rem 1.7rem;box-shadow:0 6px 28px rgba(26,46,40,.08);border:1px solid rgba(45,110,95,.1);}
+.sp-quote{font-family:'Playfair Display',serif;font-style:italic;font-size:clamp(1.05rem,2.2vw,1.3rem);line-height:1.6;color:var(--text-dark);margin:.6rem 0 1rem;}
+.sp-by{font-size:.82rem;color:var(--text-mid);font-family:'Space Mono',monospace;letter-spacing:.04em;}
+.sp-nav{position:absolute;top:50%;transform:translateY(-50%);width:42px;height:42px;border-radius:50%;border:1px solid rgba(45,110,95,.25);background:#fff;color:var(--green-dark);font-size:1.4rem;line-height:1;cursor:pointer;box-shadow:0 2px 10px rgba(26,46,40,.12);transition:background .15s,color .15s;z-index:2;}
+.sp-nav:hover{background:var(--green);color:#fff;}
+.sp-nav.prev{left:-14px;} .sp-nav.next{right:-14px;}
+.sp-dots{display:flex;justify-content:center;gap:.5rem;margin-top:1.1rem;}
+.sp-dot{width:10px !important;height:10px !important;min-width:0 !important;min-height:0 !important;flex:0 0 10px;border-radius:50%;border:none;background:rgba(45,110,95,.25);cursor:pointer;padding:0 !important;margin:0;display:block;transition:transform .2s,background .2s;}
+.sp-dot.on{background:var(--green);transform:scale(1.3);}
+@media (max-width:640px){.sp-card{padding:1.5rem 1.3rem 1.3rem;} .sp-nav{display:none;}}
+
+/* "just booked" notification */
+.sp-toast{position:fixed;left:16px;bottom:16px;z-index:150;max-width:min(340px,calc(100vw - 32px));display:flex;align-items:center;gap:.7rem;background:#fff;border:1px solid rgba(45,110,95,.2);border-radius:14px;padding:.7rem .9rem .7rem .8rem;box-shadow:0 8px 28px rgba(26,46,40,.18);opacity:0;transform:translateY(14px);pointer-events:none;transition:opacity .35s ease,transform .35s ease;}
+.sp-toast.show{opacity:1;transform:none;pointer-events:auto;}
+.sp-toast-ic{width:38px;height:38px;border-radius:50%;background:rgba(45,110,95,.12);display:flex;align-items:center;justify-content:center;font-size:1.1rem;flex-shrink:0;}
+.sp-toast-tx{font-size:.84rem;line-height:1.35;color:var(--text-dark);min-width:0;}
+.sp-toast-tx small{display:block;color:var(--text-light);font-size:.72rem;margin-top:.15rem;}
+.sp-toast-x{border:none;background:transparent;color:var(--text-light);font-size:.9rem;cursor:pointer;align-self:flex-start;padding:.1rem .2rem;}
+.sp-toast-x:hover{color:var(--text-dark);}
+@media (prefers-reduced-motion:reduce){.sp-toast{transition:none;transform:none;} .sp-track{scroll-behavior:auto;}}
+</style>
+<div id="sp-testi" class="sp-testi" style="display:none;" role="region" aria-label="Client testimonials">
+  <span class="eyebrow">Kind Words</span>
+  <h2 class="sp-h2">What our clients say</h2>
+  <div class="sp-rate" id="sp-rate"></div>
+  <div class="sp-stage">
+    <button type="button" class="sp-nav prev" id="sp-prev" aria-label="Previous testimonial">&#8249;</button>
+    <div class="sp-track" id="sp-track" tabindex="0"></div>
+    <button type="button" class="sp-nav next" id="sp-next" aria-label="Next testimonial">&#8250;</button>
+  </div>
+  <div class="sp-dots" id="sp-dots"></div>
+</div>
+
   <div style="background:var(--cream-dark);padding:1.5rem 2rem;text-align:center;">
     <p style="font-size:.84rem;color:var(--text-mid);">📍 U302 Decoro Bldg. Circumferential Rd. San Roque, Antipolo City &nbsp;·&nbsp; 📞 +63976 022 1462 &nbsp;·&nbsp; ✉️ clickloungestudio@gmail.com</p>
   </div>
@@ -2250,6 +2294,13 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 </div>
 
+
+<!-- "just booked / checked in" notification -->
+<div id="sp-toast" class="sp-toast" role="status" aria-live="polite">
+  <div class="sp-toast-ic" id="sp-ic">&#128248;</div>
+  <div class="sp-toast-tx"><div id="sp-msg"></div><small id="sp-when"></small></div>
+  <button type="button" class="sp-toast-x" id="sp-x" aria-label="Hide these notifications">&#10005;</button>
+</div>
 <!-- FOOTER -->
 <footer>
   <div style="margin-bottom:.8rem;"><img src="STUDIO_LOGO_GIF.gif" alt="ClickLounge Studio" style="width:120px;height:auto;filter:brightness(0) invert(1);opacity:.85;"></div>
@@ -3926,5 +3977,145 @@ async function rsch_confirmReschedule(){
   })();
   </script>
   
+
+<script>
+// ══ SOCIAL PROOF — real testimonials + "just booked" notifications ══
+// Data comes from the studio's own records through getPublicSocialProof:
+// first names only, no emails or phone numbers. If it can't load, nothing shows.
+(function () {
+  var SP_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
+  var CACHE_KEY = 'sp_cache_v1';
+
+  function el(id) { return document.getElementById(id); }
+  function mk(tag, cls, text) { var e = document.createElement(tag); if (cls) e.className = cls; if (text != null) e.textContent = text; return e; }
+
+  function load(cb) {
+    try {
+      var c = JSON.parse(sessionStorage.getItem(CACHE_KEY) || 'null');
+      if (c && Date.now() - c.t < 5 * 60 * 1000) { cb(c.d); return; }
+    } catch (e) {}
+    var name = '_sp_' + Math.random().toString(36).slice(2), done = false;
+    var sc = document.createElement('script');
+    function finish(d) {
+      if (done) return; done = true;
+      try { delete window[name]; } catch (e) { window[name] = undefined; }
+      if (sc.parentNode) sc.parentNode.removeChild(sc);
+      if (d && d.ok) { try { sessionStorage.setItem(CACHE_KEY, JSON.stringify({ t: Date.now(), d: d })); } catch (e) {} cb(d); }
+    }
+    window[name] = finish;
+    setTimeout(function () { finish(null); }, 10000);
+    sc.onerror = function () { finish(null); };
+    sc.src = SP_URL + '?d=' + encodeURIComponent(btoa(JSON.stringify({ action: 'getPublicSocialProof', payload: {} }))) + '&callback=' + name;
+    document.head.appendChild(sc);
+  }
+
+  function stars(n) { n = Math.max(0, Math.min(5, Math.round(n))); return '★★★★★'.slice(0, n) + '☆☆☆☆☆'.slice(0, 5 - n); }
+
+  // ── Testimonials: swipe / arrows / dots / auto-advance ──
+  function buildTestimonials(d) {
+    var list = d.testimonials || [];
+    var box = el('sp-testi');
+    if (!box || !list.length) return;
+    var track = el('sp-track'), dots = el('sp-dots');
+    track.innerHTML = ''; dots.innerHTML = '';
+    list.forEach(function (t, i) {
+      var card = mk('div', 'sp-card');
+      card.setAttribute('role', 'group'); card.setAttribute('aria-label', (i + 1) + ' of ' + list.length);
+      var st = mk('div', 'sp-stars', stars(t.rating)); st.setAttribute('aria-label', t.rating + ' out of 5 stars');
+      card.appendChild(st);
+      card.appendChild(mk('p', 'sp-quote', '“' + t.message + '”'));
+      card.appendChild(mk('div', 'sp-by', '— ' + t.name + ', ClickLounge client'));
+      track.appendChild(card);
+      var dot = mk('button', 'sp-dot'); dot.type = 'button'; dot.setAttribute('aria-label', 'Show testimonial ' + (i + 1));
+      dot.onclick = function () { go(i); pause(); };
+      dots.appendChild(dot);
+    });
+    var r = d.rating || {};
+    var rateEl = el('sp-rate');
+    rateEl.innerHTML = '';
+    if (r.count >= 10 && r.avg) {
+      var b = mk('b', null, r.avg.toFixed(1) + ' / 5');
+      rateEl.appendChild(mk('span', 'sp-stars', stars(r.avg) + ' '));
+      rateEl.appendChild(b);
+      rateEl.appendChild(document.createTextNode(' from ' + r.count + ' client reviews'));
+    }
+    box.style.display = '';
+
+    var cur = 0, timer = null, paused = false;
+    var reduce = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+    function go(i) {
+      cur = (i + list.length) % list.length;
+      track.scrollTo({ left: track.clientWidth * cur, behavior: reduce ? 'auto' : 'smooth' });
+      mark();
+    }
+    function mark() { Array.prototype.forEach.call(dots.children, function (x, k) { x.classList.toggle('on', k === cur); }); }
+    function pause() { paused = true; }
+    mark();
+    el('sp-prev').onclick = function () { go(cur - 1); pause(); };
+    el('sp-next').onclick = function () { go(cur + 1); pause(); };
+    track.addEventListener('scroll', function () {
+      var i = Math.round(track.scrollLeft / Math.max(1, track.clientWidth));
+      if (i !== cur && i >= 0 && i < list.length) { cur = i; mark(); }
+    }, { passive: true });
+    track.addEventListener('keydown', function (e) {
+      if (e.key === 'ArrowRight') { go(cur + 1); pause(); e.preventDefault(); }
+      if (e.key === 'ArrowLeft')  { go(cur - 1); pause(); e.preventDefault(); }
+    });
+    ['touchstart', 'mouseenter', 'focusin'].forEach(function (ev) { box.addEventListener(ev, pause, { passive: true }); });
+    if (list.length > 1 && !reduce) {
+      timer = setInterval(function () {
+        if (paused || document.hidden || box.offsetParent === null) return;   // only while on screen
+        go(cur + 1);
+      }, 7000);
+    }
+  }
+
+  // ── "just booked / checked in" notifications ──
+  function ago(ts) {
+    var m = Math.round((Date.now() - ts) / 60000);
+    if (m < 2) return 'just now';
+    if (m < 60) return m + ' minutes ago';
+    var h = Math.round(m / 60);
+    if (h < 24) return h + (h === 1 ? ' hour ago' : ' hours ago');
+    var dd = Math.round(h / 24);
+    return dd === 1 ? 'yesterday' : dd + ' days ago';
+  }
+  function buildToasts(d) {
+    var items = (d.activity || []).filter(function (a) { return a && a.name && a.ts; }).slice(0, 5);
+    var t = el('sp-toast');
+    if (!t || !items.length) return;
+    try { if (sessionStorage.getItem('sp_off') === '1') return; } catch (e) {}
+    var off = false, i = 0;
+    el('sp-x').onclick = function () { off = true; t.classList.remove('show'); try { sessionStorage.setItem('sp_off', '1'); } catch (e) {} };
+    function modalOpen() {
+      var m = el('modal-overlay'), b = el('booking-modal');
+      return (m && m.style.display !== 'none' && m.style.display !== '') || (b && b.offsetParent !== null && b.style.display !== 'none' && b.style.display !== '');
+    }
+    function show() {
+      if (off || i >= items.length) return;
+      if (document.hidden || modalOpen()) { setTimeout(show, 4000); return; }
+      var a = items[i++], recent = Date.now() - a.ts < 3 * 3600 * 1000;
+      var msg = el('sp-msg'); msg.innerHTML = '';
+      msg.appendChild(mk('b', null, a.name));
+      if (a.type === 'checkin') {
+        msg.appendChild(document.createTextNode(recent ? ' just checked in at the studio' : ' checked in at the studio'));
+        el('sp-ic').textContent = '📍';
+      } else {
+        var pkg = String(a.pkg || '').split(':')[0].trim();
+        msg.appendChild(document.createTextNode(recent ? ' just booked ' : ' booked '));
+        if (pkg) msg.appendChild(mk('b', null, pkg)); else msg.appendChild(document.createTextNode('a session'));
+        el('sp-ic').textContent = '📸';
+      }
+      el('sp-when').textContent = ago(a.ts) + ' · ClickLounge Studio';
+      t.classList.add('show');
+      setTimeout(function () { t.classList.remove('show'); setTimeout(show, 9000); }, 6500);
+    }
+    setTimeout(show, 6000);
+  }
+
+  function start() { load(function (d) { try { buildTestimonials(d); } catch (e) {} try { buildToasts(d); } catch (e) {} }); }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', start); else start();
+})();
+</script>
 </body>
 </html>
