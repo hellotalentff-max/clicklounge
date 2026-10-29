@@ -72,6 +72,9 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 .pkg-book{font-size:10px;font-weight:600;color:var(--teal);text-transform:uppercase;letter-spacing:.5px;}
 .pkg-card.gold .pkg-book{color:var(--gold);}
 .pkg-card.grad .pkg-book{color:#5b63d9;}
+.pkg-card.xmas{border-color:rgba(179,32,42,.18);}
+.pkg-card.xmas:hover{border-color:#b3202a;}
+.pkg-card.xmas .pkg-book{color:#b3202a;}
 
 /* ── CALENDAR ── */
 .cal-wrap{border:1.5px solid var(--light2);border-radius:12px;overflow:hidden;margin-bottom:14px;}
@@ -257,6 +260,23 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
           }
         })();
       </script>
+
+      <!-- Christmas 2026 (Festive Clicks). Remove this block when the season ends. -->
+      <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;margin-bottom:10px;">
+        <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:#b3202a;font-weight:700;">🎄 Festive Clicks · Christmas 2026</div>
+        <a href="xmas-2026.jpg" target="_blank" rel="noopener" style="font-size:10px;font-weight:600;color:#b3202a;white-space:nowrap;">View poster ↗</a>
+      </div>
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+        <div class="pkg-card xmas" onclick="selectPkg('Festive Clicks - Little Joys','Up to 5 pax · 15-min photographer-guided shoot · plain white backdrop with Christmas gift boxes · 4 mini prints (2x3) · 2 bestie prints (3x4) with Christmas layout · all digital copies','1700',30)">
+          <div class="pkg-name">Little Joys</div><div class="pkg-desc">Up to 5 pax · 15 mins · ₱1,700<br>White backdrop + gift boxes</div><div class="pkg-book">Book Now →</div>
+        </div>
+        <div class="pkg-card xmas" onclick="selectPkg('Festive Clicks - Holiday Bliss','Up to 7 pax · 25-min photographer-guided shoot · Christmas set design (with XL gift boxes) · 1 Christmas XL strip print (8x24, 3 photos) · 8 mini prints (2x3) · all digital copies','3000',45)">
+          <div class="pkg-name">Holiday Bliss</div><div class="pkg-desc">Up to 7 pax · 25 mins · ₱3,000<br>Christmas set + XL strip print</div><div class="pkg-book">Book Now →</div>
+        </div>
+        <div class="pkg-card xmas" style="grid-column:1/-1;" onclick="selectPkg('Festive Clicks - Grand Holiday','Up to 10 pax · 40-min photographer-guided shoot · Christmas set design (with XL gift boxes) · group and individual shots · 1 outfit change · 1 Christmas XL strip print (8x24, 3 photos) · 8 mini prints (2x3) · 4 bestie prints (3x4) · 5 solo print outs (3x4) · 1 8R print in double glass frame (black) · all digital copies','6000',60)">
+          <div class="pkg-name">Grand Holiday</div><div class="pkg-desc">Up to 10 pax · 40 mins · ₱6,000<br>Christmas set · group + solo shots · 1 outfit change · 8R glass frame</div><div class="pkg-book">Book Now →</div>
+        </div>
+      </div>
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:600;margin-bottom:10px;">📸 Self Shoot — Basic</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
