@@ -512,7 +512,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   ['utm_source','utm_medium','utm_campaign','utm_content','fbclid','ref'].forEach(function(k){var v=p.get(k);if(v)o[k]=v.slice(0,60);});
   var old=JSON.parse(localStorage.getItem('cl_src')||'null');
   if(old&&Date.now()-old.t>30*864e5)old=null;
-  if(!Object.keys(o).length&&!old&&document.referrer&&!/hellotalentff-max\.github\.io/.test(document.referrer))o.ref=new URL(document.referrer).hostname;
+  if(!Object.keys(o).length&&!old&&document.referrer&&!/hellotalentff-max\.github\.io|clickloungestudio\.com/.test(document.referrer))o.ref=new URL(document.referrer).hostname;
   if(Object.keys(o).length){o.t=Date.now();localStorage.setItem('cl_src',JSON.stringify(o));}
 }catch(e){}})();
 window.clSource=function(){try{
