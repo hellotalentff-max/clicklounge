@@ -187,6 +187,27 @@ body{font-family:'Poppins',sans-serif;color:var(--text);}
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","z61z5j2iv1");
 </script>
+<script>
+!function(f,b,e,v,n,t,s){if(f.fbq)return;n=f.fbq=function(){n.callMethod?n.callMethod.apply(n,arguments):n.queue.push(arguments)};if(!f._fbq)f._fbq=n;n.push=n;n.loaded=!0;n.version='2.0';n.queue=[];t=b.createElement(e);t.async=!0;t.src=v;s=b.getElementsByTagName(e)[0];s.parentNode.insertBefore(t,s)}(window,document,'script','https://connect.facebook.net/en_US/fbevents.js');
+fbq('init','263971983385899');fbq('track','PageView');
+// Where the visitor came from (ad tag, fbclid or referring site). Saved for 30 days and shared by
+// every Click Lounge page on this domain, so the booking app can record it with the booking.
+(function(){try{
+  var p=new URLSearchParams(location.search),o={};
+  ['utm_source','utm_medium','utm_campaign','utm_content','fbclid','ref'].forEach(function(k){var v=p.get(k);if(v)o[k]=v.slice(0,60);});
+  var old=JSON.parse(localStorage.getItem('cl_src')||'null');
+  if(old&&Date.now()-old.t>30*864e5)old=null;
+  if(!Object.keys(o).length&&!old&&document.referrer&&!/hellotalentff-max\.github\.io/.test(document.referrer))o.ref=new URL(document.referrer).hostname;
+  if(Object.keys(o).length){o.t=Date.now();localStorage.setItem('cl_src',JSON.stringify(o));}
+}catch(e){}})();
+window.clSource=function(){try{
+  var o=JSON.parse(localStorage.getItem('cl_src')||'{}'),s=o.utm_source||(o.fbclid?'facebook':'')||o.ref||'direct';
+  return s+(o.utm_campaign?' / '+o.utm_campaign:'');
+}catch(e){return 'direct';}};
+try{clarity('set','source',clSource());}catch(e){}
+// Messenger taps count as "Contact"
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="m.me/"],a[href*="messenger.com"]');if(a&&window.fbq)fbq('track','Contact');},true);
+</script>
 </head>
 <body>
 
@@ -772,6 +793,7 @@ function hasHMU(pkg) {
   var durParam = parseInt(p.get('dur'), 10);
   if (!isNaN(durParam) && durParam > 0) dur = durParam;
   setTimeout(function(){ selectPkg(decodeURIComponent(pkg), decodeURIComponent(desc), price, dur); }, 100);
+  if (window.fbq) fbq('track', 'InitiateCheckout', { content_name: pkg, value: parseFloat(price) || 0, currency: 'PHP' });
 })();
 
 // ════════════════════════════════════════════════
@@ -1242,6 +1264,7 @@ function submitBooking() {
   btn.disabled=true; btn.textContent='Booking…'; errEl.style.display='none';
 
   var notes = [_pkgDesc, getExtraNotes(), document.getElementById('bk-notes').value.trim()].filter(Boolean).join(' | ');
+  notes = [notes, 'Source: ' + (window.clSource ? clSource() : 'direct')].filter(Boolean).join(' | ');
   var payload = {
     fbName:      document.getElementById('bk-fb').value.trim(),
     phone:       document.getElementById('bk-phone').value.trim(),
@@ -1253,7 +1276,7 @@ function submitBooking() {
     notes:       notes,
     referredBy:  (document.getElementById('bk-referral') ? document.getElementById('bk-referral').value.trim() : ''),
     downpayment: 300,
-    source:      'Online Booking',
+    source:      'Online Booking · ' + (window.clSource ? clSource() : 'direct'),
     submittedAt: new Date().toISOString(),
     dress:       _dress,               // 👗 DRESS — reserved server-side with the booking
     dressCo:     _dress ? _dressCo : ''
@@ -1284,18 +1307,12 @@ function submitBooking() {
 
     // ── Fire Meta Pixel events ──
     if (typeof fbq !== 'undefined') {
-      fbq('track', 'Lead', {
+      // Booking submitted (not paid yet): Schedule, valued at the package price
+      fbq('track', 'Schedule', {
         content_name: payload.package,
         content_category: 'Studio Booking',
-        value: parseFloat(payload.price) || 300,
+        value: parseFloat(payload.price) || 0,
         currency: 'PHP'
-      });
-      fbq('track', 'Purchase', {
-        content_name: payload.package,
-        content_category: 'Studio Booking',
-        value: 300,          // downpayment amount
-        currency: 'PHP',
-        content_ids: [ref]
       });
     }
 
@@ -1376,6 +1393,7 @@ function submitPaymentProof() {
   }
   if (!(amt > 0)) { err.textContent = 'Please enter the amount you sent.'; err.style.display = 'block'; return; }
   btn.disabled = true; btn.textContent = 'Sending…';
+  if (window.fbq) fbq('track', 'AddPaymentInfo', { content_name: b.pkg, value: amt, currency: 'PHP' });
   gasCall('submitPaymentProof', {
     bookingId: b.ref, fbName: b.fbName, date: b.date, timeSlot: b.slot, package: b.pkg,
     method: _pp.method, payRef: ref, amount: amt,

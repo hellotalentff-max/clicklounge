@@ -504,6 +504,25 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
 <script type="text/javascript">
 (function(c,l,a,r,i,t,y){c[a]=c[a]||function(){(c[a].q=c[a].q||[]).push(arguments)};t=l.createElement(r);t.async=1;t.src="https://www.clarity.ms/tag/"+i;y=l.getElementsByTagName(r)[0];y.parentNode.insertBefore(t,y);})(window,document,"clarity","script","z61z5j2iv1");
 </script>
+<script>
+// Where the visitor came from (ad tag, fbclid or referring site). Saved for 30 days and shared by
+// every Click Lounge page on this domain, so the booking app can record it with the booking.
+(function(){try{
+  var p=new URLSearchParams(location.search),o={};
+  ['utm_source','utm_medium','utm_campaign','utm_content','fbclid','ref'].forEach(function(k){var v=p.get(k);if(v)o[k]=v.slice(0,60);});
+  var old=JSON.parse(localStorage.getItem('cl_src')||'null');
+  if(old&&Date.now()-old.t>30*864e5)old=null;
+  if(!Object.keys(o).length&&!old&&document.referrer&&!/hellotalentff-max\.github\.io/.test(document.referrer))o.ref=new URL(document.referrer).hostname;
+  if(Object.keys(o).length){o.t=Date.now();localStorage.setItem('cl_src',JSON.stringify(o));}
+}catch(e){}})();
+window.clSource=function(){try{
+  var o=JSON.parse(localStorage.getItem('cl_src')||'{}'),s=o.utm_source||(o.fbclid?'facebook':'')||o.ref||'direct';
+  return s+(o.utm_campaign?' / '+o.utm_campaign:'');
+}catch(e){return 'direct';}};
+try{clarity('set','source',clSource());}catch(e){}
+// Messenger taps count as "Contact"
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="m.me/"],a[href*="messenger.com"]');if(a&&window.fbq)fbq('track','Contact');},true);
+</script>
 </head>
 <body>
 
@@ -1853,7 +1872,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   </div>
 
   <div style="text-align:center;padding:2rem 2rem 0;display:flex;gap:1rem;justify-content:center;flex-wrap:wrap;">
-    <a class="book-btn green" href="book.html" target="_blank" onclick="if(typeof fbq!=='undefined')fbq('track','Lead')">Book Now →</a>
+    <a class="book-btn green" href="book.html" target="_blank">Book Now →</a>
     <a class="book-btn" href="https://www.instagram.com/clicklounge.studio" target="_blank">Book via Instagram</a>
   </div>
 
@@ -1984,7 +2003,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
         🔍 Check My Points →
       </button>
       <a href="book.html" target="_blank"
-        onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
+       
         style="background:var(--green);color:#fff;font-family:'Space Mono',monospace;font-size:.78rem;font-weight:700;letter-spacing:.06em;text-transform:uppercase;padding:.7rem 1.4rem;border-radius:100px;text-decoration:none;">
         📸 Book &amp; Earn More →
       </a>
@@ -2259,7 +2278,7 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   <h2 class="cc-cta-title">Ready to Start Earning?</h2>
   <p class="cc-cta-sub">Book your next session today — every peso counts toward amazing FREE rewards!</p>
   <a href="book.html" target="_blank"
-    onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
+   
     class="cc-book-btn">Book a Session &amp; Earn Points →</a>
   <div style="margin-top:1.2rem;">
     <button onclick="document.getElementById('check-pts-section').scrollIntoView({behavior:'smooth'})"
@@ -2603,7 +2622,7 @@ async function checkMyPoints() {
               📩 Message us on Facebook
             </a>
             <a href="book.html" target="_blank"
-              onclick="if(typeof fbq!=='undefined')fbq('track','Lead')"
+             
               style="background:#ffd76e;color:#1a3d35;font-family:'Space Mono',monospace;font-size:.75rem;font-weight:700;letter-spacing:.05em;text-transform:uppercase;padding:.7rem 1.2rem;border-radius:100px;text-decoration:none;">
               📸 Book &amp; Enroll Now
             </a>
