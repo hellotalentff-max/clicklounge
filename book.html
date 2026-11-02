@@ -1032,9 +1032,9 @@ function pickDate(ds) {
 }
 
 function renderSlots() {
-  // Slots this package needs (45-min per slot)
-  var need    = Math.max(1, Math.ceil(_pkgDur / 45));
-  var cutoff  = ALL_SLOTS.length - need;
+  // Every slot up to the last one (5:30 PM) can be booked, whatever the package length;
+  // a longer shoot that starts late simply runs past 5:30.
+  var cutoff  = ALL_SLOTS.length - 1;
   var html    = '';
 
   ALL_SLOTS.forEach(function(slot, i) {
