@@ -497,6 +497,14 @@ window.clSource=function(){try{
 try{clarity('set','source',clSource());}catch(e){}
 // Messenger taps count as "Contact"
 document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href*="m.me/"],a[href*="messenger.com"]');if(a&&window.fbq)fbq('track','Contact');},true);
+// The other Click Lounge subdomains (book., looklab.) keep their own storage, so links to them carry the saved source along
+window.clCarry=function(url){try{
+  var u=new URL(url,location.href);if(u.hostname===location.hostname||!/(^|\.)clickloungestudio\.com$/.test(u.hostname))return url;
+  var o=JSON.parse(localStorage.getItem('cl_src')||'null');if(!o||Date.now()-o.t>30*864e5)return url;
+  ['utm_source','utm_medium','utm_campaign','utm_content','fbclid','ref'].forEach(function(k){if(o[k]&&!u.searchParams.has(k))u.searchParams.set(k,o[k]);});
+  return u.href;
+}catch(e){return url;}};
+document.addEventListener('click',function(e){var a=e.target.closest&&e.target.closest('a[href]');if(!a)return;var n=clCarry(a.href);if(n!==a.href)a.href=n;},true);
 </script>
 </head>
 <body>
