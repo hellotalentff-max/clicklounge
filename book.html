@@ -312,6 +312,10 @@ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.c
 
       <div style="font-size:10px;text-transform:uppercase;letter-spacing:1.5px;color:var(--teal);font-weight:600;margin-bottom:10px;">📸 Self Shoot — Basic</div>
       <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-bottom:18px;">
+        <div class="pkg-card" style="grid-column:1/-1;border-color:#8e1f33;" onclick="selectPkg('Pose with Serra','Up to 2 pax · 15 min · 1 Serra dress · all digital copies · 3 printouts','1200',30)">
+          <div class="pkg-name">Pose with Serra <span style="font-size:9px;background:#8e1f33;color:#fff;padding:1px 6px;border-radius:10px;font-weight:600;vertical-align:middle;">Limited Collab</span></div>
+          <div class="pkg-desc">Up to 2 pax · 15 min · 1 Serra dress · all digital copies · 3 printouts · ₱1,200 <s>₱1,500</s></div><div class="pkg-book" style="color:#8e1f33;">Book Now →</div>
+        </div>
         <div class="pkg-card" onclick="selectPkg('Snapshot Selfie','1-2 pax · 20 min','500',30)">
           <div class="pkg-name">Snapshot Selfie</div><div class="pkg-desc">1-2 pax · 20 min · ₱500</div><div class="pkg-book">Book Now →</div>
         </div>
@@ -629,7 +633,7 @@ var GAS_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30tt
 var DRESS_API  = 'https://script.google.com/macros/s/AKfycbzPh7QccleUs6m3ipAJvIe1t8FHWPFAPnllb49ErB6y0lcLsZFK6CtsGwAv4TE4hS2jYg/exec';
 var DRESS_SITE = 'https://hellotalentff-max.github.io/hordr-dresses/';
 // Packages that never get a gown offered. Everything else does.
-var NO_DRESS_PKGS = ['Snapshot Selfie','Tribe Time','Crowd Cam','Crew Captures','Frenzy Snaps Birthday',
+var NO_DRESS_PKGS = ['Pose with Serra','Snapshot Selfie','Tribe Time','Crowd Cam','Crew Captures','Frenzy Snaps Birthday',
                      'Party Clicks Birthday','Click Capture Birthday','Candid Kids','PAWtraits'];
 
 // ── APPS SCRIPT ACTIONS USED ──────────────────────────────────────────────
@@ -796,7 +800,7 @@ function hasHMU(pkg) {
   var dur = 60;
   if (/(promo styleshots|couple styleshots promo|glowing mom|vip grad glam)/.test(pl)) dur = 90;  // HMU
   else if (/(bridal|pawsome|fam vibes|all star|studio booth)/.test(pl))                  dur = 120;
-  else if (/(snapshot|tribe|crew|crowd|frenzy|party|click capture|cap and gown)/.test(pl)) dur = 30;
+  else if (/(pose with serra|snapshot|tribe|crew|crowd|frenzy|party|click capture|cap and gown)/.test(pl)) dur = 30;
   // Explicit ?dur= (minutes) overrides the name-based guess above — used by
   // The Look Lab builder, which knows its own session length exactly.
   var durParam = parseInt(p.get('dur'), 10);
