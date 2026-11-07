@@ -880,7 +880,7 @@ function loadCalData() {
 
   // Fetch the currently viewed month from Google Calendar
   // month is 0-indexed to match POS's CAL_MONTH convention
-  gasCall('getCalendarEvents', { year: calY, month: calM })
+  gasCall('getPublicCalendar', { year: calY, month: calM })
     .then(function(res) {
       var events = Array.isArray(res.events) ? res.events : [];
       calCache[key] = events;
@@ -896,15 +896,8 @@ function loadCalData() {
       renderCal();
     })
     .catch(function() {
-      // Fallback: try getTransactions (less accurate but better than nothing)
-      gasCall('getTransactions', {})
-        .then(function(r) {
-          txCache = (r.data||r.transactions||[]);
-          calCache[key] = txCache;
-          buildAvailMap();
-          renderCal();
-        })
-        .catch(function() { renderCal(); });
+      // No fallback: the private sheets are not readable from this public page.
+      renderCal();
     });
 }
 
@@ -1461,7 +1454,7 @@ function resetForm() {
   loadCalData();
   // Silent connection test — XHR only, no JSONP
   if (GAS_URL) {
-    gasCall('getAll', {})
+    gasCall('ping', {})
       .then(function(){ document.getElementById('url-banner').style.display='none'; })
       .catch(function(){
         document.getElementById('url-banner').style.display='block';
