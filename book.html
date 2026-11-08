@@ -644,6 +644,14 @@ var NO_DRESS_PKGS = ['Pose with Serra','Snapshot Selfie','Tribe Time','Crowd Cam
 // ════════════════════════════════════════════════
 // API — XHR (replaces JSONP — eliminates iOS crash bug)
 // ════════════════════════════════════════════════
+// Calendar for this public page: getPublicCalendar has times and tags only. If the script
+// doesn't know it yet ("Unknown action" before Gate.gs is redeployed) use the old call.
+function publicCalendar(y, m) {
+  return gasCall('getPublicCalendar', { year: y, month: m }).then(function (r) {
+    if (r && r.ok === false && /Unknown action/.test(String(r.error || ''))) return gasCall('getCalendarEvents', { year: y, month: m });
+    return r;
+  });
+}
 function gasCall(action, payload) {
   return new Promise(function(resolve, reject) {
     if (!GAS_URL) { reject(new Error('No server URL')); return; }
@@ -880,7 +888,7 @@ function loadCalData() {
 
   // Fetch the currently viewed month from Google Calendar
   // month is 0-indexed to match POS's CAL_MONTH convention
-  gasCall('getPublicCalendar', { year: calY, month: calM })
+  publicCalendar(calY, calM)
     .then(function(res) {
       var events = Array.isArray(res.events) ? res.events : [];
       calCache[key] = events;
