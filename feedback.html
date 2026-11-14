@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="robots" content="noindex">
+<title>Your Feedback — Click Lounge Studio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --green:#2d6e5f; --green-dark:#1e4d42; --amber:#c49a1a; --cream:#f5ede0;
+  --warm-white:#faf6f0; --text-dark:#1a2e28; --text-mid:#4a6058; --line:#e3d8c6; --danger:#b0413a;
+}
+*{box-sizing:border-box;}
+body{margin:0;background:var(--warm-white);color:var(--text-dark);font-family:'DM Sans',Arial,sans-serif;line-height:1.5;}
+.wrap{max-width:520px;margin:0 auto;padding:24px 16px 48px;}
+.brand{text-align:center;margin-bottom:18px;}
+.brand img{height:84px;width:auto;}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:24px 20px;box-shadow:0 6px 24px rgba(30,77,66,.08);}
+h1{font-family:'Playfair Display',Georgia,serif;font-size:26px;line-height:1.2;margin:0 0 6px;color:var(--green-dark);}
+.sub{color:var(--text-mid);font-size:14px;margin:0 0 20px;}
+.pts{background:var(--cream);border-radius:10px;padding:10px 12px;font-size:13.5px;margin-bottom:20px;}
+fieldset{border:0;padding:0;margin:0 0 18px;}
+legend,label.q{display:block;font-weight:600;font-size:15px;margin-bottom:8px;}
+.stars{display:flex;gap:6px;}
+.stars input{position:absolute;opacity:0;width:1px;height:1px;}
+.stars label{flex:1;text-align:center;font-size:30px;line-height:1;padding:10px 0;border:1.5px solid var(--line);border-radius:12px;cursor:pointer;color:#cfc4b2;background:#fff;user-select:none;}
+.stars label.on{color:var(--amber);border-color:var(--amber);background:#fdf7e6;}
+.stars input:focus-visible + label{outline:3px solid var(--green);outline-offset:2px;}
+.hint{font-size:12.5px;color:var(--text-mid);margin-top:6px;min-height:18px;}
+textarea{width:100%;min-height:84px;padding:10px 12px;font:inherit;font-size:15px;border:1.5px solid var(--line);border-radius:10px;resize:vertical;margin-bottom:16px;color:var(--text-dark);}
+textarea:focus{outline:none;border-color:var(--green);}
+.btn{display:block;width:100%;text-align:center;padding:14px 16px;border:0;border-radius:12px;font:inherit;font-size:16px;font-weight:600;cursor:pointer;text-decoration:none;}
+.btn-main{background:var(--green);color:#fff;}
+.btn-main:disabled{opacity:.6;cursor:default;}
+.btn-alt{background:#fff;color:var(--green-dark);border:1.5px solid var(--green);margin-top:10px;}
+.err{color:var(--danger);font-size:14px;margin:0 0 12px;min-height:20px;}
+.center{text-align:center;}
+.big{font-size:40px;margin-bottom:6px;}
+.muted{color:var(--text-mid);font-size:13.5px;}
+.hide{display:none;}
+.spin{width:28px;height:28px;border:3px solid var(--line);border-top-color:var(--green);border-radius:50%;margin:30px auto;animation:s 1s linear infinite;}
+@keyframes s{to{transform:rotate(360deg);}}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="brand"><img src="logo-still.png" alt="Click Lounge Studio"></div>
+  <div class="card">
+
+    <div id="v-load"><div class="spin" role="status" aria-label="Loading"></div></div>
+
+    <div id="v-missing" class="hide center">
+      <div class="big">🔗</div>
+      <h1>Link not found</h1>
+      <p class="sub">This link may have expired or been copied incompletely. Message us on Facebook and we'll help right away.</p>
+      <a class="btn btn-main" href="https://m.me/clicklounge.studio">Message us on Facebook</a>
+    </div>
+
+    <form id="v-form" class="hide" novalidate>
+      <h1 id="f-title">How was your session?</h1>
+      <p class="sub" id="f-sub"></p>
+      <div class="pts">⭐ Share your feedback and get <strong>+5 ClickCard points</strong>. A 5-star rating adds 5 more.</div>
+      <fieldset>
+        <legend>Your rating</legend>
+        <div class="stars" id="stars"></div>
+        <div class="hint" id="star-hint"></div>
+      </fieldset>
+      <label class="q" for="loved">What did you love?</label>
+      <textarea id="loved" maxlength="1000" placeholder="The poses, the team, the photos…"></textarea>
+      <label class="q" for="improve">Anything we could do better?</label>
+      <textarea id="improve" maxlength="1000" placeholder="Optional"></textarea>
+      <p class="err" id="f-err" role="alert"></p>
+      <button class="btn btn-main" id="f-btn" type="submit">Send feedback</button>
+    </form>
+
+    <div id="v-done" class="hide center">
+      <div class="big">💚</div>
+      <h1 id="d-title">Thank you!</h1>
+      <p class="sub" id="d-sub">Your feedback means a lot to our team.</p>
+      <a class="btn btn-main hide" id="d-photos" target="_blank" rel="noopener">Open my photos</a>
+      <a class="btn btn-alt hide" id="d-review" href="https://g.page/r/CcA766sR1JxgEBM/review" target="_blank" rel="noopener">Share it on Google</a>
+      <a class="btn btn-alt" href="https://m.me/clicklounge.studio">Re-edit request? Message us on Facebook</a>
+    </div>
+
+  </div>
+</div>
+
+<script>
+// Talks to the POS Apps Script through two public, token-checked actions (Gate.gs):
+// feedbackGate (read one link) and feedbackSubmit (save the rating once).
+var GAS_URL = 'https://script.google.com/macros/s/AKfycbx_Y5nH34Rq16JJ2AxBDr30ttmDFuic61OqoC0u3Wq0zogHEhfoV6qE7uiNagI43flVgw/exec';
+var TOKEN = (new URLSearchParams(location.search).get('t') || '').replace(/[^A-Za-z0-9-]/g, '').slice(0, 40);
+var RATING = 0;
+var WORDS = ['', 'Not happy', 'Could be better', 'Okay', 'Great', 'Loved it!'];
+
+function gasCall(action, payload) {
+  return new Promise(function (resolve, reject) {
+    var b64 = btoa(unescape(encodeURIComponent(JSON.stringify({ action: action, payload: payload || {} }))));
+    var cb = '_fb_cb_' + Math.random().toString(36).slice(2);
+    var sc = document.createElement('script');
+    var timer = setTimeout(function () { cleanup(); reject(new Error('Timed out')); }, 30000);
+    function cleanup() { clearTimeout(timer); delete window[cb]; if (sc.parentNode) sc.parentNode.removeChild(sc); }
+    window[cb] = function (d) { cleanup(); resolve(d); };
+    sc.onerror = function () { cleanup(); reject(new Error('Network error')); };
+    sc.src = GAS_URL + '?d=' + encodeURIComponent(b64) + '&callback=' + cb;
+    document.body.appendChild(sc);
+  });
+}
+
+function show(id) {
+  ['v-load', 'v-missing', 'v-form', 'v-done'].forEach(function (v) { document.getElementById(v).classList.toggle('hide', v !== id); });
+}
+
+function buildStars() {
+  var box = document.getElementById('stars');
+  for (var i = 1; i <= 5; i++) {
+    var inp = document.createElement('input');
+    inp.type = 'radio'; inp.name = 'rating'; inp.id = 'r' + i; inp.value = i;
+    var lab = document.createElement('label');
+    lab.htmlFor = 'r' + i; lab.textContent = '★'; lab.setAttribute('aria-label', i + ' star' + (i > 1 ? 's' : '') + ': ' + WORDS[i]);
+    inp.addEventListener('change', function () { setRating(+this.value); });
+    box.appendChild(inp); box.appendChild(lab);
+  }
+}
+function setRating(n) {
+  RATING = n;
+  document.querySelectorAll('#stars label').forEach(function (l, i) { l.classList.toggle('on', i < n); });
+  document.getElementById('star-hint').textContent = WORDS[n];
+  document.getElementById('f-err').textContent = '';
+}
+
+function showDone(d, justSent) {
+  document.getElementById('d-title').textContent = 'Thank you' + (d.name ? ', ' + d.name : '') + '!';
+  document.getElementById('d-sub').textContent = justSent
+    ? 'Your ClickCard points have been added. Your photos are ready below.'
+    : 'We already have your feedback. Your photos are below.';
+  var ph = document.getElementById('d-photos');
+  if (/^https:\/\//.test(d.driveLink || '')) { ph.href = d.driveLink; ph.classList.remove('hide'); }
+  document.getElementById('d-review').classList.toggle('hide', !(justSent && RATING === 5));
+  show('v-done');
+}
+
+document.getElementById('v-form').addEventListener('submit', function (e) {
+  e.preventDefault();
+  var err = document.getElementById('f-err');
+  if (!RATING) { err.textContent = 'Please choose a star rating.'; return; }
+  var btn = document.getElementById('f-btn');
+  btn.disabled = true; btn.textContent = 'Sending…'; err.textContent = '';
+  gasCall('feedbackSubmit', {
+    t: TOKEN, rating: RATING,
+    loved: document.getElementById('loved').value.trim(),
+    improve: document.getElementById('improve').value.trim()
+  }).then(function (d) {
+    if (!d || !d.ok) throw new Error((d && d.error) || 'Something went wrong');
+    showDone(d, true);
+  }).catch(function (x) {
+    err.textContent = x.message + '. Please try again, or message us on Facebook.';
+    btn.disabled = false; btn.textContent = 'Send feedback';
+  });
+});
+
+buildStars();
+if (!TOKEN) { show('v-missing'); }
+else {
+  gasCall('feedbackGate', { t: TOKEN }).then(function (d) {
+    if (!d || !d.ok) { show('v-missing'); return; }
+    if (d.done) { showDone(d, false); return; }
+    document.getElementById('f-title').textContent = 'How was your session' + (d.name ? ', ' + d.name : '') + '?';
+    document.getElementById('f-sub').textContent = d.session || '';
+    show('v-form');
+  }).catch(function () { show('v-missing'); });
+}
+</script>
+</body>
+</html>
