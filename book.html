@@ -219,6 +219,38 @@ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.c
 </head>
 <body>
 
+<!-- 3-Day Christmas Sale teaser (same as the website homepage): shows Nov 21-29, 2026 (PH time), hidden when the visitor already came from the sale page -->
+<style>
+.sale-tz{display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap;background:linear-gradient(90deg,#6c1526,#8e1f33 50%,#6c1526);color:#fff;text-align:center;font-family:'Poppins',sans-serif;font-size:13px;line-height:1.4;padding:9px 40px 9px 14px;position:relative;}
+.sale-tz[hidden]{display:none;}
+.sale-tz b{color:#f4d58d;}
+.sale-tz .tz-cd{font-size:12px;background:rgba(255,255,255,.14);border-radius:100px;padding:2px 10px;white-space:nowrap;}
+.sale-tz a.tz-go{color:#8e1f33;background:#f4d58d;font-weight:600;text-decoration:none;border-radius:100px;padding:5px 14px;white-space:nowrap;}
+.sale-tz a.tz-go:hover{background:#fff;}
+.sale-tz .tz-x{position:absolute;right:6px;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;opacity:.75;font-size:18px;line-height:1;cursor:pointer;padding:6px 9px;}
+</style>
+<div class="sale-tz" id="sale-tz" role="region" aria-label="3-Day Christmas Sale" hidden>
+  <span>🎄 <b>3-Day Christmas Sale</b> · Nov 27–29 only · save up to ₱3,200 + free perks</span>
+  <span class="tz-cd" id="tz-cd"></span>
+  <a class="tz-go" href="https://clickloungestudio.com/sale" onclick="if(window.fbq)fbq('trackCustom','SaleTeaserClick')">See the offers →</a>
+  <button class="tz-x" type="button" aria-label="Hide the sale banner" onclick="document.getElementById('sale-tz').hidden=true;try{sessionStorage.setItem('cl_tz_hide','1')}catch(e){}">×</button>
+</div>
+<script>
+(function(){
+  var SHOW=Date.UTC(2026,10,20,16) /* Nov 21, 00:00 PH */, OPEN=Date.UTC(2026,10,26,16), CLOSE=Date.UTC(2026,10,29,16), el=document.getElementById('sale-tz'), cd=document.getElementById('tz-cd');
+  if(/[?&]sale=/.test(location.search)) return;
+  try{ if(sessionStorage.getItem('cl_tz_hide')) return; }catch(e){}
+  function left(ms){var m=Math.max(0,Math.floor(ms/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60);return d?d+'d '+h+'h':h+'h '+(m%60)+'m';}
+  function paint(){
+    var t=Date.now();
+    if(t<SHOW||t>=CLOSE){el.hidden=true;return;}
+    el.hidden=false;
+    cd.textContent = t<OPEN ? 'Opens in '+left(OPEN-t) : 'On now · ends in '+left(CLOSE-t);
+  }
+  paint(); setInterval(paint,60000);
+})();
+</script>
+
 <!-- HERO -->
 <div class="hero">
   <div class="hero-logo">📷</div>
