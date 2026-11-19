@@ -4,9 +4,9 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>3-Day Christmas Sale — ClickLounge Studio</title>
-<meta name="description" content="ClickLounge Studio 3-Day Sale, Nov 27–29 only: Festive Clicks Christmas packages and the ₱900 Self Shoot Christmas Special. Book online.">
+<meta name="description" content="ClickLounge Studio 3-Day Sale, Nov 27–29 only: Festive Clicks Christmas packages, the ₱900 Self Shoot Christmas Special and the Look Lab Glow-Up Sale. Book online.">
 <meta property="og:title" content="3-Day Christmas Sale · Nov 27–29 only">
-<meta property="og:description" content="Pick your perk: Festive Clicks or the Self Shoot Christmas Special. Book online only.">
+<meta property="og:description" content="Pick your perks: Festive Clicks, the Self Shoot Christmas Special or the Look Lab Glow-Up. Book online only.">
 <meta property="og:image" content="https://clickloungestudio.com/sale-2026/festive-clicks.webp">
 <link rel="canonical" href="https://clickloungestudio.com/sale">
 <script>
@@ -82,19 +82,11 @@ fieldset.choose legend{padding:0;margin:0 0 6px;font-size:12px;letter-spacing:.1
 .btn-ghost:hover{background:#fff7f5;}
 .note{font-size:12.5px;color:var(--muted);margin:8px 0 0;text-align:center;}
 
-/* self shoot */
-.layouts{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:6px;margin:6px 0 4px;}
-.layouts label{display:block;cursor:pointer;text-align:center;font-size:11.5px;color:var(--muted);}
-.layouts input{position:absolute;opacity:0;width:1px;height:1px;}
-.layouts .sw{display:block;aspect-ratio:2/3;border-radius:8px;border:2px solid var(--line);margin-bottom:3px;position:relative;overflow:hidden;}
-.layouts input:checked + .sw{border-color:var(--wine);box-shadow:0 0 0 2px #f1d5d5;}
-.layouts input:focus-visible + .sw{outline:3px solid var(--green);outline-offset:2px;}
-.sw::after{content:"";position:absolute;inset:16% 14% 34% 14%;background:rgba(255,255,255,.85);border-radius:3px;}
-.sw.l1{background:repeating-linear-gradient(45deg,#c0262f 0 5px,#fff 5px 10px);}
-.sw.l2{background:#dce9f2;}
-.sw.l3{background:#e7edd8;}
-.sw.l4{background:#f5dcdc;}
-.sw.l5{background:linear-gradient(#b3202a,#b3202a) top/100% 8% no-repeat,linear-gradient(#b3202a,#b3202a) bottom/100% 8% no-repeat,#fff6f0;}
+.opt:has(input:disabled){opacity:.55;cursor:not-allowed;}
+.count{display:block;margin-top:2px;font-weight:600;color:var(--muted);letter-spacing:0;text-transform:none;}
+.need{display:none;color:#b3261e;font-size:12.5px;font-weight:600;margin:4px 0 0;}
+.choose.err .need{display:block;}
+.choose.err .opt{border-color:#e3a5a0;}
 
 /* look lab tiers */
 .tier .perk{margin-top:0;}
@@ -129,6 +121,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
     <nav class="jump" aria-label="Sale offers">
       <a href="#festive">1 · Festive Clicks</a>
       <a href="#selfshoot">2 · Self Shoot Christmas</a>
+      <a href="#looklab">3 · The Look Lab Glow-Up</a>
     </nav>
   </div>
 </header>
@@ -159,11 +152,12 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
           <li>All digital copies included</li>
           <li>4 mini prints (2×3) · 2 bestie prints (3×4)</li>
         </ul>
-        <div class="perk">
-          <h4>Exclusive sale perks</h4>
-          <p>+1 Christmas Layout Printout <span class="val">(₱200 value)</span></p>
-          <p>FREE 5R Frame, 5×7 in <span class="val">(₱800 value)</span></p>
-        </div>
+        <fieldset class="perk choose" data-min="1" data-max="2">
+          <legend>Exclusive sale perks · choose 1 or 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="joys" value="+1 Christmas Layout Printout"><span>+1 Christmas Layout Printout<small>₱200 value</small></span></label>
+          <label class="opt"><input type="checkbox" name="joys" value="FREE 5R Frame (5x7)"><span>FREE 5R Frame, 5×7 in<small>₱800 value</small></span></label>
+          <p class="need">Please choose 1 or 2 perks.</p>
+        </fieldset>
         <a class="btn book" data-offer="littlejoys" href="#">Book Little Joys · ₱1,700</a>
       </article>
 
@@ -180,11 +174,12 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
           <li>All digital copies included</li>
           <li>8 mini prints (2×3)</li>
         </ul>
-        <fieldset class="perk choose">
-          <legend>Exclusive sale perk · choose one</legend>
-          <label class="opt"><input type="radio" name="bliss" value="2 Christmas Layout Printouts" checked><span>2 Christmas Layout Printouts<small>₱200 value</small></span></label>
-          <label class="opt"><input type="radio" name="bliss" value="2 FREE Double Glass Frames (10x12 in)"><span>2 FREE Double Glass Frames (10×12 in)<small>₱2,000 value</small></span></label>
-          <label class="opt"><input type="radio" name="bliss" value="FREE Hair &amp; Makeup for 1"><span>FREE Hair &amp; Makeup for 1<small>₱2,000 value · arrive 1.5 hours before your slot</small></span></label>
+        <fieldset class="perk choose" data-min="2" data-max="2">
+          <legend>Exclusive sale perks · choose 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="bliss" value="2 Christmas Layout Printouts"><span>2 Christmas Layout Printouts<small>₱200 value</small></span></label>
+          <label class="opt"><input type="checkbox" name="bliss" value="2 FREE Double Glass Frames (10x12)"><span>2 FREE Double Glass Frames (10×12 in)<small>₱2,000 value</small></span></label>
+          <label class="opt"><input type="checkbox" name="bliss" value="FREE Hair &amp; Makeup for 1 (arrive 1.5 hours before the slot)"><span>FREE Hair &amp; Makeup for 1<small>₱2,000 value · arrive 1.5 hours before your slot</small></span></label>
+          <p class="need">Please choose 2 perks.</p>
         </fieldset>
         <a class="btn book" data-offer="holidaybliss" href="#">Book Holiday Bliss · ₱3,000</a>
       </article>
@@ -203,12 +198,13 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
           <li>8 mini prints (2×3) · 4 bestie prints (3×4) · 5 solo print outs (3×4)</li>
           <li>1 8R print in a double glass frame · Christmas XL strip (8×24 in)</li>
         </ul>
-        <div class="perk">
-          <h4>Exclusive sale perks</h4>
-          <p>FREE Hair &amp; Makeup for 1 <span class="val">(₱2,000 value)</span></p>
-          <p>FREE rental dress from House of Roan or Serra for 1 <span class="val">(₱900 value)</span></p>
-          <p>3 Christmas Layout Printouts <span class="val">(₱300 value)</span></p>
-        </div>
+        <fieldset class="perk choose" data-min="2" data-max="2">
+          <legend>Exclusive sale perks · choose 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="grand" value="FREE Hair &amp; Makeup for 1 (arrive 1.5 hours before the slot)"><span>FREE Hair &amp; Makeup for 1<small>₱2,000 value · arrive 1.5 hours before your slot</small></span></label>
+          <label class="opt"><input type="checkbox" name="grand" value="FREE House of Roan or Serra rental dress for 1 (staff to reserve)"><span>FREE rental dress from House of Roan or Serra for 1<small>₱900 value</small></span></label>
+          <label class="opt"><input type="checkbox" name="grand" value="3 Christmas Layout Printouts"><span>3 Christmas Layout Printouts<small>₱300 value</small></span></label>
+          <p class="need">Please choose 2 perks.</p>
+        </fieldset>
         <a class="btn book" data-offer="grandholiday" href="#">Book Grand Holiday · ₱6,000</a>
       </article>
 
@@ -235,64 +231,74 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
           <li>Use of Christmas boxes</li>
           <li>1 Christmas Collage Printout</li>
         </ul>
-        <fieldset class="choose" style="margin-bottom:12px;">
-          <legend>Choose your Christmas layout</legend>
-          <div class="layouts">
-            <label><input type="radio" name="layout" value="Layout 1 (red candy stripe)" checked><span class="sw l1"></span>1</label>
-            <label><input type="radio" name="layout" value="Layout 2 (blue snow)"><span class="sw l2"></span>2</label>
-            <label><input type="radio" name="layout" value="Layout 3 (green and gold)"><span class="sw l3"></span>3</label>
-            <label><input type="radio" name="layout" value="Layout 4 (pink)"><span class="sw l4"></span>4</label>
-            <label><input type="radio" name="layout" value="Layout 5 (red border)"><span class="sw l5"></span>5</label>
-          </div>
-          <p class="note" style="text-align:left;margin:4px 0 0;">See all five on the <a href="sale-2026/self-shoot.webp" target="_blank" rel="noopener">poster</a>. You can change it at the studio.</p>
-        </fieldset>
+        <p class="note" style="text-align:left;margin:0 0 12px;">Christmas collage layouts are on the <a href="sale-2026/self-shoot.webp" target="_blank" rel="noopener">poster</a>.</p>
         <a class="btn book" data-offer="selfshoot" href="#">Book Self Shoot Christmas · ₱900</a>
       </article>
     </div>
   </section>
 
   <!-- 3 LOOK LAB -->
-  <!-- Look Lab Glow-Up: hidden until the owner says to show it. Remove "hidden" and restore the jump link and posters. -->
-  <section class="sec" id="looklab" aria-labelledby="h-ll" hidden>
+    <section class="sec" id="looklab" aria-labelledby="h-ll">
     <div class="sec-head">
       <div>
         <h2 id="h-ll" class="serif"><span class="num">3</span>The Look Lab Glow-Up Sale</h2>
-        <p class="sub">Book your preferred session and choose your free upgrade.</p>
+        <p class="sub">Book your preferred session and choose 2 free upgrades.</p>
       </div>
       <a class="poster-link" href="sale-2026/look-lab.webp" target="_blank" rel="noopener">View poster ↗</a>
     </div>
     <div class="grid">
       <article class="card tier">
         <h3 class="serif">Standard</h3>
-        <div class="perk"><h4>Choose 1</h4><p>+2 edited photos</p><p class="val">or</p><p>4 mini prints</p></div>
+        <fieldset class="perk choose" data-min="2" data-max="2">
+          <legend>Free upgrades · choose 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="ll_standard" value="0"><span>+2 edited photos<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_standard" value="1"><span>4 mini prints<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_standard" value="2"><span>FREE 5R Frame, 5×7 in<small>Free</small></span></label>
+          <p class="need">Please choose 2 upgrades.</p>
+        </fieldset>
         <a class="btn book btn-ghost" data-offer="ll" data-tier="standard" href="#">Build a Standard session</a>
       </article>
       <article class="card tier">
         <h3 class="serif">Signature</h3>
-        <div class="perk"><h4>Choose 1</h4><p>+3 edited photos + 4 mini prints</p><p class="val">or</p><p>+10 mins shoot time</p></div>
+        <fieldset class="perk choose" data-min="2" data-max="2">
+          <legend>Free upgrades · choose 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="ll_signature" value="0"><span>+3 edited photos + 4 mini prints<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_signature" value="1"><span>+10 mins shoot time<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_signature" value="2"><span>FREE 5R Frame, 5×7 in<small>Free</small></span></label>
+          <p class="need">Please choose 2 upgrades.</p>
+        </fieldset>
         <a class="btn book btn-ghost" data-offer="ll" data-tier="signature" href="#">Build a Signature session</a>
       </article>
       <article class="card tier">
         <h3 class="serif">Prestige</h3>
-        <div class="perk"><h4>Choose 1</h4><p>+5 edited photos</p><p class="val">or</p><p>+15 mins shoot time</p></div>
+        <fieldset class="perk choose" data-min="2" data-max="2">
+          <legend>Free upgrades · choose 2 <span class="count" aria-live="polite"></span></legend>
+          <label class="opt"><input type="checkbox" name="ll_prestige" value="0"><span>+5 edited photos<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_prestige" value="1"><span>+15 mins shoot time<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_prestige" value="2"><span>FREE 5R Frame, 5×7 in<small>Free</small></span></label>
+          <label class="opt"><input type="checkbox" name="ll_prestige" value="3"><span>FREE 8R Frame, 8×10 in<small>Free</small></span></label>
+          <p class="need">Please choose 2 upgrades.</p>
+        </fieldset>
         <a class="btn book btn-ghost" data-offer="ll" data-tier="prestige" href="#">Build a Prestige session</a>
       </article>
     </div>
-    <div class="window">Opens the Look Lab page where you pick your look, add-ons and <b>your free upgrade</b>, then book. Valid for Look Lab bookings made <b>Nov 27–29</b> for sessions <b>Dec 1, 2026 – Jan 31, 2027</b>.</div>
+    <div class="window">Opens the Look Lab page with <b>your 2 free upgrades</b> saved, where you pick your look and add-ons, then book. Valid for Look Lab bookings made <b>Nov 27–29</b> for sessions <b>Dec 1, 2026 – Jan 31, 2027</b>.</div>
   </section>
 
   <!-- HOW + POSTERS -->
   <section class="sec" aria-labelledby="h-how">
     <h2 id="h-how" class="serif" style="color:var(--wine);margin:0 0 6px;font-size:24px;">How it works</h2>
     <div class="how">
-      <div><b>1 · Pick your offer</b>Choose a package and your perk above.</div>
+      <div><b>1 · Pick your offer</b>Choose a package and tick your perks above.</div>
       <div><b>2 · Pick a date</b>Any open slot from Dec 1, 2026 to Jan 31, 2027.</div>
       <div><b>3 · Pay ₱300 to reserve</b>GCash or BPI. The rest is paid at the studio.</div>
     </div>
     <h2 class="serif" style="color:var(--wine);margin:24px 0 10px;font-size:24px;">The posters</h2>
     <div class="posters">
+      <a href="sale-2026/overview.webp" target="_blank" rel="noopener"><img src="sale-2026/overview.webp" alt="3-Day Sale overview poster" width="1024" height="1536" loading="lazy"></a>
       <a href="sale-2026/festive-clicks.webp" target="_blank" rel="noopener"><img src="sale-2026/festive-clicks.webp" alt="Festive Clicks Christmas packages poster" width="1024" height="1536" loading="lazy"></a>
       <a href="sale-2026/self-shoot.webp" target="_blank" rel="noopener"><img src="sale-2026/self-shoot.webp" alt="Self Shoot Christmas Special poster" width="1024" height="1536" loading="lazy"></a>
+      <a href="sale-2026/look-lab.webp" target="_blank" rel="noopener"><img src="sale-2026/look-lab.webp" alt="The Look Lab Glow-Up Sale poster" width="1024" height="1536" loading="lazy"></a>
     </div>
   </section>
 </main>
@@ -313,21 +319,38 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
 
   var OFFERS = {
     littlejoys: { pkg: 'Festive Clicks - Little Joys (3-Day Sale)', price: 1700, dur: 30,
-      desc: 'Up to 5 pax · 15-min photographer-guided shoot · 1 Christmas layout printout · Christmas tree and boxes · 1 colored backdrop + all-white backdrop · all digital copies · 4 mini prints (2x3) · 2 bestie prints (3x4) · SALE PERKS: +1 Christmas Layout Printout, FREE 5R Frame (5x7)' },
+      desc: 'Up to 5 pax · 15-min photographer-guided shoot · 1 Christmas layout printout · Christmas tree and boxes · 1 colored backdrop + all-white backdrop · all digital copies · 4 mini prints (2x3) · 2 bestie prints (3x4)', pick: 'joys' },
     holidaybliss: { pkg: 'Festive Clicks - Holiday Bliss (3-Day Sale)', price: 3000, dur: 45,
       desc: 'Up to 7 pax · 25-min photographer-guided shoot · Christmas XL strip (8x24) · full Christmas set-up · 1 colored backdrop + all-white backdrop · all digital copies · 8 mini prints (2x3)',
-      perk: function () { var v = (document.querySelector('input[name="bliss"]:checked') || {}).value || ''; return 'SALE PERK: ' + v + (/Makeup/.test(v) ? ' (arrive 1.5 hours before the slot)' : ''); } },
+      pick: 'bliss' },
     grandholiday: { pkg: 'Festive Clicks - Grand Holiday (3-Day Sale)', price: 6000, dur: 60,
-      desc: 'Up to 10 pax · 40-min photographer-guided shoot · group and individual shots · 1 outfit change · full Christmas set-up · 1 colored backdrop + all-white backdrop · all digital copies · 8 mini prints (2x3) · 4 bestie prints (3x4) · 5 solo print outs (3x4) · 1 8R print in double glass frame · Christmas XL strip (8x24) · SALE PERKS: FREE Hair & Makeup for 1 (arrive 1.5 hours before the slot), FREE House of Roan or Serra rental dress for 1 (staff to reserve), 3 Christmas Layout Printouts' },
+      desc: 'Up to 10 pax · 40-min photographer-guided shoot · group and individual shots · 1 outfit change · full Christmas set-up · 1 colored backdrop + all-white backdrop · all digital copies · 8 mini prints (2x3) · 4 bestie prints (3x4) · 5 solo print outs (3x4) · 1 8R print in double glass frame · Christmas XL strip (8x24)', pick: 'grand' },
     selfshoot: { pkg: 'Self Shoot Christmas Special (3-Day Sale)', price: 900, dur: 30,
-      desc: '1-3 pax · 15-min self-shoot · 1 Christmas collage · all-white background · Christmas boxes · 1 Christmas Collage Printout',
-      perk: function () { return 'Layout: ' + ((document.querySelector('input[name="layout"]:checked') || {}).value || 'Layout 1'); } }
+      desc: '1-3 pax · 15-min self-shoot · 1 Christmas collage · all-white background · Christmas boxes · 1 Christmas Collage Printout' }
   };
+
+  function picked(name) {
+    return Array.prototype.map.call(document.querySelectorAll('input[name="' + name + '"]:checked'), function (i) { return i.value; });
+  }
+  // Perk pickers: tick between data-min and data-max; the rest lock once the max is reached
+  function syncPick(fs) {
+    var max = +fs.getAttribute('data-max'), boxes = fs.querySelectorAll('input'), n = fs.querySelectorAll('input:checked').length;
+    if (boxes[0].type === 'checkbox') boxes.forEach(function (i) { i.disabled = !i.checked && n >= max; });
+    var c = fs.querySelector('.count'); if (c && max > 1) c.textContent = n + ' of ' + max + ' picked';
+    if (n >= +fs.getAttribute('data-min')) fs.classList.remove('err');
+  }
+  document.querySelectorAll('fieldset[data-max]').forEach(function (fs) { syncPick(fs); fs.addEventListener('change', function () { syncPick(fs); }); });
+  function ready(btn) {
+    var fs = btn.parentNode.querySelector('fieldset[data-min]');
+    if (!fs || fs.querySelectorAll('input:checked').length >= +fs.getAttribute('data-min')) return true;
+    fs.classList.add('err'); fs.scrollIntoView({ block: 'center' }); fs.querySelector('input:not(:disabled)').focus({ preventScroll: true });
+    return false;
+  }
 
   function urlFor(btn) {
     var key = btn.getAttribute('data-offer');
-    if (key === 'll') return LOOKLAB + '?' + TAG.slice(1) + '#sessions';
-    var o = OFFERS[key], desc = o.desc + (o.perk ? ' · ' + o.perk() : '');
+    if (key === 'll') { var tier = btn.getAttribute('data-tier'); return LOOKLAB + '?' + TAG.slice(1) + '&perk=' + picked('ll_' + tier).join(',') + '#' + tier; }
+    var o = OFFERS[key], desc = o.desc + (o.pick ? ' · SALE PERKS: ' + picked(o.pick).join(', ').replace(/&amp;/g, '&') : '');
     return BOOK + '?pkg=' + encodeURIComponent(o.pkg) + '&price=' + o.price + '&dur=' + o.dur + '&desc=' + encodeURIComponent(desc) + TAG;
   }
 
@@ -354,6 +377,7 @@ footer{text-align:center;color:var(--muted);font-size:12.5px;padding:28px 16px 4
     var b = e.target.closest && e.target.closest('.book');
     if (!b || state !== 'open') return;
     e.preventDefault();
+    if (!ready(b)) return;
     if (window.fbq) fbq('track', 'InitiateCheckout', { content_name: b.getAttribute('data-offer'), currency: 'PHP' });
     location.href = urlFor(b);
   });
