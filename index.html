@@ -467,6 +467,16 @@ footer{background:var(--green-dark);color:#fff;padding:2.5rem 2rem;text-align:ce
   section, .sub-panel{padding:1rem .5rem !important;}
 }
 
+/* ── 3-Day Christmas Sale teaser (Nov 2026). Remove after Nov 29, 2026; it hides itself once the sale ends. ── */
+.sale-tz{display:flex;align-items:center;justify-content:center;gap:.6rem;flex-wrap:wrap;background:linear-gradient(90deg,#6c1526,#8e1f33 50%,#6c1526);color:#fff;text-align:center;font-size:.86rem;line-height:1.35;padding:.6rem 2.6rem .6rem 1rem;position:relative;}
+.sale-tz[hidden]{display:none;}
+.sale-tz b{color:#f4d58d;}
+.sale-tz .tz-cd{font-family:'Space Mono',monospace;font-size:.78rem;background:rgba(255,255,255,.14);border-radius:100px;padding:.15rem .6rem;white-space:nowrap;}
+.sale-tz a.tz-go{color:#8e1f33;background:#f4d58d;font-weight:700;text-decoration:none;border-radius:100px;padding:.3rem .9rem;white-space:nowrap;}
+.sale-tz a.tz-go:hover{background:#fff;}
+.sale-tz .tz-x{position:absolute;right:.4rem;top:50%;transform:translateY(-50%);background:none;border:0;color:#fff;opacity:.75;font-size:1.1rem;line-height:1;cursor:pointer;padding:.4rem .6rem;}
+.sale-tz .tz-x:hover{opacity:1;}
+
 /* ── FESTIVE CLICKS — Christmas 2026 (home) ── */
 .xm{background:linear-gradient(180deg,#fff8f3 0%,#fbece6 100%);padding:3.5rem 1.25rem;border-top:1px solid rgba(179,32,42,.12);border-bottom:1px solid rgba(179,32,42,.12);}
 .xm-in{max-width:1080px;margin:0 auto;}
@@ -533,6 +543,28 @@ document.addEventListener('click',function(e){var a=e.target.closest&&e.target.c
 </script>
 </head>
 <body>
+
+<!-- 3-Day Christmas Sale teaser: links to clickloungestudio.com/sale; shows from Nov 21 and hides itself after Nov 29, 2026 (PH time) -->
+<div class="sale-tz" id="sale-tz" role="region" aria-label="3-Day Christmas Sale" hidden>
+  <span>🎄 <b>3-Day Christmas Sale</b> · Nov 27–29 only · save up to ₱3,200 + free perks</span>
+  <span class="tz-cd" id="tz-cd"></span>
+  <a class="tz-go" href="sale.html" onclick="if(window.fbq)fbq('trackCustom','SaleTeaserClick')">See the offers →</a>
+  <button class="tz-x" type="button" aria-label="Hide the sale banner" onclick="document.getElementById('sale-tz').hidden=true;try{sessionStorage.setItem('cl_tz_hide','1')}catch(e){}">×</button>
+</div>
+<script>
+(function(){
+  var SHOW=Date.UTC(2026,10,20,16) /* Nov 21, 00:00 PH */, OPEN=Date.UTC(2026,10,26,16), CLOSE=Date.UTC(2026,10,29,16), el=document.getElementById('sale-tz'), cd=document.getElementById('tz-cd');
+  try{ if(sessionStorage.getItem('cl_tz_hide')) return; }catch(e){}
+  function left(ms){var m=Math.max(0,Math.floor(ms/60000)),d=Math.floor(m/1440),h=Math.floor(m%1440/60);return d?d+'d '+h+'h':h+'h '+(m%60)+'m';}
+  function paint(){
+    var t=Date.now();
+    if(t<SHOW||t>=CLOSE){el.hidden=true;return;}
+    el.hidden=false;
+    cd.textContent = t<OPEN ? 'Opens in '+left(OPEN-t) : 'On now · ends in '+left(CLOSE-t);
+  }
+  paint(); setInterval(paint,60000);
+})();
+</script>
 
 <nav>
   <a href="#" onclick="showPage('home',this);return false;" style="padding:0 .8rem;border:none;"><video class="logo-anim" muted loop playsinline autoplay preload="auto" poster="logo-still.png" role="img" aria-label="ClickLounge Studio" style="height:36px;width:64px;display:block;"></video></a>
